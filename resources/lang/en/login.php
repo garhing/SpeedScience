@@ -4,6 +4,7 @@ return [
     'title'           => 'Sign In',
     'tips'            => 'Please Enter Username and Password',
     'username'        => 'Username',
+    'username_placeholder'        => 'Email',
     'password'        => 'Password',
     'captcha'         => 'Captcha',
     'remember'        => 'Remember Me',

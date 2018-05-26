@@ -4,6 +4,7 @@ return [
     'title'           => '로그인',
     'tips'            => '아이디 및 비밀번호를 입력하세요  ',
     'username'        => '아이디',
+    'username_placeholder'        => '이메일',
     'password'        => '비밀번호',
     'captcha'         => '인증코드',
     'remember'        => '로그인 상태 유지',

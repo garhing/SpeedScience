@@ -4,6 +4,7 @@ return [
     'title'           => 'ログイン',
     'tips'            => 'あなたのアカウントとパスワードを入力してください',
     'username'        => 'アカウント',
+    'username_placeholder'        => 'メール',
     'password'        => 'パスワード',
     'captcha'         => '認証コード',
     'remember'        => 'ログイン状態を保持',

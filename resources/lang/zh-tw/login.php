@@ -4,6 +4,7 @@ return [
     'title'           => '登入',
     'tips'            => '請輸入用戶名和密碼',
     'username'        => '用戶名',
+    'username_placeholder'        => '郵箱',
     'password'        => '密碼',
     'captcha'         => '驗證碼',
     'remember'        => '記住我',
