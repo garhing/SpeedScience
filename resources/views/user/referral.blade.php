@@ -46,7 +46,21 @@
                             <span class="caption-subject bold"> {{trans('home.referral_title')}} </span>
                         </div>
                         <div class="actions">
-                            <button type="submit" class="btn red" onclick="extractMoney()"> {{trans('home.referral_table_apply')}} </button>
+                            <form class="form-inline" action="#">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">类型</div>
+                                        <input type="text" class="form-control" id="acc_type_id" placeholder="如支付宝，微信等" name="acc_type">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">账户</div>
+                                        <input type="text" class="form-control" id="acc_id" placeholder="填写具体账户" name="acc">
+                                    </div>
+                                </div>
+                                <button class="btn red" onclick="extractMoney();" type="button"> {{trans('home.referral_table_apply')}}￥{{$canAmount}} </button>
+                            </form>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -102,6 +116,70 @@
                         </div>
                     </div>
                 </div>
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-dark">
+                            <span class="caption-subject bold"> 我的提现申请 </span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="table-scrollable">
+                            <table class="table table-hover table-light">
+                                <thead>
+                                <tr class="uppercase">
+                                    <th> # </th>
+                                    <th> 提现金额 </th>
+                                    <th> 提现账号 </th>
+                                    <th> 账号类型 </th>
+                                    <th> 账单号码 </th>
+                                    <th> 申请时间 </th>
+                                    <th> 状态 </th>
+                                    <th> 处理时间 </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @if($applyList->isEmpty())
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">暂无数据</td>
+                                    </tr>
+                                @else
+                                    @foreach($applyList as $apply)
+                                        <tr>
+                                            <td> {{$apply->id}} </td>
+                                            <td> ￥{{$apply->amount/100}} </td>
+                                            <td> {{$apply->account_num}} </td>
+                                            <td> {{$apply->account_type}} </td>
+                                            <td> {{$apply->bill_num}} </td>
+                                            <td> {{$apply->created_at}} </td>
+                                            <td>
+                                                @if($apply->status == -1)
+                                                    <span class="label label-default label-danger"> 驳回 </span>
+                                                @elseif($apply->status == 0)
+                                                    <span class="label label-default label-info"> 待审核 </span>
+                                                @elseif($apply->status == 2)
+                                                    <span class="label label-default label-success"> 已打款 </span>
+                                                @else
+                                                    <span class="label label-default label-default"> 审核通过待打款 </span>
+                                                @endif
+                                            </td>
+                                            <td> {{$apply->created_at == $apply->updated_at ? '' : $apply->updated_at}} </td>
+
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7 col-sm-7">
+                                <div class="dataTables_paginate paging_bootstrap_full_number pull-right">
+                                    {{ $applyList->links() }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- END EXAMPLE TABLE PORTLET-->
             </div>
         </div>
@@ -117,7 +195,16 @@
     <script type="text/javascript">
         // 申请提现
         function extractMoney() {
-            $.post("{{url('user/extractMoney')}}", {_token:'{{csrf_token()}}'}, function (ret) {
+            if ($('#acc_id').val() == null || $('#acc_id').val()==""){
+                layer.msg('账户不能为空', {time:1000});
+                return;
+            }
+            if ($('#acc_type_id').val() == null || $('#acc_type_id').val()==""){
+                layer.msg("类型不能为空", {time:1000});
+                return;
+            }
+
+            $.post("{{url('user/extractMoney')}}", {_token:'{{csrf_token()}}','acc':$('#acc_id').val(),'acc_type':$('#acc_type_id').val()}, function (ret) {
                 layer.msg(ret.message, {time:1000});
             });
         }

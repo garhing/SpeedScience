@@ -41,6 +41,9 @@
                                         <th> # </th>
                                         <th> 申请账号 </th>
                                         <th> 提现金额 </th>
+                                        <th> 提现账号 </th>
+                                        <th> 账号类型 </th>
+                                        <th> 账单号码 </th>
                                         <th> 申请时间 </th>
                                         <th> 状态 </th>
                                         <th> 处理时间 </th>
@@ -57,7 +60,10 @@
                                             <tr>
                                                 <td> {{$apply->id}} </td>
                                                 <td> <a href="{{url('admin/editUser?id=' . $apply->user_id)}}" target="_blank">{{$apply->user->username}}</a> </td>
-                                                <td> {{$apply->amount}} </td>
+                                                <td> ￥{{$apply->amount/100}} </td>
+                                                <td> {{$apply->account_num}} </td>
+                                                <td> {{$apply->account_type}} </td>
+                                                <td> {{$apply->bill_num}} </td>
                                                 <td> {{$apply->created_at}} </td>
                                                 <td>
                                                     @if($apply->status == -1)
@@ -72,11 +78,12 @@
                                                 </td>
                                                 <td> {{$apply->created_at == $apply->updated_at ? '' : $apply->updated_at}} </td>
                                                 <td>
-                                                    @if($apply->status > 0 && $apply->status < 2)
-                                                        <button type="button" class="btn btn-sm red btn-outline" onclick="doAudit('{{$apply->id}}')"> 审核 </button>
-                                                    @else
-                                                        <button type="button" class="btn btn-sm blue btn-outline" onclick="doAudit('{{$apply->id}}')"> <i class="fa fa-search"></i> </button>
-                                                    @endif
+                                                    <button type="button" class="btn btn-sm blue btn-outline" onclick="doAudit('{{$apply->id}}')"> 查看 </button>
+                                                    {{--@if($apply->status > 0 && $apply->status < 2)--}}
+                                                        {{--<button type="button" class="btn btn-sm red btn-outline" onclick="doAudit('{{$apply->id}}')"> 去审核 </button>--}}
+                                                    {{--@else--}}
+                                                        {{--<button type="button" class="btn btn-sm blue btn-outline" onclick="doAudit('{{$apply->id}}')"> <i class="fa fa-search"></i> </button>--}}
+                                                    {{--@endif--}}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -108,15 +115,16 @@
     <script type="text/javascript">
         // 审核
         function doAudit(id) {
-            window.open('{{url('admin/applyDetail?id=')}}' + id);
+            window.open('{{url('admin/applyDetail?id=')}}' + id,"_self");
         }
 
         // 搜索
         function do_search() {
             var username = $("#username").val();
             var status = $("#status option:checked").val();
+            var url = '{{url('admin/applyList')}}' + '?username=' + username + '&status=' + status;
 
-            window.location.href = '{{url('admin/applyList')}}' + '?username=' + username + '&status=' + status;
+            window.open(url,"_self");
         }
 
         // 重置

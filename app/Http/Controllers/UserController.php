@@ -1044,6 +1044,7 @@ class UserController extends Controller
         $view['link'] = self::$config['website_url'] . '/register?aff=' . $user['id'];
         $view['referralLogList'] = ReferralLog::query()->where('ref_user_id', $user['id'])->with('user')->paginate(10);
 
+        $view['applyList'] = ReferralApply::where('user_id',$user['id']) ->orderBy('id', 'desc')->paginate(15)->appends($request->except('page'));
         return Response::view('user/referral', $view);
     }
 
@@ -1077,6 +1078,8 @@ class UserController extends Controller
         $obj->before = $ref_amount;
         $obj->after = 0;
         $obj->amount = $ref_amount;
+        $obj->account_num = $request->get('acc');
+        $obj->account_type = $request->get('acc_type');
         $obj->link_logs = $link_logs;
         $obj->status = 0;
         $obj->save();

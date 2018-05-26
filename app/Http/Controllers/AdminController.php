@@ -1910,8 +1910,9 @@ class AdminController extends Controller
     {
         $id = $request->get('id');
         $status = $request->get('status');
+        $bill_num = $request->get('bill_num');
 
-        $ret = ReferralApply::query()->where('id', $id)->update(['status' => $status]);
+        $ret = ReferralApply::query()->where('id', $id)->update(['status' => $status,'bill_num'=>$bill_num]);
         if ($ret) {
             // 审核申请的时候将关联的
             $referralApply = ReferralApply::query()->where('id', $id)->first();
