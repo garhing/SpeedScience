@@ -1,0 +1,14 @@
+.logo-font:hover {text-decoration: underline;color: #fff;}
+.logo-font:link {text-decoration: none; }
+.logo-font:visited {text-decoration: none; }
+.logo-font:active {text-decoration: none;}
+.logo-font {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size:30px;
+    font-weight: bold;
+    color: #fff;
+}
+.page-sidebar-closed.page-sidebar-closed-hide-logo .page-header.navbar .page-logo .logo-font {
+    display: none; }

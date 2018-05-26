@@ -29,6 +29,7 @@
     <link href="/assets/layouts/layout4/css/layout.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/layouts/layout4/css/themes/default.min.css" rel="stylesheet" type="text/css" id="style_color" />
     <link href="/assets/layouts/layout4/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/project.css" rel="stylesheet" type="text/css" />
     <!-- END THEME LAYOUT STYLES -->
     <link rel="shortcut icon" href="{{asset('favicon.ico')}}" />
 </head>
@@ -40,8 +41,9 @@
     <div class="page-header-inner ">
         <!-- BEGIN LOGO -->
         <div class="page-logo">
-            <a href="{{url('/user')}}">
-                <img src="/assets/images/logo.png" alt="logo" class="logo-default" /> </a>
+            {{--<a href="{{url('/user')}}">--}}
+                {{--<img src="/assets/images/logo.png" alt="logo" class="logo-default" /> </a>--}}
+            <a href="{{url('/')}}" class="logo-font">助力科研 </a>
             <div class="menu-toggler sidebar-toggler">
                 <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
             </div>
