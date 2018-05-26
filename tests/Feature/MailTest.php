@@ -6,18 +6,22 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-
-class ExampleTest extends TestCase
+use Mail;
+use App\Mail\activeUser;
+class MailTest extends TestCase
 {
     /**
      * A basic test example.
      *
      * @return void
      */
-    public function testBasicTest()
+    public function testExample()
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
+        $this->assertTrue(true);
     }
+    public function testEmail()
+    {
+        Mail::to('izhangxm@foxmail.com')->send(new activeUser('aaaa', 'hahah'));
+    }
+
 }

@@ -86,7 +86,7 @@
         @endif
         <div class="form-group">
             <label class="control-label visible-ie8 visible-ie9">{{trans('login.username')}}</label>
-            <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="{{trans('login.username')}}" name="username" value="{{Request::old('username')}}" />
+            <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="{{trans('login.username_placeholder')}}" name="username" value="{{Request::old('username')}}" />
         </div>
         <div class="form-group">
             <label class="control-label visible-ie8 visible-ie9">{{trans('login.password')}}</label>
