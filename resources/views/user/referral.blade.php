@@ -205,7 +205,9 @@
             }
 
             $.post("{{url('user/extractMoney')}}", {_token:'{{csrf_token()}}','acc':$('#acc_id').val(),'acc_type':$('#acc_type_id').val()}, function (ret) {
-                layer.msg(ret.message, {time:1000});
+                layer.msg(ret.message, {time:1000},function () {
+                    window.location.reload();
+                });
             });
         }
     </script>
