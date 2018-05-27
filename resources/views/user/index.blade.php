@@ -88,7 +88,7 @@
                         </span>
                     </li>
                     <li class="list-group-item">
-                        {{trans('home.account_expire')}}：{{date('Y-m-d 0:0:0') > $info['expire_time'] ? trans('home.expired') : $info['expire_time']}}
+                        {{trans('home.account_expire')}}：{{date('Y-m-d 0:0:0') > $info['expire_time'] ? trans('home.expired') : $info['expire_time'].' 24:00:00'}}
                     </li>
                     <li class="list-group-item">
                         {{trans('home.account_last_usage')}}：{{empty($info['t']) ? trans('home.never_used') : date('Y-m-d H:i:s', $info['t'])}}
