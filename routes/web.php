@@ -2,6 +2,26 @@
 
 Route::get('s/{code}', 'SubscribeController@index'); // 节点订阅地址
 
+
+Route::group(['middleware' => ['forbidden']], function () {
+    Route::any('/', 'HomeController@index'); // 用户首页
+    Route::any('home/index', 'HomeController@index'); // 用户首页
+    Route::any('home/features', 'HomeController@features');
+    Route::any('home/datacenter', 'HomeController@datacenter');
+    Route::any('home/panel', 'HomeController@panel');
+    Route::any('home/sla', 'HomeController@sla');
+    Route::any('home/sla_full', 'HomeController@sla_full');
+    Route::any('home/game_pricing', 'HomeController@game_pricing');
+    Route::any('home/client', 'HomeController@client');
+    Route::any('home/speedtest', 'HomeController@speedtest');
+    Route::any('home/status', 'HomeController@status');
+    Route::any('home/about', 'HomeController@about');
+    Route::any('home/contact', 'HomeController@contact');
+    Route::any('home/coupons', 'HomeController@coupons');
+    Route::any('home/aff', 'HomeController@aff');
+    Route::any('home/use_policy', 'HomeController@use_policy');
+});
+
 Route::group(['middleware' => ['forbidden']], function () {
     Route::get('lang/{locale}', 'UserController@switchLang'); // 语言切换
     Route::any('login', 'LoginController@index'); // 登录
@@ -94,7 +114,6 @@ Route::group(['middleware' => ['forbidden', 'user', 'admin']], function () {
 });
 
 Route::group(['middleware' => ['forbidden', 'user']], function () {
-    Route::any('/', 'UserController@index'); // 用户首页
     Route::any('user', 'UserController@index'); // 用户首页
     Route::any('user/article', 'UserController@article'); // 文章详情
     Route::get('user/subscribe', 'UserController@subscribe'); // 节点订阅

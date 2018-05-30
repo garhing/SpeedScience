@@ -23,6 +23,7 @@
     <!-- END THEME GLOBAL STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link href="/assets/pages/css/login-2.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/project.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL STYLES -->
     <!-- BEGIN THEME LAYOUT STYLES -->
     <!-- END THEME LAYOUT STYLES -->
@@ -32,7 +33,7 @@
 <body class=" login">
 <!-- BEGIN LOGO -->
 <div class="logo">
-    <a href="javascript:;"> <img src="/assets/images/home_logo.png" alt="" /> </a>
+    <a href="{{url('/')}}" class="logo-font">助力科研</a>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
