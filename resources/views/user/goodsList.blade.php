@@ -15,9 +15,26 @@
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content" style="padding-top:0;">
         <!-- BEGIN PAGE BASE CONTENT -->
+
         <div class="row">
             <div class="col-md-12">
+
+            </div>
+            <div class="col-md-12">
                 <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="icon-link font-blue"></i>
+                            <span class="caption-subject font-blue bold">购买必读</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div class="mt-clipboard-container">
+                            流量可购买多次，每次购买会叠加流量；<br>
+                            套餐购买会导致之前购买的套餐失效，请谨慎购买！<br>
+                            购买任一服务后，凭账单号码加QQ群：674788156 获得后续增值服务或报告异常。<br>
+                        </div>
+                    </div>
                     <div class="portlet-body">
                         <div class="table-scrollable table-scrollable-borderless">
                             <table class="table table-hover table-light table-checkable order-column">

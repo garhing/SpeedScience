@@ -32,8 +32,12 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="well" style="background-color: #FFF;">
-                    {{trans('home.ratio_tips')}}
+                    {{trans('home.ratio_tips')}}<br>
+                    <br>
                     <button class="btn btn-sm blue" onclick="subscribe()"> {{trans('home.subscribe_button')}} </button>
+                </div>
+                <div class="well" style="background-color: #FFF;">
+                    下方是可用节点，具体教程请看公告或文章。
                 </div>
                 <div class="row widget-row">
                         @foreach($nodeList as $node)

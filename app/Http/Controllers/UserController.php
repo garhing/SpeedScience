@@ -1069,6 +1069,7 @@ class UserController extends Controller
         // 取出本次申请关联返利日志ID
         $link_logs = '';
         $referralLog = ReferralLog::query()->where('ref_user_id', $user['id'])->where('status', 0)->get();
+        ReferralLog::query()->where('ref_user_id', $user['id'])->where('status', 0)->update(['status'=>1]);
         foreach ($referralLog as $log) {
             $link_logs .= $log->id . ',';
         }

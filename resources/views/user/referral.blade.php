@@ -16,13 +16,6 @@
         <!-- BEGIN PAGE BASE CONTENT -->
         <div class="row">
             <div class="col-md-12">
-                <div class="note note-info">
-                    <p>{{trans('home.promote', ['traffic' => $referral_traffic, 'referral_percent' => $referral_percent * 100])}}</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
                 <div class="portlet light form-fit bordered">
                     <div class="portlet-title">
                         <div class="caption">
@@ -32,6 +25,7 @@
                     </div>
                     <div class="portlet-body form">
                         <div class="mt-clipboard-container">
+                            <p>{{trans('home.promote', ['traffic' => $referral_traffic, 'referral_percent' => $referral_percent * 100])}}</p>
                             <input type="text" id="mt-target-1" class="form-control" value="{{$link}}" />
                             <a href="javascript:;" class="btn blue mt-clipboard" data-clipboard-action="copy" data-clipboard-target="#mt-target-1">
                                 <i class="icon-note"></i> {{trans('home.referral_button')}}
@@ -43,9 +37,9 @@
                 <div class="portlet light bordered">
                     <div class="portlet-title">
                         <div class="caption font-dark">
-                            <span class="caption-subject bold"> {{trans('home.referral_title')}} </span>
+                            <span class="caption-subject bold"> 我的推广记录 </span>
                         </div>
-                        <div class="actions">
+                        <div class="actions pull-right">
                             <form class="form-inline" action="#">
                                 <div class="form-group">
                                     <div class="input-group">
@@ -61,6 +55,13 @@
                                 </div>
                                 <button class="btn red" onclick="extractMoney();" type="button"> {{trans('home.referral_table_apply')}}￥{{$canAmount}} </button>
                             </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            提现时，请一定要反复检查账户是否正确，填错后无法撤回，请谨慎。任何由用户失误造成的损失请自行承担。
+                            <div class="dataTables_info" role="status" aria-live="polite">{{trans('home.referral_summary', ['total' => $referralLogList->total(), 'amount' => $canAmount, 'money' => $referral_money])}}</div>
+                            提现申请将自动合并所有可提现金额。
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -106,12 +107,17 @@
                         </div>
                         <div class="row">
                             <div class="col-md-5 col-sm-5">
-                                <div class="dataTables_info" role="status" aria-live="polite">{{trans('home.referral_summary', ['total' => $referralLogList->total(), 'amount' => $canAmount, 'money' => $referral_money])}}</div>
                             </div>
                             <div class="col-md-7 col-sm-7">
                                 <div class="dataTables_paginate paging_bootstrap_full_number pull-right">
                                     {{ $referralLogList->links() }}
                                 </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-7 col-sm-7  pull-right">
+
                             </div>
                         </div>
                     </div>
