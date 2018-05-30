@@ -3,6 +3,8 @@
 /storage/framework
 /storage/logs
 /storage/app/public
+config/database.php
+public/assets/images/qrcode/
 /vendor
 /.idea
 /.vagrant
