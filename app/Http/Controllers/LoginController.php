@@ -53,11 +53,11 @@ class LoginController extends Controller
                 $request->session()->flash('errorMsg', '用户名或密码错误');
 
                 return Redirect::back()->withInput();
-            } else if ($user->status < 0) {
+            } else if ($user->is_admin != 1 && $user->status < 0) {
                 $request->session()->flash('errorMsg', '账号已禁用');
 
                 return Redirect::back();
-            } else if ($user->status == 0 && self::$config['is_active_register'] && $user->is_admin == 0) {
+            } else if ($user->is_admin != 1 && $user->status == 0 && self::$config['is_active_register']) {
                 $request->session()->flash('errorMsg', '账号未激活，请先<a href="/activeUser?username=' . $user->username . '" target="_blank"><span style="color:#000">【激活账号】</span></a>');
 
                 return Redirect::back()->withInput();

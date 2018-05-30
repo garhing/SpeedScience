@@ -74,7 +74,7 @@ class UserController extends Controller
 
         // 节点列表
         $userLabelIds = UserLabel::query()->where('user_id', $user['id'])->pluck('label_id');
-        if (empty($userLabelIds)) {
+        if ($user['status'] ==-1 || $user['enable']<=0 || empty($userLabelIds)) {
             $view['nodeList'] = [];
 
             return Response::view('user/index', $view);
@@ -918,13 +918,14 @@ class UserController extends Controller
                 User::query()->where('id', $user->id)->increment('transfer_enable', $goods->traffic * 1048576);
 
                 // 更新账号过期时间、流量重置日
+                User::query()->where('id', $user->id)->update(['enable' => 1, 'status'=>1]);
                 if ($goods->type == 2) {
                     $traffic_reset_day = in_array(date('d'), [29, 30, 31]) ? 28 : abs(date('d'));
-                    User::query()->where('id', $user->id)->update(['traffic_reset_day' => $traffic_reset_day, 'expire_time' => date('Y-m-d', strtotime("+" . $goods->days . " days")), 'enable' => 1]);
+                    User::query()->where('id', $user->id)->update(['traffic_reset_day' => $traffic_reset_day, 'expire_time' => date('Y-m-d', strtotime("+" . $goods->days . " days"))]);
                 } else {
                     $lastCanUseDays = floor(round(strtotime($user->expire_time) - strtotime(date('Y-m-d H:i:s'))) / 3600 / 24);
                     if ($lastCanUseDays < $goods->days) {
-                        User::query()->where('id', $user->id)->update(['expire_time' => date('Y-m-d', strtotime("+" . $goods->days . " days")), 'enable' => 1]);
+                        User::query()->where('id', $user->id)->update(['expire_time' => date('Y-m-d', strtotime("+" . $goods->days . " days"))]);
                     }
                 }
 

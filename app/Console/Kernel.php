@@ -55,7 +55,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('autoDisableUserJob')->everyMinute();
         $schedule->command('autoExpireCouponJob')->everyThirtyMinutes();
         $schedule->command('autoExpireInviteJob')->everyThirtyMinutes();
-        $schedule->command('autoRemoveDisabledUserLabelsJob')->everyMinute();
         $schedule->command('autoReleasePortJob')->everyMinute();
         $schedule->command('autoReopenUserJob')->everyMinute();
         $schedule->command('autoResetUserTrafficJob')->everyFiveMinutes();

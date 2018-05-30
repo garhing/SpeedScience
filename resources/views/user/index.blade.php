@@ -36,7 +36,6 @@
                     <button class="btn btn-sm blue" onclick="subscribe()"> {{trans('home.subscribe_button')}} </button>
                 </div>
                 <div class="row widget-row">
-                    @if(!$nodeList->isEmpty())
                         @foreach($nodeList as $node)
                             <div class="col-md-4">
                                 <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 ">
@@ -65,13 +64,15 @@
                                 </div>
                             </div>
                         @endforeach
-                    @endif
                 </div>
             </div>
             <div class="col-md-4">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        {{trans('home.account_status')}}：{{$info['enable'] ? trans('home.enabled') : trans('home.disabled') }}
+                        服务状态：{{$info['status']!=-1 ? trans('home.enabled') : trans('home.disabled') }}
+                    </li>
+                    <li class="list-group-item">
+                        账户状态：{{$info['enable'] ? trans('home.enabled') : trans('home.disabled') }}
                     </li>
                     @if($login_add_score)
                         <li class="list-group-item">
