@@ -1347,8 +1347,19 @@ class AdminController extends Controller
     // 生成SS端口
     public function makePort(Request $request)
     {
-        $last_user = User::query()->orderBy('id', 'desc')->first();
-        $last_port = self::$config['is_rand_port'] ? $this->getRandPort() : $last_user->port + 1;
+        $exists_port = User::query()->pluck('port')->toArray();
+        $deny_port = [0, 1068, 1109, 1434, 3127, 3128, 3129, 3130, 3332, 4444, 5554, 6669, 8080, 8081, 8082, 8181, 8282, 9996, 17185, 24554, 35601, 60177, 60179]; // 不生成的端口
+        $config = $this->systemConfig();
+
+        $ok_port = -1;
+        for($port=$config['min_port'];$port <=$config['max_port'];$port++){
+
+            if (!in_array($port, $exists_port) and !in_array($port, $deny_port)) {
+                $ok_port = $port;
+                break;
+            }
+        }
+        $last_port = self::$config['is_rand_port'] ? $this->getRandPort() : $ok_port;
         echo $last_port;
         exit;
     }
