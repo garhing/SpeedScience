@@ -9,17 +9,7 @@
                     ShadowsocksR概念加速服务在多平台均可使用，完美支持iOS9、安卓、Windows、macOS等操作系统，甚至可以在极路由（搭配SS插件）、Openwrt、支持梅林固件的路由器上面直接配置使用。</p>
             </div>
             <div class="banner-tabs tabs-responsive">
-                <div class="tabs-container">
-                    <ul class="nav nav-tabs text-center">
-                        <li class="active"><a href="{{url('/home/client')}}">客户端</a></li>
-                        <li><a href="{{url('/home/speedtest')}}">测速</a></li>
-                        <li><a href="{{url('/home/status')}}">线路状态</a></li>
-                    </ul>
-                    <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab"><i
-                                class="zmdi zmdi-chevron-left"></i></button>
-                    <button class="btn btn-icon btn-link btn-next" type="button" data-click="next-tab"><i
-                                class="zmdi zmdi-chevron-right"></i></button>
-                </div>
+                @include('home.subpage.soft_sub')
             </div>
         </div>
     </div>

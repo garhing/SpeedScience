@@ -38,31 +38,25 @@ use DB;
 
 class AdminController extends Controller
 {
-    protected static $config;
-
-    function __construct()
-    {
-        self::$config = $this->systemConfig();
-    }
 
     public function index(Request $request)
     {
-        $past = strtotime(date('Y-m-d', strtotime("-" . self::$config['expire_days'] . " days")));
+        $past = strtotime(date('Y-m-d', strtotime("-" . $this->config['expire_days'] . " days")));
 
-        $view['expireDays'] = self::$config['expire_days'];
+        $view['expireDays'] = $this->config['expire_days'];
         $view['totalUserCount'] = User::query()->count(); // 总用户数
         $view['enableUserCount'] = User::query()->where('enable', 1)->count(); // 有效用户数
         $view['activeUserCount'] = User::query()->where('t', '>=', $past)->count(); // 活跃用户数
         $view['unActiveUserCount'] = User::query()->where('t', '<=', $past)->where('enable', 1)->count(); // 不活跃用户数
         $view['onlineUserCount'] = User::query()->where('t', '>=', time() - 600)->count(); // 10分钟内在线用户数
-        $view['expireWarningUserCount'] = User::query()->where('expire_time', '<=', date('Y-m-d', strtotime("+" . self::$config['expire_days'] . " days")))->whereIn('status', [0, 1])->where('enable', 1)->count(); // 临近过期用户数
+        $view['expireWarningUserCount'] = User::query()->where('expire_time', '<=', date('Y-m-d', strtotime("+" . $this->config['expire_days'] . " days")))->whereIn('status', [0, 1])->where('enable', 1)->count(); // 临近过期用户数
 
         // 24小时内流量异常用户
         $tempUsers = [];
         $userTotalTrafficList = UserTrafficHourly::query()->where('node_id', 0)->where('total', '>', 104857600)->where('created_at', '>=', date('Y-m-d H:i:s', time() - 24 * 60 * 60))->groupBy('user_id')->selectRaw("user_id, sum(total) as totalTraffic")->get(); // 只统计100M以上的记录，加快速度
         if (!$userTotalTrafficList->isEmpty()) {
             foreach ($userTotalTrafficList as $vo) {
-                if ($vo->totalTraffic > (self::$config['traffic_ban_value'] * 1024 * 1024 * 1024)) {
+                if ($vo->totalTraffic > ($this->config['traffic_ban_value'] * 1024 * 1024 * 1024)) {
                     $tempUsers[] = $vo->user_id;
                 }
             }
@@ -82,7 +76,7 @@ class AdminController extends Controller
         $view['totalWaitRefAmount'] = ReferralLog::query()->whereIn('status', [0, 1])->sum('ref_amount') / 100;
         $view['totalRefAmount'] = ReferralApply::query()->where('status', 2)->sum('amount') / 100;
 
-        return Response::view('admin/index', $view);
+        return $this->view('admin/index', $view);
     }
 
     // 用户列表
@@ -131,7 +125,7 @@ class AdminController extends Controller
 
         // 临近过期提醒
         if ($expireWarning) {
-            $query->whereIn('status', [0, 1])->where('expire_time', '<=', date('Y-m-d', strtotime("+" . self::$config['expire_days'] . " days")));
+            $query->whereIn('status', [0, 1])->where('expire_time', '<=', date('Y-m-d', strtotime("+" . $this->config['expire_days'] . " days")));
         }
 
         // 当前在线
@@ -141,7 +135,7 @@ class AdminController extends Controller
 
         // 不活跃用户
         if ($unActive) {
-            $query->where('t', '<=', strtotime(date('Y-m-d', strtotime("-" . self::$config['expire_days'] . " days"))))->where('enable', 1);
+            $query->where('t', '<=', strtotime(date('Y-m-d', strtotime("-" . $this->config['expire_days'] . " days"))))->where('enable', 1);
         }
 
         // 24小时内流量异常用户
@@ -150,7 +144,7 @@ class AdminController extends Controller
             $userTotalTrafficList = UserTrafficHourly::query()->where('node_id', 0)->where('total', '>', 104857600)->where('created_at', '>=', date('Y-m-d H:i:s', time() - 24 * 60 * 60))->groupBy('user_id')->selectRaw("user_id, sum(total) as totalTraffic")->get(); // 只统计100M以上的记录，加快速度
             if (!$userTotalTrafficList->isEmpty()) {
                 foreach ($userTotalTrafficList as $vo) {
-                    if ($vo->totalTraffic > (self::$config['traffic_ban_value'] * 1024 * 1024 * 1024)) {
+                    if ($vo->totalTraffic > ($this->config['traffic_ban_value'] * 1024 * 1024 * 1024)) {
                         $tempUsers[] = $vo->user_id;
                     }
                 }
@@ -167,12 +161,12 @@ class AdminController extends Controller
             // 流量异常警告
             $time = date('Y-m-d H:i:s', time() - 24 * 60 * 60);
             $totalTraffic = UserTrafficHourly::query()->where('user_id', $user->id)->where('node_id', 0)->where('created_at', '>=', $time)->sum('total');
-            $user->trafficWarning = $totalTraffic > (self::$config['traffic_ban_value'] * 1024 * 1024 * 1024) ? 1 : 0;
+            $user->trafficWarning = $totalTraffic > ($this->config['traffic_ban_value'] * 1024 * 1024 * 1024) ? 1 : 0;
         }
 
         $view['userList'] = $userList;
 
-        return Response::view('admin/userList', $view);
+        return $this->view('admin/userList', $view);
     }
 
     // 添加账号
@@ -182,7 +176,7 @@ class AdminController extends Controller
             // 校验username是否已存在
             $exists = User::query()->where('username', $request->get('username'))->first();
             if ($exists) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '用户名已存在，请重新输入']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '用户名已存在，请重新输入']);
             }
 
             // 密码为空时则生成随机密码
@@ -233,22 +227,22 @@ class AdminController extends Controller
                     }
                 }
 
-                return Response::json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
+                return $this->json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
             } else {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '添加失败']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '添加失败']);
             }
         } else {
             // 生成一个可用端口
             $last_user = User::query()->orderBy('id', 'desc')->first();
-            $view['last_port'] = self::$config['is_rand_port'] ? $this->getRandPort() : $last_user->port + 1;
-            $view['is_rand_port'] = self::$config['is_rand_port'];
+            $view['last_port'] = $this->config['is_rand_port'] ? $this->getRandPort() : $last_user->port + 1;
+            $view['is_rand_port'] = $this->config['is_rand_port'];
             $view['method_list'] = $this->methodList();
             $view['protocol_list'] = $this->protocolList();
             $view['obfs_list'] = $this->obfsList();
             $view['level_list'] = $this->levelList();
             $view['label_list'] = Label::query()->orderBy('sort', 'desc')->orderBy('id', 'asc')->get();
 
-            return Response::view('admin/addUser', $view);
+            return $this->view('admin/addUser', $view);
         }
     }
 
@@ -260,7 +254,7 @@ class AdminController extends Controller
             for ($i = 0; $i < 5; $i++) {
                 // 生成一个可用端口
                 $last_user = User::query()->orderBy('id', 'desc')->first();
-                $port = self::$config['is_rand_port'] ? $this->getRandPort() : $last_user->port + 1;
+                $port = $this->config['is_rand_port'] ? $this->getRandPort() : $last_user->port + 1;
 
                 $user = new User();
                 $user->username = '批量生成-' . makeRandStr();
@@ -276,8 +270,8 @@ class AdminController extends Controller
                 $user->save();
 
                 // 初始化默认标签
-                if (count(self::$config['initial_labels_for_user']) > 0) {
-                    $labels = explode(',', self::$config['initial_labels_for_user']);
+                if (count($this->config['initial_labels_for_user']) > 0) {
+                    $labels = explode(',', $this->config['initial_labels_for_user']);
                     foreach ($labels as $label) {
                         $userLabel = new UserLabel();
                         $userLabel->user_id = $user->id;
@@ -289,11 +283,11 @@ class AdminController extends Controller
 
             DB::commit();
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '批量生成账号成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '批量生成账号成功']);
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '批量生成账号失败：' . $e->getMessage()]);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '批量生成账号失败：' . $e->getMessage()]);
         }
     }
 
@@ -332,7 +326,7 @@ class AdminController extends Controller
             // 校验username是否已存在
             $exists = User::query()->where('id', '<>', $id)->where('username', $username)->first();
             if ($exists) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '用户名已存在，请重新输入']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '用户名已存在，请重新输入']);
             }
 
             DB::beginTransaction();
@@ -384,12 +378,12 @@ class AdminController extends Controller
 
                 DB::commit();
 
-                return Response::json(['status' => 'success', 'data' => '', 'message' => '编辑成功']);
+                return $this->json(['status' => 'success', 'data' => '', 'message' => '编辑成功']);
             } catch (\Exception $e) {
                 DB::rollBack();
                 Log::error('编辑用户信息异常：' . $e->getMessage());
 
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '编辑失败']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '编辑失败']);
             }
         } else {
             $user = User::query()->with(['label'])->where('id', $id)->first();
@@ -410,7 +404,7 @@ class AdminController extends Controller
             $view['level_list'] = $this->levelList();
             $view['label_list'] = Label::query()->orderBy('sort', 'desc')->orderBy('id', 'asc')->get();
 
-            return Response::view('admin/editUser', $view);
+            return $this->view('admin/editUser', $view);
         }
     }
 
@@ -420,14 +414,14 @@ class AdminController extends Controller
         $id = $request->get('id');
 
         if ($id == 1) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '系统管理员不可删除']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '系统管理员不可删除']);
         }
 
         $user = User::query()->where('id', $id)->delete();
         if ($user) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '删除失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '删除失败']);
         }
     }
 
@@ -460,7 +454,7 @@ class AdminController extends Controller
 
         $view['nodeList'] = $nodeList;
 
-        return Response::view('admin/nodeList', $view);
+        return $this->view('admin/nodeList', $view);
     }
 
     // 添加节点
@@ -468,11 +462,11 @@ class AdminController extends Controller
     {
         if ($request->isMethod('POST')) {
             if (false === filter_var($request->get('ip'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '添加失败：IPv4地址不合法']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '添加失败：IPv4地址不合法']);
             }
 
             if ($request->get('ipv6') && false === filter_var($request->get('ipv6'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '添加失败：IPv6地址不合法']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '添加失败：IPv6地址不合法']);
             }
 
             DB::beginTransaction();
@@ -528,12 +522,12 @@ class AdminController extends Controller
 
                 DB::commit();
 
-                return Response::json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
+                return $this->json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
             } catch (\Exception $e) {
                 DB::rollBack();
                 Log::error('添加节点信息异常：' . $e->getMessage());
 
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '添加失败：' . $e->getMessage()]);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '添加失败：' . $e->getMessage()]);
             }
         } else {
             $view['method_list'] = $this->methodList();
@@ -544,7 +538,7 @@ class AdminController extends Controller
             $view['country_list'] = Country::query()->orderBy('country_code', 'asc')->get();
             $view['label_list'] = Label::query()->orderBy('sort', 'desc')->orderBy('id', 'asc')->get();
 
-            return Response::view('admin/addNode', $view);
+            return $this->view('admin/addNode', $view);
         }
     }
 
@@ -584,11 +578,11 @@ class AdminController extends Controller
             $status = $request->get('status');
 
             if (false === filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '添加失败：IPv4地址不合法']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '添加失败：IPv4地址不合法']);
             }
 
             if ($request->get('ipv6') && false === filter_var($ipv6, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '添加失败：IPv6地址不合法']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '添加失败：IPv6地址不合法']);
             }
 
             DB::beginTransaction();
@@ -650,12 +644,12 @@ class AdminController extends Controller
 
                 DB::commit();
 
-                return Response::json(['status' => 'success', 'data' => '', 'message' => '编辑成功']);
+                return $this->json(['status' => 'success', 'data' => '', 'message' => '编辑成功']);
             } catch (\Exception $e) {
                 DB::rollBack();
                 Log::error('编辑节点信息异常：' . $e->getMessage());
 
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '编辑失败：' . $e->getMessage()]);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '编辑失败：' . $e->getMessage()]);
             }
         } else {
             $node = SsNode::query()->with(['label'])->where('id', $id)->first();
@@ -676,7 +670,7 @@ class AdminController extends Controller
             $view['country_list'] = Country::query()->orderBy('country_code', 'asc')->get();
             $view['label_list'] = Label::query()->orderBy('sort', 'desc')->orderBy('id', 'asc')->get();
 
-            return Response::view('admin/editNode', $view);
+            return $this->view('admin/editNode', $view);
         }
     }
 
@@ -687,7 +681,7 @@ class AdminController extends Controller
 
         $node = SsNode::query()->where('id', $id)->first();
         if (!$node) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '节点不存在，请重试']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '节点不存在，请重试']);
         }
 
         DB::beginTransaction();
@@ -699,12 +693,12 @@ class AdminController extends Controller
 
             DB::commit();
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('删除节点信息异常：' . $e->getMessage());
 
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '删除失败：' . $e->getMessage()]);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '删除失败：' . $e->getMessage()]);
         }
     }
 
@@ -749,7 +743,7 @@ class AdminController extends Controller
         $view['nodeName'] = $node->name;
         $view['nodeServer'] = $node->server;
 
-        return Response::view('admin/nodeMonitor', $view);
+        return $this->view('admin/nodeMonitor', $view);
     }
 
     // 文章列表
@@ -757,7 +751,7 @@ class AdminController extends Controller
     {
         $view['articleList'] = Article::query()->where('is_del', 0)->orderBy('sort', 'desc')->paginate(15)->appends($request->except('page'));
 
-        return Response::view('admin/articleList', $view);
+        return $this->view('admin/articleList', $view);
     }
 
     // 添加文章
@@ -773,9 +767,9 @@ class AdminController extends Controller
             $article->sort = $request->get('sort', 0);
             $article->save();
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
         } else {
-            return Response::view('admin/addArticle');
+            return $this->view('admin/addArticle');
         }
     }
 
@@ -801,14 +795,14 @@ class AdminController extends Controller
 
             $ret = Article::query()->where('id', $id)->update($data);
             if ($ret) {
-                return Response::json(['status' => 'success', 'data' => '', 'message' => '编辑成功']);
+                return $this->json(['status' => 'success', 'data' => '', 'message' => '编辑成功']);
             } else {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '编辑失败']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '编辑失败']);
             }
         } else {
             $view['article'] = Article::query()->where('id', $id)->first();
 
-            return Response::view('admin/editArticle', $view);
+            return $this->view('admin/editArticle', $view);
         }
     }
 
@@ -819,9 +813,9 @@ class AdminController extends Controller
 
         $ret = Article::query()->where('id', $id)->update(['is_del' => 1]);
         if ($ret) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '删除失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '删除失败']);
         }
     }
 
@@ -837,7 +831,7 @@ class AdminController extends Controller
         }
         $view['level_dict'] = $level_dict;
 
-        return Response::view('admin/groupList', $view);
+        return $this->view('admin/groupList', $view);
     }
 
     // 添加节点分组
@@ -849,11 +843,11 @@ class AdminController extends Controller
             $ssGroup->level = $request->get('level');
             $ssGroup->save();
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
         } else {
             $view['level_list'] = $this->levelList();
 
-            return Response::view('admin/addGroup', $view);
+            return $this->view('admin/addGroup', $view);
         }
     }
 
@@ -873,15 +867,15 @@ class AdminController extends Controller
 
             $ret = SsGroup::query()->where('id', $id)->update($data);
             if ($ret) {
-                return Response::json(['status' => 'success', 'data' => '', 'message' => '编辑成功']);
+                return $this->json(['status' => 'success', 'data' => '', 'message' => '编辑成功']);
             } else {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '编辑失败']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '编辑失败']);
             }
         } else {
             $view['group'] = SsGroup::query()->where('id', $id)->first();
             $view['level_list'] = $this->levelList();
 
-            return Response::view('admin/editGroup', $view);
+            return $this->view('admin/editGroup', $view);
         }
     }
 
@@ -893,14 +887,14 @@ class AdminController extends Controller
         // 检查是否该分组下是否有节点
         $group_node = SsGroupNode::query()->where('group_id', $id)->get();
         if (!$group_node->isEmpty()) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '删除失败：该分组下有节点关联，请先解除关联']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '删除失败：该分组下有节点关联，请先解除关联']);
         }
 
         $ret = SsGroup::query()->where('id', $id)->delete();
         if ($ret) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '删除失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '删除失败']);
         }
     }
 
@@ -941,7 +935,7 @@ class AdminController extends Controller
 
         $view['trafficLogList'] = $trafficLogList;
 
-        return Response::view('admin/trafficLog', $view);
+        return $this->view('admin/trafficLog', $view);
     }
 
     // 订阅请求日志
@@ -964,7 +958,7 @@ class AdminController extends Controller
 
         $view['subscribeList'] = $query->orderBy('id', 'desc')->paginate(20)->appends($request->except('page'));
 
-        return Response::view('admin/subscribeLog', $view);
+        return $this->view('admin/subscribeLog', $view);
     }
 
     public function setSubscribeStatus(Request $request)
@@ -973,7 +967,7 @@ class AdminController extends Controller
         $status = $request->get('status', 0);
 
         if (empty($id)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '操作异常']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '操作异常']);
         }
 
         if ($status) {
@@ -982,7 +976,7 @@ class AdminController extends Controller
             UserSubscribe::query()->where('id', $id)->update(['status' => 0, 'ban_time' => time(), 'ban_desc' => '后台手动封禁']);
         }
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
     }
 
     // SS(R)链接反解析
@@ -992,7 +986,7 @@ class AdminController extends Controller
             $content = $request->get('content');
 
             if (empty($content)) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '请在左侧填入要反解析的SS(R)链接']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '请在左侧填入要反解析的SS(R)链接']);
             }
 
             // 反解析处理
@@ -1014,9 +1008,9 @@ class AdminController extends Controller
             // 生成转换好的JSON文件
             file_put_contents(public_path('downloads/decompile.json'), $txt);
 
-            return Response::json(['status' => 'success', 'data' => $txt, 'message' => '反解析成功']);
+            return $this->json(['status' => 'success', 'data' => $txt, 'message' => '反解析成功']);
         } else {
-            return Response::view('admin/decompile');
+            return $this->view('admin/decompile');
         }
     }
 
@@ -1033,13 +1027,13 @@ class AdminController extends Controller
             $content = $request->get('content');
 
             if (empty($content)) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '请在左侧填入要转换的内容']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '请在左侧填入要转换的内容']);
             }
 
             // 校验格式
             $content = json_decode($content);
             if (empty($content->port_password)) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '转换失败：配置信息里缺少【port_password】字段，或者该字段为空']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '转换失败：配置信息里缺少【port_password】字段，或者该字段为空']);
             }
 
             // 转换成SSR格式JSON
@@ -1066,14 +1060,14 @@ class AdminController extends Controller
             // 生成转换好的JSON文件
             file_put_contents(public_path('downloads/convert.json'), $json);
 
-            return Response::json(['status' => 'success', 'data' => $json, 'message' => '转换成功']);
+            return $this->json(['status' => 'success', 'data' => $json, 'message' => '转换成功']);
         } else {
             // 加密方式、协议、混淆
             $view['method_list'] = $this->methodList();
             $view['protocol_list'] = $this->protocolList();
             $view['obfs_list'] = $this->obfsList();
 
-            return Response::view('admin/convert', $view);
+            return $this->view('admin/convert', $view);
         }
     }
 
@@ -1184,7 +1178,7 @@ class AdminController extends Controller
 
             return Redirect::back();
         } else {
-            return Response::view('admin/import');
+            return $this->view('admin/import');
         }
     }
 
@@ -1252,7 +1246,7 @@ class AdminController extends Controller
 
         $view['nodeList'] = $nodeList;
 
-        return Response::view('admin/export', $view);
+        return $this->view('admin/export', $view);
     }
 
     // 修改个人资料
@@ -1288,7 +1282,7 @@ class AdminController extends Controller
                 return Redirect::back();
             }
         } else {
-            return Response::view('admin/profile');
+            return $this->view('admin/profile');
         }
     }
 
@@ -1341,7 +1335,7 @@ class AdminController extends Controller
         $view['trafficHourly'] = $trafficHourly;
         $view['username'] = $user->username;
 
-        return Response::view('admin/userMonitor', $view);
+        return $this->view('admin/userMonitor', $view);
     }
 
     // 生成SS端口
@@ -1359,7 +1353,7 @@ class AdminController extends Controller
                 break;
             }
         }
-        $last_port = self::$config['is_rand_port'] ? $this->getRandPort() : $ok_port;
+        $last_port = $this->config['is_rand_port'] ? $this->getRandPort() : $ok_port;
         echo $last_port;
         exit;
     }
@@ -1380,13 +1374,13 @@ class AdminController extends Controller
             $sort = $request->get('sort', 0);
 
             if (empty($name)) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '配置名称不能为空']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '配置名称不能为空']);
             }
 
             // 校验是否已存在
             $config = SsConfig::query()->where('name', $name)->where('type', $type)->first();
             if ($config) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '配置已经存在，请勿重复添加']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '配置已经存在，请勿重复添加']);
             }
 
             $ssConfig = new SsConfig();
@@ -1396,7 +1390,7 @@ class AdminController extends Controller
             $ssConfig->sort = $sort;
             $ssConfig->save();
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
         } else {
             $view['method_list'] = SsConfig::query()->where('type', 1)->get();
             $view['protocol_list'] = SsConfig::query()->where('type', 2)->get();
@@ -1404,7 +1398,7 @@ class AdminController extends Controller
             $view['level_list'] = $this->levelList();
             $view['country_list'] = Country::query()->get();
 
-            return Response::view('admin/config', $view);
+            return $this->view('admin/config', $view);
         }
     }
 
@@ -1415,9 +1409,9 @@ class AdminController extends Controller
 
         $ret = SsConfig::query()->where('id', $id)->delete();
         if ($ret) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '删除失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '删除失败']);
         }
     }
 
@@ -1427,12 +1421,12 @@ class AdminController extends Controller
         $id = $request->get('id');
 
         if (empty($id)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '非法请求']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '非法请求']);
         }
 
         $config = SsConfig::query()->where('id', $id)->first();
         if (!$config) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '配置不存在']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '配置不存在']);
         }
 
         // 去除该配置所属类型的默认值
@@ -1441,7 +1435,7 @@ class AdminController extends Controller
         // 将该ID对应记录值置为默认值
         SsConfig::query()->where('id', $id)->update(['is_default' => 1]);
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
     }
 
     // 设置系统扩展信息，例如客服、统计代码
@@ -1454,9 +1448,9 @@ class AdminController extends Controller
             Config::query()->where('name', 'website_analytics')->update(['value' => $websiteAnalytics]);
             Config::query()->where('name', 'website_customer_service')->update(['value' => $websiteCustomerService]);
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
         } catch (\Exception $e) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
         }
     }
 
@@ -1467,7 +1461,7 @@ class AdminController extends Controller
         if (!file_exists($file)) {
             $request->session()->flash('analysisErrorMsg', $file . ' 不存在，请先创建文件');
 
-            return Response::view('admin/analysis');
+            return $this->view('admin/analysis');
         }
 
         $logs = $this->tail($file, 10000);
@@ -1494,7 +1488,7 @@ class AdminController extends Controller
             $view['urlList'] = array_unique($url);
         }
 
-        return Response::view('admin/analysis', $view);
+        return $this->view('admin/analysis', $view);
     }
 
     // 添加等级
@@ -1504,16 +1498,16 @@ class AdminController extends Controller
         $level_name = $request->get('level_name');
 
         if (empty($level)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '等级不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '等级不能为空']);
         }
 
         if (empty($level_name)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '等级名称不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '等级名称不能为空']);
         }
 
         $exists = Level::query()->where('level', $level)->first();
         if ($exists) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该等级已存在，请勿重复添加']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该等级已存在，请勿重复添加']);
         }
 
         $level = new Level();
@@ -1522,9 +1516,9 @@ class AdminController extends Controller
         $level->save();
 
         if ($level->id) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '提交成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '提交成功']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '操作失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '操作失败']);
         }
     }
 
@@ -1536,39 +1530,39 @@ class AdminController extends Controller
         $level_name = $request->get('level_name');
 
         if (empty($id)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => 'ID不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => 'ID不能为空']);
         }
 
         if (empty($level)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '等级不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '等级不能为空']);
         }
 
         if (empty($level_name)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '等级名称不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '等级名称不能为空']);
         }
 
         $le = Level::query()->where('id', $id)->first();
         if (empty($le)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '等级不存在']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '等级不存在']);
         }
 
         // 校验该等级下是否存在关联分组
         $existGroups = SsGroup::query()->where('level', $le->level)->get();
         if (!$existGroups->isEmpty()) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该等级下存在关联分组，请先取消关联']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该等级下存在关联分组，请先取消关联']);
         }
 
         // 校验该等级下是否存在关联账号
         $existUsers = User::query()->where('level', $le->level)->get();
         if (!$existUsers->isEmpty()) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该等级下存在关联账号，请先取消关联']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该等级下存在关联账号，请先取消关联']);
         }
 
         $ret = Level::query()->where('id', $id)->update(['level' => $level, 'level_name' => $level_name]);
         if ($ret) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '操作失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '操作失败']);
         }
     }
 
@@ -1578,31 +1572,31 @@ class AdminController extends Controller
         $id = $request->get('id');
 
         if (empty($id)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => 'ID不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => 'ID不能为空']);
         }
 
         $level = Level::query()->where('id', $id)->first();
         if (empty($level)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '等级不存在']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '等级不存在']);
         }
 
         // 校验该等级下是否存在关联分组
         $existGroups = SsGroup::query()->where('level', $level->level)->get();
         if (!$existGroups->isEmpty()) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该等级下存在关联分组，请先取消关联']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该等级下存在关联分组，请先取消关联']);
         }
 
         // 校验该等级下是否存在关联账号
         $existUsers = User::query()->where('level', $level->level)->get();
         if (!$existUsers->isEmpty()) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该等级下存在关联账号，请先取消关联']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该等级下存在关联账号，请先取消关联']);
         }
 
         $ret = Level::query()->where('id', $id)->delete();
         if ($ret) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '操作失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '操作失败']);
         }
     }
 
@@ -1613,16 +1607,16 @@ class AdminController extends Controller
         $country_code = $request->get('country_code');
 
         if (empty($country_name)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '国家/地区名称不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '国家/地区名称不能为空']);
         }
 
         if (empty($country_code)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '国家/地区代码不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '国家/地区代码不能为空']);
         }
 
         $exists = Country::query()->where('country_name', $country_name)->first();
         if ($exists) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该国家/地区名称已存在，请勿重复添加']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该国家/地区名称已存在，请勿重复添加']);
         }
 
         $country = new Country();
@@ -1631,9 +1625,9 @@ class AdminController extends Controller
         $country->save();
 
         if ($country->id) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '提交成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '提交成功']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '操作失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '操作失败']);
         }
     }
 
@@ -1645,33 +1639,33 @@ class AdminController extends Controller
         $country_code = $request->get('country_code');
 
         if (empty($id)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => 'ID不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => 'ID不能为空']);
         }
 
         if (empty($country_name)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '国家/地区名称不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '国家/地区名称不能为空']);
         }
 
         if (empty($country_code)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '国家/地区代码不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '国家/地区代码不能为空']);
         }
 
         $country = Country::query()->where('id', $id)->first();
         if (empty($country)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '国家/地区不存在']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '国家/地区不存在']);
         }
 
         // 校验该国家/地区下是否存在关联节点
         $existNode = SsNode::query()->where('country_code', $country->country_code)->get();
         if (!$existNode->isEmpty()) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该国家/地区下存在关联节点，请先取消关联']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该国家/地区下存在关联节点，请先取消关联']);
         }
 
         $ret = Country::query()->where('id', $id)->update(['country_name' => $country_name, 'country_code' => $country_code]);
         if ($ret) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '操作失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '操作失败']);
         }
     }
 
@@ -1681,25 +1675,25 @@ class AdminController extends Controller
         $id = $request->get('id');
 
         if (empty($id)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => 'ID不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => 'ID不能为空']);
         }
 
         $country = Country::query()->where('id', $id)->first();
         if (empty($country)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '国家/地区不存在']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '国家/地区不存在']);
         }
 
         // 校验该国家/地区下是否存在关联节点
         $existNode = SsNode::query()->where('country_code', $country->country_code)->get();
         if (!$existNode->isEmpty()) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该国家/地区下存在关联节点，请先取消关联']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该国家/地区下存在关联节点，请先取消关联']);
         }
 
         $ret = Country::query()->where('id', $id)->delete();
         if ($ret) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '操作失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '操作失败']);
         }
     }
 
@@ -1709,7 +1703,7 @@ class AdminController extends Controller
         $view = $this->systemConfig();
         $view['label_list'] = Label::query()->orderBy('sort', 'desc')->orderBy('id', 'asc')->get();
 
-        return Response::view('admin/system', $view);
+        return $this->view('admin/system', $view);
     }
 
     // 设置某个配置项
@@ -1719,31 +1713,31 @@ class AdminController extends Controller
         $value = trim($request->get('value'));
 
         if ($name == '') {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '设置失败：请求参数异常']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '设置失败：请求参数异常']);
         }
 
         // 屏蔽异常配置
-        if (!array_key_exists($name, self::$config)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '设置失败：配置不存在']);
+        if (!array_key_exists($name, $this->config)) {
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '设置失败：配置不存在']);
         }
 
         // 如果开启用户邮件重置密码，则先设置网站名称和网址
         if (($name == 'is_reset_password' || $name == 'is_active_register') && $value == '1') {
             $config = Config::query()->where('name', 'website_name')->first();
             if ($config->value == '') {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '设置失败：开启重置密码需要先设置【网站名称】']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '设置失败：开启重置密码需要先设置【网站名称】']);
             }
 
             $config = Config::query()->where('name', 'website_url')->first();
             if ($config->value == '') {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '设置失败：开启重置密码需要先设置【网站地址】']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '设置失败：开启重置密码需要先设置【网站地址】']);
             }
         }
 
         // 更新配置
         Config::query()->where('name', $name)->update(['value' => $value]);
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
     }
 
     // 设置返利比例
@@ -1754,7 +1748,7 @@ class AdminController extends Controller
 
         Config::query()->where('name', 'referral_percent')->update(['value' => $value]);
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => '设置成功']);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => '设置成功']);
     }
 
     // 设置微信、支付宝二维码
@@ -1790,7 +1784,7 @@ class AdminController extends Controller
     {
         $view['inviteList'] = Invite::query()->with(['generator', 'user'])->orderBy('status', 'asc')->orderBy('id', 'desc')->paginate(15)->appends($request->except('page'));
 
-        return Response::view('admin/inviteList', $view);
+        return $this->view('admin/inviteList', $view);
     }
 
     // 生成邀请码
@@ -1808,7 +1802,7 @@ class AdminController extends Controller
             $obj->save();
         }
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => '生成成功']);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => '生成成功']);
     }
 
     // 导出邀请码
@@ -1853,7 +1847,7 @@ class AdminController extends Controller
 
         $view['applyList'] = $query->orderBy('id', 'desc')->paginate(15)->appends($request->except('page'));
 
-        return Response::view('admin/applyList', $view);
+        return $this->view('admin/applyList', $view);
     }
 
     // 提现申请详情
@@ -1871,7 +1865,7 @@ class AdminController extends Controller
         $view['info'] = $apply;
         $view['list'] = $list;
 
-        return Response::view('admin/applyDetail', $view);
+        return $this->view('admin/applyDetail', $view);
     }
 
     // 订单列表
@@ -1913,7 +1907,7 @@ class AdminController extends Controller
 
         $view['orderList'] = $query->paginate(15);
 
-        return Response::view('admin/orderList', $view);
+        return $this->view('admin/orderList', $view);
     }
 
     // 设置提现申请状态
@@ -1935,7 +1929,7 @@ class AdminController extends Controller
             }
         }
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
     }
 
     // 重置用户流量
@@ -1945,7 +1939,7 @@ class AdminController extends Controller
 
         User::query()->where('id', $id)->update(['u' => 0, 'd' => 0]);
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => '操作成功']);
     }
 
     // 操作用户余额
@@ -1956,7 +1950,7 @@ class AdminController extends Controller
             $amount = $request->get('amount');
 
             if (empty($user_id) || empty($amount)) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '充值异常']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '充值异常']);
             }
 
             DB::beginTransaction();
@@ -1983,14 +1977,14 @@ class AdminController extends Controller
 
                 DB::commit();
 
-                return Response::json(['status' => 'success', 'data' => '', 'message' => '充值成功']);
+                return $this->json(['status' => 'success', 'data' => '', 'message' => '充值成功']);
             } catch (\Exception $e) {
                 DB::rollBack();
 
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '充值失败：' . $e->getMessage()]);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '充值失败：' . $e->getMessage()]);
             }
         } else {
-            return Response::view('admin/handleUserBalance');
+            return $this->view('admin/handleUserBalance');
         }
     }
 
@@ -2009,7 +2003,7 @@ class AdminController extends Controller
 
         $view['list'] = $query->paginate(15);
 
-        return Response::view('admin/userBalanceLogList', $view);
+        return $this->view('admin/userBalanceLogList', $view);
     }
 
     // 用户封禁记录
@@ -2027,7 +2021,7 @@ class AdminController extends Controller
 
         $view['list'] = $query->paginate(15);
 
-        return Response::view('admin/userBanLogList', $view);
+        return $this->view('admin/userBanLogList', $view);
     }
 
     // 转换成某个用户的身份
@@ -2037,14 +2031,14 @@ class AdminController extends Controller
 
         $user = User::query()->find($id);
         if (!$user) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => "用户不存在"]);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => "用户不存在"]);
         }
 
         // 存储当前管理员身份信息，并将当前登录信息改成要切换的用户的身份信息
         $request->session()->put('admin', $request->session()->get("user"));
         $request->session()->put('user', $user->toArray());
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => "身份切换成功"]);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => "身份切换成功"]);
     }
 
     // 标签列表
@@ -2058,7 +2052,7 @@ class AdminController extends Controller
 
         $view['labelList'] = $labelList;
 
-        return Response::view('admin/labelList', $view);
+        return $this->view('admin/labelList', $view);
     }
 
     // 添加标签
@@ -2073,9 +2067,9 @@ class AdminController extends Controller
             $label->sort = $sort;
             $label->save();
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
         } else {
-            return Response::view('admin/addLabel');
+            return $this->view('admin/addLabel');
         }
     }
 
@@ -2089,12 +2083,12 @@ class AdminController extends Controller
 
             Label::query()->where('id', $id)->update(['name' => $name, 'sort' => $sort]);
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '添加成功']);
         } else {
             $id = $request->get('id');
             $view['label'] = Label::query()->where('id', $id)->first();
 
-            return Response::view('admin/editLabel', $view);
+            return $this->view('admin/editLabel', $view);
         }
     }
 
@@ -2111,11 +2105,11 @@ class AdminController extends Controller
 
             DB::commit();
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '删除失败：' . $e->getMessage()]);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '删除失败：' . $e->getMessage()]);
         }
     }
 }

@@ -149,9 +149,9 @@
 <script src="/assets/global/scripts/app.min.js" type="text/javascript"></script>
 <script src="/assets/layouts/layout4/scripts/layout.min.js" type="text/javascript"></script>
 <!-- 统计 -->
-{!! $website_analytics !!}
+{{ $app_config['website_analytics'] }}
 <!-- 客服 -->
-{!! $website_customer_service !!}
+{{ $app_config['website_customer_service'] }}
 </body>
 
 </html>

@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-5 col-sm-6">
                     <div class="banner-slogan banner-slogan-hero">
-                        <h1 class="slogan-title">遍布全球的10+个加速数据中心</h1>
+                        <h1 class="slogan-title">遍布全球的数据加速中心</h1>
                         <h2 class="slogan-desc">
                             ShadowsocksR拥有分布在全球九大国家的10+个数据中心，为用户提供多方位需求。无论是限定IP的游戏，还是限定美区的Spotify，使用概念加速服务，均可完美支持！</h2>
                         <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/home/speedtest')}}">查看ShadowsocksR加速速度评测<i
@@ -17,19 +17,7 @@
                 </div>
             </div>
             <div class="banner-tabs tabs-responsive">
-                <div class="tabs-container">
-                    <ul class="nav nav-tabs">
-                        <li><a href="{{url('/home/features')}}">概念加速</a></li>
-                        <li class="active"><a href="{{url('/home/datacenter')}}">数据中心</a></li>
-                        <li><a href="{{url('/home/panel')}}">控制面板</a></li>
-                        <li><a href="{{url('/home/client')}}">推荐软件</a></li>
-                        <li><a href="{{url('/home/game_pricing')}}">游戏加速</a></li>
-                    </ul>
-                    <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab"><i
-                                class="zmdi zmdi-chevron-left"></i></button>
-                    <button class="btn btn-icon btn-link btn-next" type="button" data-click="next-tab"><i
-                                class="zmdi zmdi-chevron-right"></i></button>
-                </div>
+                @include('home.subpage.feas_sub')
             </div>
         </div>
     </div>

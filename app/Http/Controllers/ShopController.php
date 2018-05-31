@@ -28,7 +28,7 @@ class ShopController extends Controller
 
         $view['goodsList'] = $goodsList;
 
-        return Response::view('shop/goodsList', $view);
+        return $this->view('shop/goodsList', $view);
     }
 
     // 添加商品
@@ -124,7 +124,7 @@ class ShopController extends Controller
         } else {
             $view['label_list'] = Label::query()->orderBy('sort', 'desc')->orderBy('id', 'asc')->get();
 
-            return Response::view('shop/addGoods', $view);
+            return $this->view('shop/addGoods', $view);
         }
     }
 
@@ -218,7 +218,7 @@ class ShopController extends Controller
             $view['goods'] = $goods;
             $view['label_list'] = Label::query()->orderBy('sort', 'desc')->orderBy('id', 'asc')->get();
 
-            return Response::view('shop/editGoods', $view);
+            return $this->view('shop/editGoods', $view);
         }
     }
 
@@ -229,6 +229,6 @@ class ShopController extends Controller
 
         Goods::query()->where('id', $id)->update(['is_del' => 1]);
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
     }
 }

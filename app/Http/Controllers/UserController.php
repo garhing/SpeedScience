@@ -40,13 +40,6 @@ use DB;
 
 class UserController extends Controller
 {
-    protected static $config;
-    protected static $userLevel;
-
-    function __construct()
-    {
-        self::$config = $this->systemConfig();
-    }
 
     public function index(Request $request)
     {
@@ -61,15 +54,13 @@ class UserController extends Controller
         $view['info'] = $user->toArray();
         $view['notice'] = Article::query()->where('type', 2)->where('is_del', 0)->orderBy('id', 'desc')->first();
         $view['articleList'] = Article::query()->where('type', 1)->where('is_del', 0)->orderBy('sort', 'desc')->orderBy('id', 'desc')->paginate(5);
-        $view['wechat_qrcode'] = self::$config['wechat_qrcode'];
-        $view['alipay_qrcode'] = self::$config['alipay_qrcode'];
-        $view['login_add_score'] = self::$config['login_add_score'];
-        $view['website_analytics'] = self::$config['website_analytics'];
-        $view['website_customer_service'] = self::$config['website_customer_service'];
+        $view['wechat_qrcode'] = $this->config['wechat_qrcode'];
+        $view['alipay_qrcode'] = $this->config['alipay_qrcode'];
+        $view['login_add_score'] = $this->config['login_add_score'];
 
         // 推广返利是否可见
         if (!$request->session()->has('referral_status')) {
-            $request->session()->put('referral_status', self::$config['referral_status']);
+            $request->session()->put('referral_status', $this->config['referral_status']);
         }
 
         // 节点列表
@@ -77,7 +68,7 @@ class UserController extends Controller
         if ($user['status'] ==-1 || $user['enable']<=0 || empty($userLabelIds)) {
             $view['nodeList'] = [];
 
-            return Response::view('user/index', $view);
+            return $this->view('user/index', $view);
         }
 
         $nodeList = DB::table('ss_node')
@@ -140,7 +131,7 @@ class UserController extends Controller
 
         $view['nodeList'] = $nodeList;
 
-        return Response::view('user/index', $view);
+        return $this->view('user/index', $view);
     }
 
     // 公告详情
@@ -153,10 +144,8 @@ class UserController extends Controller
             return Redirect::to('user');
         }
 
-        $view['website_analytics'] = self::$config['website_analytics'];
-        $view['website_customer_service'] = self::$config['website_customer_service'];
 
-        return Response::view('user/article', $view);
+        return $this->view('user/article', $view);
     }
 
     // 修改个人资料
@@ -269,10 +258,8 @@ class UserController extends Controller
             $view['protocol_list'] = $this->protocolList();
             $view['obfs_list'] = $this->obfsList();
             $view['info'] = User::query()->where('id', $user['id'])->first();
-            $view['website_analytics'] = self::$config['website_analytics'];
-            $view['website_customer_service'] = self::$config['website_customer_service'];
 
-            return Response::view('user/profile', $view);
+            return $this->view('user/profile', $view);
         }
     }
 
@@ -299,10 +286,8 @@ class UserController extends Controller
 
         $view['trafficDaily'] = "'" . implode("','", $dailyData) . "'";
         $view['trafficHourly'] = "'" . implode("','", $hourlyData) . "'";
-        $view['website_analytics'] = self::$config['website_analytics'];
-        $view['website_customer_service'] = self::$config['website_customer_service'];
 
-        return Response::view('user/trafficLog', $view);
+        return $this->view('user/trafficLog', $view);
     }
 
     // 商品列表
@@ -314,10 +299,8 @@ class UserController extends Controller
         }
 
         $view['goodsList'] = $goodsList;
-        $view['website_analytics'] = self::$config['website_analytics'];
-        $view['website_customer_service'] = self::$config['website_customer_service'];
 
-        return Response::view('user/goodsList', $view);
+        return $this->view('user/goodsList', $view);
     }
 
     // 工单
@@ -325,11 +308,9 @@ class UserController extends Controller
     {
         $user = $request->session()->get('user');
 
-        $view['website_analytics'] = self::$config['website_analytics'];
-        $view['website_customer_service'] = self::$config['website_customer_service'];
-        $view['ticketList'] = Ticket::query()->where('user_id', $user['id'])->paginate(10)->appends($request->except('page'));
+                        $view['ticketList'] = Ticket::query()->where('user_id', $user['id'])->paginate(10)->appends($request->except('page'));
 
-        return Response::view('user/ticketList', $view);
+        return $this->view('user/ticketList', $view);
     }
 
     // 订单
@@ -338,10 +319,8 @@ class UserController extends Controller
         $user = $request->session()->get('user');
 
         $view['orderList'] = Order::query()->with(['user', 'goods', 'coupon', 'payment'])->where('user_id', $user['id'])->orderBy('oid', 'desc')->paginate(10)->appends($request->except('page'));
-        $view['website_analytics'] = self::$config['website_analytics'];
-        $view['website_customer_service'] = self::$config['website_customer_service'];
 
-        return Response::view('user/orderList', $view);
+        return $this->view('user/orderList', $view);
     }
 
     // 添加工单
@@ -353,7 +332,7 @@ class UserController extends Controller
         $user = $request->session()->get('user');
 
         if (empty($title) || empty($content)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '请输入标题和内容']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '请输入标题和内容']);
         }
 
         $obj = new Ticket();
@@ -370,8 +349,8 @@ class UserController extends Controller
 
             // 发邮件通知管理员
             try {
-                if (self::$config['crash_warning_email']) {
-                    Mail::to(self::$config['crash_warning_email'])->send(new newTicket(self::$config['website_name'], $emailTitle, $content));
+                if ($this->config['crash_warning_email']) {
+                    Mail::to($this->config['crash_warning_email'])->send(new newTicket($this->config['website_name'], $emailTitle, $content));
                     $this->sendEmailLog(1, $emailTitle, $content);
                 }
             } catch (\Exception $e) {
@@ -379,14 +358,14 @@ class UserController extends Controller
             }
 
             // 通过ServerChan发微信消息提醒管理员
-            if (self::$config['is_server_chan'] && self::$config['server_chan_key']) {
+            if ($this->config['is_server_chan'] && $this->config['server_chan_key']) {
                 $serverChan = new ServerChan();
                 $serverChan->send($emailTitle, $content);
             }
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '提交成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '提交成功']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '提交失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '提交失败']);
         }
     }
 
@@ -415,8 +394,8 @@ class UserController extends Controller
 
                 // 发邮件通知管理员
                 try {
-                    if (self::$config['crash_warning_email']) {
-                        Mail::to(self::$config['crash_warning_email'])->send(new replyTicket(self::$config['website_name'], $title, $content));
+                    if ($this->config['crash_warning_email']) {
+                        Mail::to($this->config['crash_warning_email'])->send(new replyTicket($this->config['website_name'], $title, $content));
                         $this->sendEmailLog(1, $title, $content);
                     }
                 } catch (\Exception $e) {
@@ -424,14 +403,14 @@ class UserController extends Controller
                 }
 
                 // 通过ServerChan发微信消息提醒管理员
-                if (self::$config['is_server_chan'] && self::$config['server_chan_key']) {
+                if ($this->config['is_server_chan'] && $this->config['server_chan_key']) {
                     $serverChan = new ServerChan();
                     $serverChan->send($title, $content);
                 }
 
-                return Response::json(['status' => 'success', 'data' => '', 'message' => '回复成功']);
+                return $this->json(['status' => 'success', 'data' => '', 'message' => '回复成功']);
             } else {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '回复失败']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '回复失败']);
             }
         } else {
             $ticket = Ticket::query()->where('id', $id)->with('user')->first();
@@ -441,10 +420,8 @@ class UserController extends Controller
 
             $view['ticket'] = $ticket;
             $view['replyList'] = TicketReply::query()->where('ticket_id', $id)->with('user')->orderBy('id', 'asc')->get();
-            $view['website_analytics'] = self::$config['website_analytics'];
-            $view['website_customer_service'] = self::$config['website_customer_service'];
 
-            return Response::view('user/replyTicket', $view);
+            return $this->view('user/replyTicket', $view);
         }
     }
 
@@ -457,9 +434,9 @@ class UserController extends Controller
 
         $ret = Ticket::query()->where('id', $id)->where('user_id', $user['id'])->update(['status' => 2]);
         if ($ret) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '关闭成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '关闭成功']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '关闭失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '关闭失败']);
         }
     }
 
@@ -471,24 +448,20 @@ class UserController extends Controller
         // 已生成的邀请码数量
         $num = Invite::query()->where('uid', $user['id'])->count();
 
-        $view['website_analytics'] = self::$config['website_analytics'];
-        $view['website_customer_service'] = self::$config['website_customer_service'];
-        $view['num'] = self::$config['invite_num'] - $num <= 0 ? 0 : self::$config['invite_num'] - $num; // 还可以生成的邀请码数量
+                        $view['num'] = $this->config['invite_num'] - $num <= 0 ? 0 : $this->config['invite_num'] - $num; // 还可以生成的邀请码数量
         $view['inviteList'] = Invite::query()->where('uid', $user['id'])->with(['generator', 'user'])->paginate(10); // 邀请码列表
 
-        return Response::view('user/invite', $view);
+        return $this->view('user/invite', $view);
     }
 
     // 公开的邀请码列表
     public function free(Request $request)
     {
-        $view['website_analytics'] = self::$config['website_analytics'];
-        $view['website_customer_service'] = self::$config['website_customer_service'];
-        $view['is_invite_register'] = self::$config['is_invite_register'];
-        $view['is_free_code'] = self::$config['is_free_code'];
+                        $view['is_invite_register'] = $this->config['is_invite_register'];
+        $view['is_free_code'] = $this->config['is_free_code'];
         $view['inviteList'] = Invite::query()->where('uid', 1)->where('status', 0)->paginate();
 
-        return Response::view('user/free', $view);
+        return $this->view('user/free', $view);
     }
 
     // 生成邀请码
@@ -498,8 +471,8 @@ class UserController extends Controller
 
         // 已生成的邀请码数量
         $num = Invite::query()->where('uid', $user['id'])->count();
-        if ($num >= self::$config['invite_num']) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '生成失败：最多只能生成' . self::$config['invite_num'] . '个邀请码']);
+        if ($num >= $this->config['invite_num']) {
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '生成失败：最多只能生成' . $this->config['invite_num'] . '个邀请码']);
         }
 
         $obj = new Invite();
@@ -510,7 +483,7 @@ class UserController extends Controller
         $obj->dateline = date('Y-m-d H:i:s', strtotime("+7 days"));
         $obj->save();
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => '生成成功']);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => '生成成功']);
     }
 
     // 激活账号页
@@ -520,7 +493,7 @@ class UserController extends Controller
             $username = trim($request->get('username'));
 
             // 是否开启账号激活
-            if (!self::$config['is_active_register']) {
+            if (!$this->config['is_active_register']) {
                 $request->session()->flash('errorMsg', '系统未开启账号激活功能，请联系管理员');
 
                 return Redirect::back()->withInput();
@@ -546,15 +519,15 @@ class UserController extends Controller
             $activeTimes = 0;
             if (Cache::has('activeUser_' . md5($username))) {
                 $activeTimes = Cache::get('activeUser_' . md5($username));
-                if ($activeTimes >= self::$config['active_times']) {
-                    $request->session()->flash('errorMsg', '同一个账号24小时内只能请求激活' . self::$config['active_times'] . '次，请勿频繁操作');
+                if ($activeTimes >= $this->config['active_times']) {
+                    $request->session()->flash('errorMsg', '同一个账号24小时内只能请求激活' . $this->config['active_times'] . '次，请勿频繁操作');
 
                     return Redirect::back();
                 }
             }
 
             // 生成激活账号的地址
-            $token = md5(self::$config['website_name'] . $username . microtime());
+            $token = md5($this->config['website_name'] . $username . microtime());
             $verify = new Verify();
             $verify->user_id = $user->id;
             $verify->username = $username;
@@ -563,12 +536,12 @@ class UserController extends Controller
             $verify->save();
 
             // 发送邮件
-            $activeUserUrl = self::$config['website_url'] . '/active/' . $token;
+            $activeUserUrl = $this->config['website_url'] . '/active/' . $token;
             $title = '重新激活账号';
             $content = '请求地址：' . $activeUserUrl;
 
             try {
-                Mail::to($user->username)->send(new activeUser(self::$config['website_name'], $activeUserUrl));
+                Mail::to($user->username)->send(new activeUser($this->config['website_name'], $activeUserUrl));
                 $this->sendEmailLog($user->id, $title, $content);
             } catch (\Exception $e) {
                 $this->sendEmailLog($user->id, $title, $content, 0, $e->getMessage());
@@ -579,9 +552,9 @@ class UserController extends Controller
 
             return Redirect::back();
         } else {
-            $view['is_active_register'] = self::$config['is_active_register'];
+            $view['is_active_register'] = $this->config['is_active_register'];
 
-            return Response::view('user/activeUser', $view);
+            return $this->view('user/activeUser', $view);
         }
     }
 
@@ -598,15 +571,15 @@ class UserController extends Controller
         } else if (empty($verify->user)) {
             $request->session()->flash('errorMsg', '该链接已失效');
 
-            return Response::view('user/active');
+            return $this->view('user/active');
         } else if ($verify->status == 1) {
             $request->session()->flash('errorMsg', '该链接已失效');
 
-            return Response::view('user/active');
+            return $this->view('user/active');
         } else if ($verify->user->status != 0) {
             $request->session()->flash('errorMsg', '该账号无需激活.');
 
-            return Response::view('user/active');
+            return $this->view('user/active');
         } else if (time() - strtotime($verify->created_at) >= 1800) {
             $request->session()->flash('errorMsg', '该链接已过期');
 
@@ -614,7 +587,7 @@ class UserController extends Controller
             $verify->status = 2;
             $verify->save();
 
-            return Response::view('user/active');
+            return $this->view('user/active');
         }
 
         // 更新账号状态
@@ -631,7 +604,7 @@ class UserController extends Controller
 
         // 账号激活后给邀请人送流量
         if ($verify->user->referral_uid) {
-            $transfer_enable = self::$config['referral_traffic'] * 1048576;
+            $transfer_enable = $this->config['referral_traffic'] * 1048576;
 
             User::query()->where('id', $verify->user->referral_uid)->increment('transfer_enable', $transfer_enable);
             User::query()->where('id', $verify->user->referral_uid)->update(['enable' => 1]);
@@ -639,7 +612,7 @@ class UserController extends Controller
 
         $request->session()->flash('successMsg', '账号激活成功');
 
-        return Response::view('user/active');
+        return $this->view('user/active');
     }
 
     // 重设密码页
@@ -649,7 +622,7 @@ class UserController extends Controller
             $username = trim($request->get('username'));
 
             // 是否开启重设密码
-            if (!self::$config['is_reset_password']) {
+            if (!$this->config['is_reset_password']) {
                 $request->session()->flash('errorMsg', '系统未开启重置密码功能，请联系管理员');
 
                 return Redirect::back()->withInput();
@@ -667,15 +640,15 @@ class UserController extends Controller
             $resetTimes = 0;
             if (Cache::has('resetPassword_' . md5($username))) {
                 $resetTimes = Cache::get('resetPassword_' . md5($username));
-                if ($resetTimes >= self::$config['reset_password_times']) {
-                    $request->session()->flash('errorMsg', '同一个账号24小时内只能重设密码' . self::$config['reset_password_times'] . '次，请勿频繁操作');
+                if ($resetTimes >= $this->config['reset_password_times']) {
+                    $request->session()->flash('errorMsg', '同一个账号24小时内只能重设密码' . $this->config['reset_password_times'] . '次，请勿频繁操作');
 
                     return Redirect::back();
                 }
             }
 
             // 生成取回密码的地址
-            $token = md5(self::$config['website_name'] . $username . microtime());
+            $token = md5($this->config['website_name'] . $username . microtime());
             $verify = new Verify();
             $verify->user_id = $user->id;
             $verify->username = $username;
@@ -684,12 +657,12 @@ class UserController extends Controller
             $verify->save();
 
             // 发送邮件
-            $resetPasswordUrl = self::$config['website_url'] . '/reset/' . $token;
+            $resetPasswordUrl = $this->config['website_url'] . '/reset/' . $token;
             $title = '重置密码';
             $content = '请求地址：' . $resetPasswordUrl;
 
             try {
-                Mail::to($user->username)->send(new resetPassword(self::$config['website_name'], $resetPasswordUrl));
+                Mail::to($user->username)->send(new resetPassword($this->config['website_name'], $resetPasswordUrl));
                 $this->sendEmailLog($user->id, $title, $content);
             } catch (\Exception $e) {
                 $this->sendEmailLog($user->id, $title, $content, 0, $e->getMessage());
@@ -700,11 +673,9 @@ class UserController extends Controller
 
             return Redirect::back();
         } else {
-            $view['website_analytics'] = self::$config['website_analytics'];
-            $view['website_customer_service'] = self::$config['website_customer_service'];
-            $view['is_reset_password'] = self::$config['is_reset_password'];
+                                    $view['is_reset_password'] = $this->config['is_reset_password'];
 
-            return Response::view('user/resetPassword', $view);
+            return $this->view('user/resetPassword', $view);
         }
     }
 
@@ -778,12 +749,12 @@ class UserController extends Controller
                 // 重新获取一遍verify
                 $view['verify'] = Verify::query()->where('token', $token)->with('user')->first();
 
-                return Response::view('user/reset', $view);
+                return $this->view('user/reset', $view);
             }
 
             $view['verify'] = $verify;
 
-            return Response::view('user/reset', $view);
+            return $this->view('user/reset', $view);
         }
     }
 
@@ -793,21 +764,21 @@ class UserController extends Controller
         $coupon_sn = $request->get('coupon_sn');
 
         if (empty($coupon_sn)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '优惠券不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '优惠券不能为空']);
         }
 
         $coupon = Coupon::query()->where('sn', $coupon_sn)->whereIn('type', [1, 2])->where('is_del', 0)->first();
         if (empty($coupon)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该优惠券不存在']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该优惠券不存在']);
         } else if ($coupon->status == 1) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该优惠券已使用，请换一个试试']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该优惠券已使用，请换一个试试']);
         } else if ($coupon->status == 2) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该优惠券已失效，请换一个试试']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该优惠券已失效，请换一个试试']);
         } else if ($coupon->available_start > time() || $coupon->available_end < time()) {
             $coupon->status = 2;
             $coupon->save();
 
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该优惠券已失效，请换一个试试']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该优惠券已失效，请换一个试试']);
         }
 
         $data = [
@@ -816,7 +787,7 @@ class UserController extends Controller
             'discount' => $coupon->discount
         ];
 
-        return Response::json(['status' => 'success', 'data' => $data, 'message' => '该优惠券有效']);
+        return $this->json(['status' => 'success', 'data' => $data, 'message' => '该优惠券有效']);
     }
 
     // 购买服务
@@ -830,14 +801,14 @@ class UserController extends Controller
         if ($request->method() == 'POST') {
             $goods = Goods::query()->with(['label'])->where('id', $goods_id)->where('status', 1)->first();
             if (empty($goods)) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '支付失败：商品或服务已下架']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '支付失败：商品或服务已下架']);
             }
 
             // 使用优惠券
             if (!empty($coupon_sn)) {
                 $coupon = Coupon::query()->where('sn', $coupon_sn)->whereIn('type', [1, 2])->where('is_del', 0)->where('status', 0)->first();
                 if (empty($coupon)) {
-                    return Response::json(['status' => 'fail', 'data' => '', 'message' => '支付失败：优惠券不存在']);
+                    return $this->json(['status' => 'fail', 'data' => '', 'message' => '支付失败：优惠券不存在']);
                 }
 
                 // 计算实际应支付总价
@@ -850,7 +821,7 @@ class UserController extends Controller
             // 验证账号余额是否充足
             $user = User::query()->where('id', $user['id'])->first();
             if ($user->balance < $amount) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '支付失败：您的余额不足，请先充值']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '支付失败：您的余额不足，请先充值']);
             }
 
             DB::beginTransaction();
@@ -955,20 +926,20 @@ class UserController extends Controller
                     $referralLog->ref_user_id = $user->referral_uid;
                     $referralLog->order_id = $order->oid;
                     $referralLog->amount = $amount;
-                    $referralLog->ref_amount = $amount * self::$config['referral_percent'];
+                    $referralLog->ref_amount = $amount * $this->config['referral_percent'];
                     $referralLog->status = 0;
                     $referralLog->save();
                 }
 
                 DB::commit();
 
-                return Response::json(['status' => 'success', 'data' => '', 'message' => '支付成功']);
+                return $this->json(['status' => 'success', 'data' => '', 'message' => '支付成功']);
             } catch (\Exception $e) {
                 DB::rollBack();
 
                 Log::error('支付订单失败：' . $e->getMessage());
 
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '支付失败：' . $e->getMessage()]);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '支付失败：' . $e->getMessage()]);
             }
         } else {
             $goods = Goods::query()->where('id', $goods_id)->where('status', 1)->first();
@@ -978,11 +949,9 @@ class UserController extends Controller
 
             $goods->traffic = flowAutoShow($goods->traffic * 1048576);
             $view['goods'] = $goods;
-            $view['is_youzan'] = self::$config['is_youzan'];
-            $view['website_analytics'] = self::$config['website_analytics'];
-            $view['website_customer_service'] = self::$config['website_customer_service'];
+            $view['is_youzan'] = $this->config['is_youzan'];
 
-            return Response::view('user/addOrder', $view);
+            return $this->view('user/addOrder', $view);
         }
     }
 
@@ -993,7 +962,7 @@ class UserController extends Controller
 
         // 积分满100才可以兑换
         if ($user['score'] < 100) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '兑换失败：满100才可以兑换，请继续累计吧']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '兑换失败：满100才可以兑换，请继续累计吧']);
         }
 
         DB::beginTransaction();
@@ -1021,11 +990,11 @@ class UserController extends Controller
             $request->session()->remove('user');
             $request->session()->put('user', $user);
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '兑换成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '兑换成功']);
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '兑换失败：' . $e->getMessage()]);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '兑换失败：' . $e->getMessage()]);
         }
     }
 
@@ -1035,18 +1004,16 @@ class UserController extends Controller
         // 生成个人推广链接
         $user = $request->session()->get('user');
 
-        $view['website_analytics'] = self::$config['website_analytics'];
-        $view['website_customer_service'] = self::$config['website_customer_service'];
-        $view['referral_traffic'] = flowAutoShow(self::$config['referral_traffic'] * 1048576);
-        $view['referral_percent'] = self::$config['referral_percent'];
-        $view['referral_money'] = self::$config['referral_money'];
+                        $view['referral_traffic'] = flowAutoShow($this->config['referral_traffic'] * 1048576);
+        $view['referral_percent'] = $this->config['referral_percent'];
+        $view['referral_money'] = $this->config['referral_money'];
         $view['totalAmount'] = ReferralLog::query()->where('ref_user_id', $user['id'])->sum('ref_amount') / 100;
         $view['canAmount'] = ReferralLog::query()->where('ref_user_id', $user['id'])->where('status', 0)->sum('ref_amount') / 100;
-        $view['link'] = self::$config['website_url'] . '/register?aff=' . $user['id'];
+        $view['link'] = $this->config['website_url'] . '/register?aff=' . $user['id'];
         $view['referralLogList'] = ReferralLog::query()->where('ref_user_id', $user['id'])->with('user')->paginate(10);
 
         $view['applyList'] = ReferralApply::where('user_id',$user['id']) ->orderBy('id', 'desc')->paginate(15)->appends($request->except('page'));
-        return Response::view('user/referral', $view);
+        return $this->view('user/referral', $view);
     }
 
     // 申请提现
@@ -1057,13 +1024,13 @@ class UserController extends Controller
         // 判断是否已存在申请
         $referralApply = ReferralApply::query()->where('user_id', $user['id'])->whereIn('status', [0, 1])->first();
         if ($referralApply) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '申请失败：已存在申请，请等待之前的申请处理完']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '申请失败：已存在申请，请等待之前的申请处理完']);
         }
 
         // 校验可以提现金额是否超过系统设置的阀值
         $ref_amount = ReferralLog::query()->where('ref_user_id', $user['id'])->where('status', 0)->sum('ref_amount');
-        if ($ref_amount / 100 < self::$config['referral_money']) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '申请失败：满' . self::$config['referral_money'] . '元才可以提现，继续努力吧']);
+        if ($ref_amount / 100 < $this->config['referral_money']) {
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '申请失败：满' . $this->config['referral_money'] . '元才可以提现，继续努力吧']);
         }
 
         // 取出本次申请关联返利日志ID
@@ -1086,7 +1053,7 @@ class UserController extends Controller
         $obj->status = 0;
         $obj->save();
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => '申请成功，请等待管理员审核']);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => '申请成功，请等待管理员审核']);
     }
 
     // 节点订阅
@@ -1108,12 +1075,10 @@ class UserController extends Controller
             $code = $subscribe->code;
         }
 
-        $view['website_analytics'] = self::$config['website_analytics'];
-        $view['website_customer_service'] = self::$config['website_customer_service'];
-        $view['subscribe_status'] = !$subscribe ? 1 : $subscribe->status;
-        $view['link'] = self::$config['subscribe_domain'] ? self::$config['subscribe_domain'] . '/s/' . $code : self::$config['website_url'] . '/s/' . $code;
+                        $view['subscribe_status'] = !$subscribe ? 1 : $subscribe->status;
+        $view['link'] = $this->config['subscribe_domain'] ? $this->config['subscribe_domain'] . '/s/' . $code : $this->config['website_url'] . '/s/' . $code;
 
-        return Response::view('/user/subscribe', $view);
+        return $this->view('/user/subscribe', $view);
     }
 
     // 更换订阅地址
@@ -1132,13 +1097,13 @@ class UserController extends Controller
 
             DB::commit();
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '更换成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '更换成功']);
         } catch (\Exception $e) {
             DB::rollBack();
 
             Log::info("更换订阅地址异常：" . $e->getMessage());
 
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '更换失败' . $e->getMessage()]);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '更换失败' . $e->getMessage()]);
         }
     }
 
@@ -1146,19 +1111,19 @@ class UserController extends Controller
     public function switchToAdmin(Request $request)
     {
         if (!$request->session()->has('admin') || !$request->session()->has('user')) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '非法请求']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '非法请求']);
         }
 
         $admin = $request->session()->get('admin');
         $user = User::query()->where('id', $admin['id'])->first();
         if (!$user) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => "非法请求"]);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => "非法请求"]);
         }
 
         // 管理员信息重新写入user
         $request->session()->put('user', $request->session()->get('admin'));
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => "身份切换成功"]);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => "身份切换成功"]);
     }
 
     // 卡券余额充值
@@ -1168,12 +1133,12 @@ class UserController extends Controller
 
         $coupon_sn = trim($request->get('coupon_sn'));
         if (empty($coupon_sn)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '券码不能为空']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '券码不能为空']);
         }
 
         $coupon = Coupon::query()->where('sn', $coupon_sn)->where('type', 3)->where('is_del', 0)->where('status', 0)->first();
         if (!$coupon) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '该券不可用']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该券不可用']);
         }
 
         DB::beginTransaction();
@@ -1208,12 +1173,12 @@ class UserController extends Controller
 
             DB::commit();
 
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '充值成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '充值成功']);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             DB::rollBack();
 
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '充值失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '充值失败']);
         }
     }
 

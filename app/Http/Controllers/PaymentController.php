@@ -15,12 +15,6 @@ use DB;
 
 class PaymentController extends Controller
 {
-    protected static $config;
-
-    function __construct()
-    {
-        self::$config = $this->systemConfig();
-    }
 
     // 创建支付单
     public function create(Request $request)
@@ -31,25 +25,25 @@ class PaymentController extends Controller
 
         $goods = Goods::query()->where('id', $goods_id)->where('status', 1)->first();
         if (!$goods) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：商品或服务已下架']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：商品或服务已下架']);
         }
 
         // 判断是否开启有赞云支付
-        if (!self::$config['is_youzan']) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：系统并未开启在线支付功能']);
+        if (!$this->config['is_youzan']) {
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：系统并未开启在线支付功能']);
         }
 
         // 判断是否存在同个商品的未支付订单
         $existsOrder = Order::query()->where('goods_id', $goods_id)->where('status', 0)->where('user_id', $user['id'])->first();
         if ($existsOrder) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：尚有未支付的订单，请先去支付']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：尚有未支付的订单，请先去支付']);
         }
 
         // 使用优惠券
         if ($coupon_sn) {
             $coupon = Coupon::query()->where('sn', $coupon_sn)->whereIn('type', [1, 2])->where('is_del', 0)->where('status', 0)->first();
             if (!$coupon) {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：优惠券不存在']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：优惠券不存在']);
             }
 
             // 计算实际应支付总价
@@ -61,7 +55,7 @@ class PaymentController extends Controller
 
         // 如果最后总价格为0，则不允许创建支付单
         if ($amount <= 0) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：合计价格为0，无需使用在线支付']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：合计价格为0，无需使用在线支付']);
         }
 
         DB::beginTransaction();
@@ -109,13 +103,13 @@ class PaymentController extends Controller
 
             DB::commit();
 
-            return Response::json(['status' => 'success', 'data' => $sn, 'message' => '创建支付单成功']);
+            return $this->json(['status' => 'success', 'data' => $sn, 'message' => '创建支付单成功']);
         } catch (\Exception $e) {
             DB::rollBack();
 
             Log::error('创建支付订单失败：' . $e->getMessage());
 
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：' . $e->getMessage()]);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：' . $e->getMessage()]);
         }
     }
 
@@ -137,14 +131,12 @@ class PaymentController extends Controller
         if (!$order) {
             $request->session()->flash('errorMsg', '订单不存在');
 
-            return Response::view('payment/' . $sn);
+            return $this->view('payment/' . $sn);
         }
 
         $view['payment'] = $payment;
-        $view['website_analytics'] = self::$config['website_analytics'];
-        $view['website_customer_service'] = self::$config['website_customer_service'];
 
-        return Response::view('payment/detail', $view);
+        return $this->view('payment/detail', $view);
     }
 
     // 获取订单支付状态
@@ -153,21 +145,21 @@ class PaymentController extends Controller
         $sn = $request->get('sn');
 
         if (empty($sn)) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '请求失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '请求失败']);
         }
 
         $user = $request->session()->get('user');
         $payment = Payment::query()->where('sn', $sn)->where('user_id', $user['id'])->first();
         if (!$payment) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '支付失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '支付失败']);
         }
 
         if ($payment->status) {
-            return Response::json(['status' => 'success', 'data' => '', 'message' => '支付成功']);
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '支付成功']);
         } else if ($payment->status < 0) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '支付失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '支付失败']);
         } else {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '等待支付']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '等待支付']);
         }
     }
 
@@ -184,6 +176,6 @@ class PaymentController extends Controller
 
         $view['list'] = $query->orderBy('id', 'desc')->paginate(10);
 
-        return Response::view('payment/callbackList', $view);
+        return $this->view('payment/callbackList', $view);
     }
 }

@@ -17,12 +17,6 @@ use Cache;
  */
 class LoginController extends Controller
 {
-    protected static $config;
-
-    function __construct()
-    {
-        self::$config = $this->systemConfig();
-    }
 
     // 登录返回订阅信息
     public function login(Request $request)
@@ -34,7 +28,7 @@ class LoginController extends Controller
         // 10分钟内请求失败15次，则封IP一小时
         if (Cache::has($cacheKey)) {
             if (Cache::get($cacheKey) >= 15) {
-                return Response::json(['status' => 'fail', 'data' => [], 'message' => '频繁访问失败，禁止访问1小时']);
+                return $this->json(['status' => 'fail', 'data' => [], 'message' => '频繁访问失败，禁止访问1小时']);
             }
         } else {
             Cache::put($cacheKey, 1, 10);
@@ -43,14 +37,14 @@ class LoginController extends Controller
         if (!$username || !$password) {
             Cache::increment($cacheKey);
 
-            return Response::json(['status' => 'fail', 'data' => [], 'message' => '账号密码不能为空']);
+            return $this->json(['status' => 'fail', 'data' => [], 'message' => '账号密码不能为空']);
         }
 
         $user = User::query()->where('username', trim($username))->where('password', md5($password))->where('status', '>=', 0)->first();
         if (!$user) {
             Cache::increment($cacheKey);
 
-            return Response::json(['status' => 'fail', 'data' => [], 'message' => '账号不存在或已被禁用']);
+            return $this->json(['status' => 'fail', 'data' => [], 'message' => '账号不存在或已被禁用']);
         }
 
         // 如果生成过订阅链接则生成一个
@@ -72,8 +66,8 @@ class LoginController extends Controller
         $data['user'] = $user;
 
         // 订阅链接
-        $data['link'] = self::$config['subscribe_domain'] ? self::$config['subscribe_domain'] . '/s/' . $code : self::$config['website_url'] . '/s/' . $code;
+        $data['link'] = $this->config['subscribe_domain'] ? $this->config['subscribe_domain'] . '/s/' . $code : $this->config['website_url'] . '/s/' . $code;
 
-        return Response::json(['status' => 'success', 'data' => $data, 'message' => '登录成功']);
+        return $this->json(['status' => 'success', 'data' => $data, 'message' => '登录成功']);
     }
 }

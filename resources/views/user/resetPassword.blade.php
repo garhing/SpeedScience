@@ -33,7 +33,7 @@
 <body class=" login">
 <!-- BEGIN LOGO -->
 <div class="logo">
-    <a href="{{url('/')}}" class="logo-font">助力科研</a>
+    <a href="{{url('/')}}" class="logo-font">{{$app_config['website_name']}}</a>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
@@ -120,9 +120,9 @@
     }
 </script>
 <!-- 统计 -->
-{!! $website_analytics !!}
+{{ $app_config['website_analytics'] }}
 <!-- 客服 -->
-{!! $website_customer_service !!}
+{{ $app_config['website_customer_service'] }}
 </body>
 
 </html>

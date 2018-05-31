@@ -38,96 +38,89 @@ use DB;
 
 class HomeController extends Controller
 {
-    protected static $config;
-
-    function __construct()
-    {
-        self::$config = $this->systemConfig();
-    }
-
     public function index(Request $request)
     {
         $view = [];
-        return Response::view('home/index', $view);
+        return $this->view('home/index', $view);
     }
     public function features(Request $request)
     {
         $view = [];
-        return Response::view('home/features', $view);
+        return $this->view('home/features', $view);
     }
     public function datacenter(Request $request)
     {
         $view = [];
-        return Response::view('home/datacenter', $view);
+        return $this->view('home/datacenter', $view);
     }
     public function panel(Request $request)
     {
         $view = [];
-        return Response::view('home/panel', $view);
+        return $this->view('home/panel', $view);
     }
     public function sla(Request $request)
     {
         $view = [];
-        return Response::view('home/sla', $view);
+        return $this->view('home/sla', $view);
     }
     public function sla_full(Request $request)
     {
         $view = [];
-        return Response::view('home/sla_full', $view);
+        return $this->view('home/sla_full', $view);
     }
     public function game_pricing(Request $request)
     {
         $view = [];
-        return Response::view('home/game_pricing', $view);
+        return $this->view('home/game_pricing', $view);
     }
     public function client(Request $request)
     {
         $view = [];
-        return Response::view('home/client', $view);
+        return $this->view('home/client', $view);
     }
     public function speedtest(Request $request)
     {
         $view = [];
-        return Response::view('home/speedtest', $view);
+        return $this->view('home/speedtest', $view);
     }
     public function status(Request $request)
     {
         $view = [];
-        return Response::view('home/status', $view);
+        return $this->view('home/status', $view);
     }
     public function about(Request $request)
     {
         $view = [];
-        return Response::view('home/about', $view);
+        return $this->view('home/about', $view);
     }
     public function aaaa(Request $request)
     {
         $view = [];
-        return Response::view('home/index', $view);
+        return $this->view('home/index', $view);
     }
     public function contact(Request $request)
     {
         $view = [];
-        return Response::view('home/contact', $view);
+        return $this->view('home/contact', $view);
     }
     public function coupons(Request $request)
     {
         $view = [];
-        return Response::view('home/coupons', $view);
+        return $this->view('home/coupons', $view);
     }
     public function aff(Request $request)
     {
         $view = [];
-        return Response::view('home/aff', $view);
+        return $this->view('home/aff', $view);
     }
     public function tos(Request $request)
     {
         $view = [];
-        return Response::view('home/tos', $view);
+        return $this->view('home/tos', $view);
     }
     public function use_policy(Request $request)
     {
         $view = [];
-        return Response::view('home/use_policy', $view);
+        return $this->view('home/use_policy', $view);
     }
 }

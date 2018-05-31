@@ -12,10 +12,27 @@ use App\Http\Models\EmailLog;
 use App\Http\Models\Level;
 use App\Http\Models\SsConfig;
 use App\Http\Models\User;
-
+use Response;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    public $config;
+    public function __construct()
+    {
+        $this->config = $this->systemConfig();
+    }
+
+    public function view($view, $data = array(), $status = 200, $headers = array()){
+
+        $data['app_config'] = $this->config;
+        return Response::view($view, $data,$status,$headers);
+    }
+
+    public function json($data = array(), $status = 200, $headers = array(), $options = 0){
+
+        $data['app_config'] = $this->config;
+        return Response::json( $data,$status,$headers,$options);
+    }
 
     // 生成订阅地址的唯一码
     public function makeSubscribeCode()

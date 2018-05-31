@@ -41,7 +41,7 @@
     <div class="page-header-inner ">
         <!-- BEGIN LOGO -->
         <div class="page-logo">
-            <a href="{{url('/')}}" class="logo-font">助力科研 </a>
+            <a href="{{url('/')}}" class="logo-font">{{$app_config['website_name']}} </a>
             <div class="menu-toggler sidebar-toggler">
                 <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
             </div>

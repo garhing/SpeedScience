@@ -43,7 +43,7 @@
         <div class="page-logo">
             {{--<a href="{{url('/user')}}">--}}
                 {{--<img src="/assets/images/logo.png" alt="logo" class="logo-default" /> </a>--}}
-            <a href="{{url('/')}}" class="logo-font">助力科研 </a>
+            <a href="{{url('/')}}" class="logo-font">{{$app_config['website_name']}}</a>
             <div class="menu-toggler sidebar-toggler">
                 <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
             </div>
@@ -232,9 +232,9 @@
 <script src="/assets/layouts/layout4/scripts/layout.min.js" type="text/javascript"></script>
 <!-- END THEME LAYOUT SCRIPTS -->
 <!-- 统计 -->
-{!! $website_analytics !!}
+{{ $app_config['website_analytics'] }}
 <!-- 客服 -->
-{!! $website_customer_service !!}
+{{ $app_config['website_customer_service'] }}
 </body>
 
 </html>

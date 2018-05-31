@@ -54,20 +54,20 @@
                 <button class="navbar-toggle btn btn-link btn-icon" type="button"><i><span class="icon-bar"></span><span
                                 class="icon-bar"></span><span class="icon-bar"></span></i></button>
                 <div class="navbar-header">
-                    <a class="navbar-brand slogan-title" href="{{url('/')}}">助力科研</a>
+                    <a class="navbar-brand slogan-title" href="{{url('/')}}">{{$app_config['website_name']}}</a>
                 </div>
                 <div class="navbar-container">
                     <ul class="nav navbar-nav navbar-main">
+                        <li></li>
                         <li>
                             <a href="{{url('/')}}">首页</a>
                         </li>
                         <li class="dropdown">
                             <a href="{{url('/home/features')}}" data-toggle="dropdown">产品特性</a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{url('/home/features')}}">概念加速</a></li>
+                                <li><a href="{{url('/home/features')}}">加速特性</a></li>
                                 <li><a href="{{url('/home/datacenter')}}">数据中心</a></li>
                                 <li><a href="{{url('/home/panel')}}">控制面板</a></li>
-                                <li><a href="{{url('/home/sla')}}">质量保证</a></li>
                                 <li><a href="{{url('/home/game_pricing')}}">游戏加速</a></li>
                             </ul>
                         </li>
@@ -122,9 +122,9 @@
                             <li><a href="{{url('/home/game_pricing')}}">游戏加速</a></li>
                             <li><a href="{{url('/home/features')}}">概念加速</a></li>
                             <li><a href="{{url('/home/datacenter')}}">数据中心</a></li>
+                            <li><a href="{{url('/home/game_pricing')}}">游戏加速</a></li>
                             <li><a href="{{url('/home/panel')}}">控制面板</a></li>
                             <li><a href="{{url('/home/sla')}}">质量保证</a></li>
-                            <li><a href="{{url('/home/game_pricing')}}">游戏加速</a></li>
                         </ul>
                     </div>
                     <div class="col-xs-3">

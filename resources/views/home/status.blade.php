@@ -9,17 +9,7 @@
                 <p class="slogan-desc">我们的线路健康状况将在此页面更新，以作为您选择节点的依据。</p>
             </div>
             <div class="banner-tabs tabs-responsive">
-                <div class="tabs-container">
-                    <ul class="nav nav-tabs text-center">
-                        <li><a href="{{url('/home/client')}}">客户端</a></li>
-                        <li><a href="{{url('/home/speedtest')}}">测速</a></li>
-                        <li class="active"><a href="{{url('/home/status')}}">线路状态</a></li>
-                    </ul>
-                    <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab"><i
-                                class="zmdi zmdi-chevron-left"></i></button>
-                    <button class="btn btn-icon btn-link btn-next" type="button" data-click="next-tab"><i
-                                class="zmdi zmdi-chevron-right"></i></button>
-                </div>
+                @include('home.subpage.soft_sub')
             </div>
         </div>
     </div>

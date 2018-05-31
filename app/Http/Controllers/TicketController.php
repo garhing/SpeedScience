@@ -19,19 +19,12 @@ use Mail;
  */
 class TicketController extends Controller
 {
-    protected static $config;
-
-    public function __construct()
-    {
-        self::$config = $this->systemConfig();
-    }
-
     // 工单列表
     public function ticketList(Request $request)
     {
         $view['ticketList'] = Ticket::query()->orderBy('id', 'desc')->paginate(10);
 
-        return Response::view('ticket/ticketList', $view);
+        return $this->view('ticket/ticketList', $view);
     }
 
     // 回复工单
@@ -62,9 +55,9 @@ class TicketController extends Controller
 
                 // 发通知邮件
                 if (!$user['is_admin']) {
-                    if (self::$config['crash_warning_email']) {
+                    if ($this->config['crash_warning_email']) {
                         try {
-                            Mail::to(self::$config['crash_warning_email'])->send(new replyTicket(self::$config['website_name'], $title, $content));
+                            Mail::to($this->config['crash_warning_email'])->send(new replyTicket($this->config['website_name'], $title, $content));
                             $this->sendEmailLog(1, $title, $content);
                         } catch (\Exception $e) {
                             $this->sendEmailLog(1, $title, $content, 0, $e->getMessage());
@@ -72,7 +65,7 @@ class TicketController extends Controller
                     }
                 } else {
                     try {
-                        Mail::to($ticket->user->username)->send(new replyTicket(self::$config['website_name'], $title, $content));
+                        Mail::to($ticket->user->username)->send(new replyTicket($this->config['website_name'], $title, $content));
                         $this->sendEmailLog($ticket->user_id, $title, $content);
                     } catch (\Exception $e) {
                         $this->sendEmailLog($ticket->user_id, $title, $content, 0, $e->getMessage());
@@ -80,20 +73,20 @@ class TicketController extends Controller
                 }
 
                 // 通过ServerChan发微信消息提醒管理员
-                if (!$user['is_admin'] && self::$config['is_server_chan'] && self::$config['server_chan_key']) {
+                if (!$user['is_admin'] && $this->config['is_server_chan'] && $this->config['server_chan_key']) {
                     $serverChan = new ServerChan();
                     $serverChan->send($title, $content);
                 }
 
-                return Response::json(['status' => 'success', 'data' => '', 'message' => '回复成功']);
+                return $this->json(['status' => 'success', 'data' => '', 'message' => '回复成功']);
             } else {
-                return Response::json(['status' => 'fail', 'data' => '', 'message' => '回复失败']);
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '回复失败']);
             }
         } else {
             $view['ticket'] = Ticket::query()->where('id', $id)->with('user')->first();
             $view['replyList'] = TicketReply::query()->where('ticket_id', $id)->with('user')->orderBy('id', 'asc')->get();
 
-            return Response::view('ticket/replyTicket', $view);
+            return $this->view('ticket/replyTicket', $view);
         }
     }
 
@@ -106,7 +99,7 @@ class TicketController extends Controller
         $ticket->status = 2;
         $ret = $ticket->save();
         if (!$ret) {
-            return Response::json(['status' => 'fail', 'data' => '', 'message' => '关闭失败']);
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '关闭失败']);
         }
 
         $title = "工单关闭提醒";
@@ -114,13 +107,13 @@ class TicketController extends Controller
 
         // 发邮件通知用户
         try {
-            Mail::to($ticket->user->username)->send(new closeTicket(self::$config['website_name'], $title, $content));
+            Mail::to($ticket->user->username)->send(new closeTicket($this->config['website_name'], $title, $content));
             $this->sendEmailLog($ticket->user_id, $title, $content);
         } catch (\Exception $e) {
             $this->sendEmailLog($ticket->user_id, $title, $content, 0, $e->getMessage());
         }
 
-        return Response::json(['status' => 'success', 'data' => '', 'message' => '关闭成功']);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => '关闭成功']);
     }
 
 }
