@@ -3,25 +3,31 @@
 
     <div class="page-banner page-banner-subpage p-b-0">
         <div class="container">
-            <div class="banner-slogan banner-slogan-hero">
-                <h1 class="slogan-title text-center">我们的正常运行时间保证</h1>
-                <h2 class="slogan-desc text-center">{{$app_config['website_name']}}在其云服务平台的核心架构中提供多重冗余机制和智能分流 -
-                    负载均衡机制来保证服务的稳定运行。提供企业级的安全与稳定性。</h2>
-                <div class="actions text-center"><a href="{{url('/home/sla_full')}}" class="btn btn-lg btn-primary-light">阅读完整SLA<i
-                                class="zmdi zmdi-long-arrow-right"></i></a></div>
+            <div class="row">
+                <div class="col-lg-4 col-md-5 col-sm-6">
+                    <div class="banner-slogan banner-slogan-hero">
+                        <h1 class="slogan-title">我们的正常运行时间保证</h1>
+                        <h2 class="slogan-desc">{{$app_config['website_name']}}在其云服务平台的核心架构中提供多重冗余机制和智能分流 -
+                            负载均衡机制来保证服务的稳定运行。提供企业级的安全与稳定性。</h2>
+                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/home/sla_full')}}">阅读完整协议<i
+                                        class="zmdi zmdi-long-arrow-right"></i></a></div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-7 col-sm-6">
+                    <div class="banner-image ">
+                        <div class="image image-network-uptime" >
+                            <div class="globe animate" style="width: 398px;height: 390px;margin-left: -100px;margin-top: -20px;"></div>
+                            <div class="circle circle-xlg circle-orange service-icon-xlg image-shadow" data-animation-delay="0.3s"
+                            style="margin-bottom: -120px;"
+                            >
+                                <span>100%<small>在线率</small></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="banner-tabs tabs-responsive">
-                <div class="tabs-container">
-                    <ul class="nav nav-tabs text-center">
-                        <li><a href="{{url('/home/about')}}">关于我们</a></li>
-                        <li class="active"><a href="{{url('/home/sla')}}">服务协议</a></li>
-                        <li><a href="{{url('/home/contact')}}">联系我们</a></li>
-                    </ul>
-                    <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab"><i
-                                class="zmdi zmdi-chevron-left"></i></button>
-                    <button class="btn btn-icon btn-link btn-next" type="button" data-click="next-tab"><i
-                                class="zmdi zmdi-chevron-right"></i></button>
-                </div>
+                @include('home.subpage.feas_sub')
             </div>
         </div>
         <!-- /.banner-tabs -->

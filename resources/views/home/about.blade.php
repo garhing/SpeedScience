@@ -6,20 +6,9 @@
         <div class="container">
             <div class="banner-slogan banner-slogan-hero">
                 <h1 class="slogan-title text-center">关于{{$app_config['website_name']}}</h1>
-                <h2 class="slogan-desc text-center">我们的使命：提供高效、稳定、可靠、安全的概念加速服务。</h2>
-            </div>
-            <div class="banner-tabs tabs-responsive">
-                <div class="tabs-container">
-                    <ul class="nav nav-tabs text-center">
-                        <li class="active"><a href="about/index.html">关于我们</a></li>
-                        <li><a href="{{url('/home/sla')}}">服务协议</a></li>
-                        <li><a href="{{url('/home/contact')}}">联系我们</a></li>
-                    </ul>
-                    <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab"><i
-                                class="zmdi zmdi-chevron-left"></i></button>
-                    <button class="btn btn-icon btn-link btn-next" type="button" data-click="next-tab"><i
-                                class="zmdi zmdi-chevron-right"></i></button>
-                </div>
+                <h2 class="slogan-desc text-center">我们的使命：提供高效、稳定、可靠、安全的概念加速服务。<br/>
+                    {{$app_config['website_name']}}开始于2014年
+                    我们通过数年的加速服务提供经历，从向游戏玩家群体内部提供到向小微企业和外贸公司提供稳定国际互联线路，再到向个人用户提供公有云加速服务，我们经历了很多，并拥有丰富的经验。</h2>
             </div>
         </div>
         <!-- /.banner-tabs -->
@@ -244,6 +233,15 @@
                 <div><img src="/home/img/services/azure.svg" alt="Azure"/></div>
                 <div><img src="/home/img/services/linode.svg" alt="Linode"/></div>
                 <div><img src="/home/img/services/idcf.svg" alt="IDCF"/></div>
+            </div>
+        </div>
+    </div>
+    <!-- /.page-section -->
+    <div class="page-section section-center">
+        <div class="container">
+            <h2 class="section-title text-center">希望寻求合作或是定制服务？</h2>
+            <div class="partner-logos">
+                希望寻求合作或是定制服务？请通过 <a href="{{url('/user/ticketList')}}">工单系统</a> 联系我们
             </div>
         </div>
     </div>

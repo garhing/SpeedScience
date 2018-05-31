@@ -8,17 +8,7 @@
                 <h2 class="slogan-desc text-center">希望寻求合作或是定制服务？请通过 <a href="{{url('/user/ticketList')}}">工单系统</a> 联系我们</h2>
             </div>
             <div class="banner-tabs tabs-responsive">
-                <div class="tabs-container">
-                    <ul class="nav nav-tabs text-center">
-                        <li><a href="{{url('/home/about')}}">关于我们</a></li>
-                        <li><a href="{{url('/home/sla')}}">服务协议</a></li>
-                        <li class="active"><a href="{{url('/home/contact')}}">联系我们</a></li>
-                    </ul>
-                    <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab"><i
-                                class="zmdi zmdi-chevron-left"></i></button>
-                    <button class="btn btn-icon btn-link btn-next" type="button" data-click="next-tab"><i
-                                class="zmdi zmdi-chevron-right"></i></button>
-                </div>
+                @include('home.subpage.about_sub')
             </div>
         </div>
         <!-- /.banner-tabs -->

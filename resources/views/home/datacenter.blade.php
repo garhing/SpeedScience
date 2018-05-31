@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-7 col-sm-6">
-                    <div class="banner-image"><span class="image image-bird-location image-shadow"></span></div>
+                    <div class="banner-image"> <i class="service-icon service-icon-xlg service-icon-dedicated image-shadow"></i></div>
                 </div>
             </div>
             <div class="banner-tabs tabs-responsive">

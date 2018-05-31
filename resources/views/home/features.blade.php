@@ -139,14 +139,186 @@
 
             <p class="section-desc">为您的所有设备添加{{$app_config['website_name']}}高速服务，立即开启无碍网络体验！</p>
 
-            <div class="actions">
-                <a class="btn btn-light btn-outline btn-lg" href="{{url('/home/speedtest')}}">查看测速结果<i
-                            class="zmdi zmdi-long-arrow-right"></i></a>
+        </div>
+    </div>
+    <!-- /.page-section -->
+    <div class="page-section section-center">
+        <div class="container">
+            <h2 class="section-title">{{$app_config['website_name']}}概念加速服务测试</h2>
+
+            <p class="section-desc">我们将{{$app_config['website_name']}}概念加速服务速度与业内平均水平作比较。</p>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="benchmark benchmark-unixbench benchmark-low-end">
+                        <div class="benchmark-title">
+                            <h3>下载速度</h3>
+                            <small>越大越好</small>
+                        </div>
+                        <div class="benchmark-graph">
+                            <div class="graph">
+                                <ul class="graph-grid">
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                </ul>
+                                <ul class="graph-bars">
+                                    <li>
+                                        <div class="bar-holder">
+                                            <span class="bar bar-vultr animate"><span>{{$app_config['website_name']}}</span></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bar-holder">
+                                            <span class="bar bar-rackspace animate"><span>业内高端</span></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bar-holder">
+                                            <span class="bar bar-aws animate"><span>业内普通</span></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <ul class="axis axis-y">
+                                <li>350 Mbps</li>
+                                <li>300 Mbps</li>
+                                <li>250 Mbps</li>
+                                <li>200 Mbps</li>
+                                <li>150 Mbps</li>
+                                <li>100 Mbps</li>
+                                <li>50 Mbps</li>
+                                <li>0 Mbps</li>
+                            </ul>
+                            <ul class="axis axis-x">
+                                <li>{{$app_config['website_name']}}</li>
+                                <li>业内高端</li>
+                                <li>业内普通</li>
+                            </ul>
+                        </div>
+                        <!-- /.benchmark-graph -->
+                    </div>
+                    <!-- /.benchmark -->
+                </div>
+                <div class="col-sm-4">
+                    <div class="benchmark benchmark-performance benchmark-low-end">
+                        <div class="benchmark-title">
+                            <h3>节点数目</h3>
+                            <small>越多越好</small>
+                        </div>
+                        <div class="benchmark-graph">
+                            <div class="graph">
+                                <ul class="graph-grid">
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                </ul>
+                                <ul class="graph-bars">
+                                    <li>
+                                        <div class="bar-holder">
+                                            <span class="bar bar-vultr animate"><span>{{$app_config['website_name']}}</span></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bar-holder">
+                                            <span class="bar bar-rackspace animate"><span>业内高端</span></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bar-holder">
+                                            <span class="bar bar-aws animate"><span>业内普通</span></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <ul class="axis axis-y">
+                                <li>70</li>
+                                <li>60</li>
+                                <li>50</li>
+                                <li>40</li>
+                                <li>30</li>
+                                <li>20</li>
+                                <li>10</li>
+                                <li>0</li>
+                            </ul>
+                            <ul class="axis axis-x">
+                                <li>{{$app_config['website_name']}}</li>
+                                <li>业内高端</li>
+                                <li>业内普通</li>
+                            </ul>
+                        </div>
+                        <!-- /.benchmark-graph -->
+                    </div>
+                    <!-- /.benchmark -->
+                </div>
+                <div class="col-sm-4">
+                    <div class="benchmark benchmark-io benchmark-low-end">
+                        <div class="benchmark-title">
+                            <h3>客户满意度</h3>
+                            <small>百分比越高越好</small>
+                        </div>
+                        <div class="benchmark-graph">
+                            <div class="graph">
+                                <ul class="graph-grid">
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                </ul>
+                                <ul class="graph-bars">
+                                    <li>
+                                        <div class="bar-holder">
+                                            <span class="bar bar-vultr animate"><span>{{$app_config['website_name']}}<sup>*</sup></span></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bar-holder">
+                                            <span class="bar bar-rackspace animate"><span>业内高端</span></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bar-holder">
+                                            <span class="bar bar-aws animate"><span>业内普通</span></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <ul class="axis axis-y">
+                                <li>100%</li>
+                                <li>95%</li>
+                                <li>90%</li>
+                                <li>...</li>
+                                <li>20%</li>
+                                <li>15%</li>
+                                <li>10%</li>
+                                <li>5%</li>
+                            </ul>
+                            <ul class="axis axis-x">
+                                <li>{{$app_config['website_name']}}</li>
+                                <li>业内高端</li>
+                                <li>业内普通</li>
+                            </ul>
+                        </div>
+                        <!-- /.benchmark-graph -->
+                        * 针对{{$app_config['website_name']}} 200位用户抽查
+                    </div>
+                    <!-- /.benchmark -->
+                </div>
             </div>
         </div>
     </div>
     <!-- /.page-section -->
-
     <div class="page-section">
         <div class="container">
             <div class="section-row row">

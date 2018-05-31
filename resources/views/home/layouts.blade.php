@@ -9,7 +9,7 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title>@yield('title')</title>
+    <title>{{$app_config['website_name']}}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta content="" name="description"/>
@@ -59,9 +59,6 @@
                 <div class="navbar-container">
                     <ul class="nav navbar-nav navbar-main">
                         <li></li>
-                        <li>
-                            <a href="{{url('/')}}">首页</a>
-                        </li>
                         <li class="dropdown">
                             <a href="{{url('/home/features')}}" data-toggle="dropdown">产品特性</a>
                             <ul class="dropdown-menu">
@@ -69,35 +66,44 @@
                                 <li><a href="{{url('/home/datacenter')}}">数据中心</a></li>
                                 <li><a href="{{url('/home/panel')}}">控制面板</a></li>
                                 <li><a href="{{url('/home/game_pricing')}}">游戏加速</a></li>
+                                <li><a href="{{url('/home/sla')}}">服务保证</a></li>
                             </ul>
                         </li>
+                        {{--<li class="dropdown">--}}
+                        {{--<a href="index-2.html" data-toggle="dropdown">软件与教程</a>--}}
+                        {{--<ul class="dropdown-menu">--}}
+                        {{--<li></li>--}}
+                        {{--<li><a href="{{url('/home/client')}}">软件下载</a></li>--}}
+                        {{--<li><a href="{{url('/home/speedtest')}}">速度测试</a></li>--}}
+                        {{--<li><a href="{{url('/home/status')}}">线路状态</a></li>--}}
+                        {{--</ul>--}}
+                        {{--</li>--}}
 
                         <li class="dropdown">
-                            <a href="index-2.html" data-toggle="dropdown">软件与教程</a>
+                            <a href="index-2.html" data-toggle="dropdown">用户政策</a>
                             <ul class="dropdown-menu">
-                                <li></li>
-                                <li><a href="{{url('/home/client')}}">软件下载</a></li>
-                                <li><a href="{{url('/home/speedtest')}}">速度测试</a></li>
-                                <li><a href="{{url('/home/status')}}">线路状态</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="{{url('/home/about')}}" data-toggle="dropdown">关于与优惠</a>
-                            <ul class="dropdown-menu">
+                                <li><a href="{{url('/home/tos')}}">服务条款</a></li>
+                                <li><a href="{{url('/home/use_policy')}}">使用政策</a></li>
+                                <li><a href="{{url('/home/sla_full')}}">服务协议</a></li>
                                 <li><a href="{{url('/home/about')}}">关于我们</a></li>
-                                <li><a href="{{url('/home/contact')}}">联系我们</a></li>
-                                <li><a href="{{url('/home/coupons')}}">优惠代码</a></li>
-                                <li><a href="{{url('/home/aff')}}">推介计划</a></li>
-                                <li><a href="{{url('/home/use_policy')}}">用户政策</a></li>
                             </ul>
                         </li>
+                        <li><a href="{{url('/home/aff')}}">推介计划</a></li>
+                        @if(Session::get('user'))
+                            <li><a href="{{url('/user/index')}}" style="color: #fff;font-weight: bold;">我的主页</a></li>
+                            <li><a href="{{url('/logout')}}" style="color: #fff;font-weight: bold;">退出登录</a></li>
+                        @endif
                     </ul>
-                    <ul class="nav navbar-buttons">
-                        <li></li>
-                        <li> <a href="{{url('/login')}}" class="btn btn-success" style="background-color: #5aa700;">登录</a></li>
-                        <li><a href="{{url('/register')}}" class="btn btn-dark">注册</a></li>
-                        <li></li>
-                    </ul>
+                    @if(!Session::get('user'))
+                        <ul class="nav navbar-buttons">
+                            <li></li>
+                            <li><a href="{{url('/login')}}" class="btn btn-success"
+                                   style="background-color: #5aa700;">登录</a></li>
+                            <li><a href="{{url('/register')}}" class="btn btn-dark">注册</a></li>
+                            <li></li>
+                        </ul>
+                    @endif
+
 
                 </div>
 

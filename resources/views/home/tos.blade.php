@@ -2,14 +2,7 @@
 @section('main_content')
 
     <div class="page-banner page-banner-subpage p-b-0 text-center">
-        <div class="container">
-            <div class="banner-slogan banner-slogan-hero">
-                <h1 class="slogan-title">条约</h1>
-            </div>
-            <div class="banner-tabs tabs-responsive">
-                @include('home.subpage.tos_sub')
-            </div>
-        </div>
+        @include('home.subpage.tos_full_sub')
     </div>
     <!-- /.page-banner -->
 

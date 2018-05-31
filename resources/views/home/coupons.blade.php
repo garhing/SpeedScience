@@ -20,7 +20,7 @@
                     <p>{{$app_config['website_name']}}提供业界顶级的加速网络，帮助我们的用户通过{{$app_config['website_name']}}全球加速网络更快更安全地访问国际网际网络上的资源，并保护用户逇隐私。</p>
                 </div>
 
-                <a class="panel panel-coupon" href="{{url('/home/coupons')}}" data-toggle="modal">
+                <a class="panel panel-coupon" href="" data-toggle="modal">
                     <div class="coupon-desc">
                         <div class="display-2 text-primary"><b>年付9折</b> 优惠</div>
                         <p>
