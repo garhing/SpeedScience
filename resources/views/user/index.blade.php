@@ -41,7 +41,7 @@
                 </div>
                 <div class="row widget-row">
                         @foreach($nodeList as $node)
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 ">
                                     <h4 class="widget-thumb-heading">{{$node->name}}</h4>
                                     <div class="widget-thumb-wrap">

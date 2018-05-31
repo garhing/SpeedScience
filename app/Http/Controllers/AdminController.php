@@ -1927,6 +1927,10 @@ class AdminController extends Controller
             } else if ($referralApply && $status == 2) {
                 ReferralLog::query()->whereIn('id', $log_ids)->update(['status' => 2]);
             }
+            else if ($referralApply && $status == -1) {
+                ReferralLog::query()->whereIn('id', $log_ids)->update(['status' => 0]);
+            }
+
         }
 
         return $this->json(['status' => 'success', 'data' => '', 'message' => '操作成功']);

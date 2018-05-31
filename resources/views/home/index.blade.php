@@ -8,9 +8,7 @@
                     <div class="banner-slogan banner-slogan-hero">
                         <h1 class="slogan-title">科研网络加速平台<br>为您的科研注入全新力量</h1>
                         <h2 class="slogan-desc">
-                            {{$app_config['website_name']}}
-                            拥有分布在全球九大国家的10+个数据中心，为科学研究者提供多方位需求。无论是谷歌学术，还是ScienceDirect，使用{{$app_config['website_name']}}
-                            加速服务，均可完美支持！</h2>
+                            {{$app_config['website_name']}}拥有分布在全球九大国家的10+个数据中心，为科学研究者提供多方位需求。无论是谷歌学术，还是ScienceDirect，使用{{$app_config['website_name']}}加速服务，均可完美支持！</h2>
                         <div class="actions"><a class="btn btn-lg btn-primary-light"
                                                 href="{{url('/home/features')}}">查看{{$app_config['website_name']}}产品特性<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
@@ -30,7 +28,7 @@
                 <div class="row">
 
                     <div class="col-sm-4">
-                        <a class="service" href="{{url('/home/datacenter')}}">
+                        <a class="service">
                             <i class="service-icon service-icon-compute image-shadow-sm animate zoomIn"></i>
                             <div class="service-body">
                                 <h3>按月计费</h3>
@@ -41,7 +39,7 @@
                         <!--/ .service -->
                     </div>
                     <div class="col-sm-4">
-                        <a class="service" href="{{url('/home/panel')}}">
+                        <a class="service">
                             <i class="service-icon service-icon-storage image-shadow-sm animate zoomIn"></i>
                             <div class="service-body">
                                 <h3>按量计费</h3>
@@ -52,7 +50,7 @@
                         <!--/ .service -->
                     </div>
                     <div class="col-sm-4">
-                        <a class="service" href="{{url('/home/features')}}">
+                        <a class="service">
                             <i class="service-icon service-icon-dedicated image-shadow-sm animate zoomIn"></i>
                             <div class="service-body">
                                 <h3>定制服务</h3>
@@ -62,7 +60,6 @@
                         </a>
                         <!--/ .service -->
                     </div>
-
                     <h3>全节点使用aes-256-cfb高强度流加密算法，支持auth_sha1协议，支持http_simple以及http_post流量混淆。</h3>
                 </div>
             </div>
