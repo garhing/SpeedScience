@@ -29,7 +29,7 @@
     <div class="page-section section-center">
         <div class="container"><br><br>
             <h2 class="section-title">简单面板，方便易用</h2>
-            <p class="section-desc m-b-20">ShadowsocksR后台管理非常简单，不论是查看加速服务连接信息，还是查询流量使用情况，界面的依然那么简单易用，让人惊喜连连。</p><br><br><br><br><br><br><br><br><br>
+            <p class="section-desc m-b-20">{{$app_config['website_name']}}后台管理非常简单，不论是查看加速服务连接信息，还是查询流量使用情况，界面的依然那么简单易用，让人惊喜连连。</p><br><br><br><br><br><br><br><br><br>
 
 
         </div>
@@ -38,7 +38,7 @@
     <div class="page-section section-center section-blue section-control-panel">
         <div class="container">
             <h2 class="section-title">流量信息，一眼可见</h2>
-            <p class="section-desc m-b-40">ShadowsocksR后台管理界面，可方便查看流量使用情况。有关加速服务所需的所有信息，均可在后台一键查看。</p>
+            <p class="section-desc m-b-40">{{$app_config['website_name']}}后台管理界面，可方便查看流量使用情况。有关加速服务所需的所有信息，均可在后台一键查看。</p>
             <div class="row">
                 <div class="col-sm-10 col-sm-offset-1">
                     <div class="row m-b-40">
@@ -89,7 +89,7 @@
     <div class="page-section section-center section-dark">
         <div class="container">
             <h2 class="section-title">秒级开通，便捷管理</h2>
-            <p class="section-desc m-b-60">ShadowsocksR允许用户同时购买一种加速服务多次。您也可以同时购买应用于不同需求的服务。一键开通的服务，让您不必等待。</p>
+            <p class="section-desc m-b-60">{{$app_config['website_name']}}允许用户同时购买一种加速服务多次。您也可以同时购买应用于不同需求的服务。一键开通的服务，让您不必等待。</p>
             <div class="row">
                 <div class="col-sm-10 col-sm-offset-1">
                     <div class="panel panel-block">
@@ -114,7 +114,7 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td><b>ShadowsocksR概念加速 超值版-30G/月</b></td>
+                                <td><b>{{$app_config['website_name']}}概念加速 超值版-30G/月</b></td>
                                 <td>月付</td>
                                 <td>30 GB</td>
                                 <td>2016-04-21</td>
@@ -123,7 +123,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><b>ShadowsocksR概念加速 100G流量包</b></td>
+                                <td><b>{{$app_config['website_name']}}概念加速 100G流量包</b></td>
                                 <td>一次性</td>
                                 <td>100 GB</td>
                                 <td>2016-05-03</td>
@@ -132,7 +132,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><b>ShadowsocksR概念加速 游戏线路-50G/月</b></td>
+                                <td><b>{{$app_config['website_name']}}概念加速 游戏线路-50G/月</b></td>
                                 <td>年付</td>
                                 <td>50 GB</td>
                                 <td>2015-12-28</td>

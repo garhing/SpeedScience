@@ -5,9 +5,9 @@
             <div class="row">
                 <div class="col-lg-4 col-md-5 col-sm-6">
                     <div class="banner-slogan banner-slogan-hero">
-                        <h1 class="slogan-title">加入ShadowsocksR推介计划！</h1>
-                        <h2 class="slogan-desc">通过推荐他人使用ShadowsocksR服务来获取10%收益！</h2>
-                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="#">现在就加入推介计划！<i
+                        <h1 class="slogan-title">加入{{$app_config['website_name']}}推介计划！</h1>
+                        <h2 class="slogan-desc">通过推荐他人使用{{$app_config['website_name']}}服务来获取10%收益！</h2>
+                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/user/referral')}}">现在就加入推介计划！<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                 <div class="col-md-5 col-sm-6 col-sm-pull-6">
                     <h2 class="section-title">推介系统如何工作？</h2>
                     <p class="section-desc">
-                        加入推介计划后，您将获得一个独一无二的链接，当您的朋友通过该链接访问ShadowsocksR后，将会有一个Cookies存入他们的浏览器。在90天内，只要该用户注册了ShadowsocksR并购买了服务，您将可以从中获得10%的推介收益。无论他是否是第一次访问或直接保存ShadowsocksR的直达链接。</p>
+                        加入推介计划后，您将获得一个独一无二的链接，当您的朋友通过该链接访问{{$app_config['website_name']}}后，将会有一个Cookies存入他们的浏览器。在90天内，只要该用户注册了{{$app_config['website_name']}}并购买了服务，您将可以从中获得10%的推介收益。无论他是否是第一次访问或直接保存{{$app_config['website_name']}}的直达链接。</p>
                 </div>
             </div>
             <div class="section-row row">
@@ -66,8 +66,8 @@
                 </div>
 
                 <div class="col-sm-4">
-                    <h3 class="h4">推介佣金是否可以用于购买ShadowsocksR服务？</h3>
-                    <p>我们默认情况下会提现推介佣金到您的ShadowsocksR账户，可以用于购买ShadowsocksR的任何服务！通过推介计划，您甚至可以免费使用ShadowsocksR服务。</p>
+                    <h3 class="h4">推介佣金是否可以用于购买{{$app_config['website_name']}}服务？</h3>
+                    <p>我们默认情况下会提现推介佣金到您的{{$app_config['website_name']}}账户，可以用于购买{{$app_config['website_name']}}的任何服务！通过推介计划，您甚至可以免费使用{{$app_config['website_name']}}服务。</p>
                 </div>
             </div>
         </div>
@@ -86,7 +86,7 @@
             <!-- /.section-image -->
             <h2 class="section-title">我是否需要支付费用？</h2>
             <p class="section-desc m-b-20">
-                您无需为推介计划支付任何的费用，在您选择加入推介计划后，您将可以直接通过推介ShadowsocksR的产品与服务来获取收益，ShadowsocksR不会在此过程中收取任何的额外费用。</p>
+                您无需为推介计划支付任何的费用，在您选择加入推介计划后，您将可以直接通过推介{{$app_config['website_name']}}的产品与服务来获取收益，{{$app_config['website_name']}}不会在此过程中收取任何的额外费用。</p>
         </div>
     </div>
 
@@ -109,8 +109,8 @@
                     </div>
                 </div>
                 <div class="col-md-5 col-sm-6 col-sm-pull-6">
-                    <h2 class="section-title">谁有资格加入ShadowsocksR推介计划？</h2>
-                    <p class="section-desc">任何ShadowsocksR的客户都可以加入推介计划来从中获取收益。</p>
+                    <h2 class="section-title">谁有资格加入{{$app_config['website_name']}}推介计划？</h2>
+                    <p class="section-desc">任何{{$app_config['website_name']}}的客户都可以加入推介计划来从中获取收益。</p>
                 </div>
             </div>
             <div class="section-row text-center">

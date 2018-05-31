@@ -4,8 +4,8 @@
     <div class="page-banner page-banner-subpage p-b-0">
         <div class="container">
             <div class="banner-slogan banner-slogan-hero">
-                <h1 class="slogan-title text-center">联系ShadowsocksR</h1>
-                <h2 class="slogan-desc text-center">希望寻求合作或是定制服务？请通过 <a href="#">工单系统</a> 联系我们</h2>
+                <h1 class="slogan-title text-center">联系{{$app_config['website_name']}}</h1>
+                <h2 class="slogan-desc text-center">希望寻求合作或是定制服务？请通过 <a href="{{url('/user/ticketList')}}">工单系统</a> 联系我们</h2>
             </div>
             <div class="banner-tabs tabs-responsive">
                 <div class="tabs-container">

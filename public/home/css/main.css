@@ -704,9 +704,7 @@ note: moved to layout
     font-size: 2.5em;
     color: #eee !important;
 }
-.no-svg .navbar-brand {
-	background: url(../img/png/logo.png) no-repeat center center;
-}
+
 @media (max-width: 767px) {
   .page-navbar .container {
     padding: 0 10px;
@@ -719,10 +717,11 @@ note: moved to layout
 		text-align: center;
 	}
 	.navbar-header .navbar-brand {
-		display: inline-block;
-		float: none;
+		display: block;
+		float: left;
 		height: 52px;
-		width: 152px;
+		width: 200px;
+      text-align: left;
 	}
 	.navbar-open .navbar-toggle span {
 		background-color: #1e88e5;
@@ -730,7 +729,7 @@ note: moved to layout
 	.navbar-brand {
     margin: -3px 0 -11px;
     margin-left: 2px;
-    padding-right: 700px;
+    padding-left: 10px;
   }
 }
 

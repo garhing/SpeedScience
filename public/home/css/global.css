@@ -62,7 +62,6 @@ select.form-control {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-image: url('../_images/arrow.html');
     background-repeat: no-repeat;
     background-position: 100% 50%;
     background-size: 30px 50px;

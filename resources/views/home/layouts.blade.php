@@ -93,19 +93,23 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-buttons">
-                        <li><a href="{{url('/login')}}" class="btn btn-success" style="background-color: #5aa700;">登录</a></li>
+                        <li></li>
+                        <li> <a href="{{url('/login')}}" class="btn btn-success" style="background-color: #5aa700;">登录</a></li>
                         <li><a href="{{url('/register')}}" class="btn btn-dark">注册</a></li>
+                        <li></li>
                     </ul>
+
                 </div>
+
             </div>
         </nav>
     </div>
-    @yield('main_content')
+@yield('main_content')
 
-    <!-- /.page-section -->
+<!-- /.page-section -->
     <div class="page-section section-blue section-center">
         <div class="container">
-            <h2 align="center" class="section-title">使用概念加速，开启新的体验！</h2>
+            <h2 align="center" class="section-title">使用{{$app_config['website_name']}}，开启全新科研体验！</h2>
             <a href="{{url('/register')}}">
                 <button class="btn btn-primary-light btn-lg" type="submit">立即注册</button>
             </a>
@@ -156,10 +160,11 @@
             </div>
         </footer>
         <footer class="footer-bottom">
-            <div class="container">
+            <div class="container text-center">
                 <div class="row">
-                    <div class="col-md-6">
-                        <p class="footer-copyright"> Copyright © 2014-2016 ShadowsocksR. QQ交流群：<a href="#"># </a></p>
+                    <div class="col-md-12">
+                        <p class="footer-copyright"> Copyright © 2014-2020 {{$app_config['website_name']}}. QQ交流群：<a>674788156 </a>
+                        </p>
                     </div>
                 </div>
             </div>

@@ -8,7 +8,7 @@
             <div class="banner-slogan">
                 <h1 class="slogan-title">套餐 &amp; 价格</h1>
 
-                <h2 class="slogan-desc">现在加入ShadowsocksR，即可使用高达250Mbps高速加速服务。 新用户注册还可享受年付优惠！</h2>
+                <h2 class="slogan-desc">现在加入{{$app_config['website_name']}}，即可使用高达250Mbps高速加速服务。 新用户注册还可享受年付优惠！</h2>
             </div>
             <!-- /.banner-slogan -->
             <div class="banner-tabs banner-tabs-pricing">
@@ -204,9 +204,9 @@
                     <span class="bird-fast image-shadow-sm"><span class="bird-fast-lines"></span></span>
                 </div>
             </div>
-            <h2 class="section-title">ShadowsocksR加速服务比业内标准速度快 4 倍！</h2>
+            <h2 class="section-title">{{$app_config['website_name']}}加速服务比业内标准速度快 4 倍！</h2>
 
-            <p class="section-desc">ShadowsocksR测试标准服务与同类型供应商速度。查看为何ShadowsocksR加速服务生而不同！</p>
+            <p class="section-desc">{{$app_config['website_name']}}测试标准服务与同类型供应商速度。查看为何{{$app_config['website_name']}}加速服务生而不同！</p>
 
             <div class="actions">
                 <a class="btn btn-light btn-outline btn-lg" href="{{url('/home/speedtest')}}">查看测试结果<i
@@ -221,7 +221,7 @@
 
             <h2 class="section-title">简单、高效、易用</h2>
 
-            <p class="section-desc">现在就开始享用ShadowsocksR的全球加速网络带来的便捷体验！</p>
+            <p class="section-desc">现在就开始享用{{$app_config['website_name']}}的全球加速网络带来的便捷体验！</p>
 
             <div class="features features-icon-top features-center">
                 <div class="row">
@@ -233,7 +233,7 @@
                     <!-- /.feature -->
                     <div class="col-sm-3 col-xs-6">
                         <div class="feature"><i class="icon icon-lg icon-globe animate zoomIn"></i>
-                            <h4>超过40个全球ShadowsocksR加速网络连接点</h4>
+                            <h4>超过40个全球{{$app_config['website_name']}}加速网络连接点</h4>
                         </div>
                     </div>
                     <!-- /.feature -->
@@ -299,7 +299,7 @@
                         怎么付款购买加速服务？
                     </h3>
                     <div class="accordion-body collapse in">
-                        ShadowsocksR采用支付宝付款。所有的ShadowsocksR套餐服务都为预付费，在购买服务后，即可使用加速服务。ShadowsocksR的月付套餐，包含30天内有效期；年付的套餐，包含365天有效期限。在账单到期前一个星期，ShadowsocksR会自动生成续费账单。在支付帐单后，即可延长相应有效期。
+                        {{$app_config['website_name']}}采用支付宝付款。所有的{{$app_config['website_name']}}套餐服务都为预付费，在购买服务后，即可使用加速服务。{{$app_config['website_name']}}的月付套餐，包含30天内有效期；年付的套餐，包含365天有效期限。在账单到期前一个星期，{{$app_config['website_name']}}会自动生成续费账单。在支付帐单后，即可延长相应有效期。
                     </div>
                 </li>
 
@@ -310,7 +310,7 @@
                         我可以在多少设备上使用？
                     </h3>
                     <div class="accordion-body collapse">
-                        我们不限制您的设备登录数量，但是为了避免用户将ShadowsocksR账户泄漏或者主动分享带来的问题，我们限制标准服务只能在两个公网IP同时登录，这已经足够满足您在家和在外同时使用ShadowsocksR的加速服务。
+                        我们不限制您的设备登录数量，但是为了避免用户将{{$app_config['website_name']}}账户泄漏或者主动分享带来的问题，我们限制标准服务只能在两个公网IP同时登录，这已经足够满足您在家和在外同时使用{{$app_config['website_name']}}的加速服务。
                     </div>
                 </li>
 
@@ -321,7 +321,7 @@
                         你们都支持什么系统，手机支持吗？
                     </h3>
                     <div class="accordion-body collapse">
-                        ShadowsocksR加速服务，目前支持的系统包含：iOS9、Android、Windows、OSX、Ubuntu、Openwrt路由器、极路由。其中，在Openwrt路由器使用，需您自行安装对应插件；在极路由（1S以上）使用，需配合ShadowsocksR专属插件。在您订购服务后，可提交工单，获取插件安装及使用方法。
+                        {{$app_config['website_name']}}加速服务，目前支持的系统包含：iOS9、Android、Windows、OSX、Ubuntu、Openwrt路由器、极路由。其中，在Openwrt路由器使用，需您自行安装对应插件；在极路由（1S以上）使用，需配合{{$app_config['website_name']}}专属插件。在您订购服务后，可提交工单，获取插件安装及使用方法。
                     </div>
                 </li>
             </ul>

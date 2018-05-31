@@ -116,6 +116,7 @@ Route::group(['middleware' => ['forbidden', 'user', 'admin']], function () {
 
 Route::group(['middleware' => ['forbidden', 'user']], function () {
     Route::any('user', 'UserController@index'); // 用户首页
+    Route::any('user/index', 'UserController@index'); // 用户首页
     Route::any('user/article', 'UserController@article'); // 文章详情
     Route::get('user/subscribe', 'UserController@subscribe'); // 节点订阅
     Route::post('user/exchangeSubscribe', 'UserController@exchangeSubscribe'); // 更换节点订阅地址

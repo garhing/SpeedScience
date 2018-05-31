@@ -1,34 +1,34 @@
 @extends('home.layouts')
 @section('main_content')
 
-    <div class="page-banner page-banner-home">
-        <div class="banner-slogan">
-            <div class="container">
-                <h1 class="slogan-title">重新定义加速<br>混淆加密传输</h1><br>
-                <h2 class="slogan-desc">现在加入即可享受高达1Gbps数据传输加速<br>
-                    <br>节点覆盖：香港、台湾、韩国、日本、美国、新加坡、英国、法国、国内节点等，全球10+数据中心、40+动态加速节点，助您网络加速。<br>
-                    <br>目前线路采用以下机房服务器（机房线路会动态调整，最终以网站公告为准）：阿里云HKB数据中心、阿里云华东数据中心、台湾Hinet数据中心、日本IIJ名古屋数据中心、日本Choopa数据中心、日本KDDI数据中心、英国Choopa数据中心、美国Choopa数据中心、法国OVH机房、韩国KT机房、洛杉矶CN2机房、美国C3EDGE机房、新加坡PCCW机房等</h2>
-
-            </div>
-        </div>
-        <!-- /.banner-slogan -->
-    </div>
-    <div class="page-section section-center" style="padding-top: 200px;">
+    <div class="page-banner page-banner-subpage p-b-0">
         <div class="container">
-            <h3>我们是全球首家（且目前唯一）使用GeoTrust EV SSL证书的ShadowsocksR概念加速服务商，从最大限度上确保网站的安全性。</h3><br><br>
+            <div class="row">
+                <div class="col-lg-4 col-md-5 col-sm-6">
+                    <div class="banner-slogan banner-slogan-hero">
+                        <h1 class="slogan-title">科研网络加速平台<br>为您的科研注入全新力量</h1>
+                        <h2 class="slogan-desc">
+                            {{$app_config['website_name']}}
+                            拥有分布在全球九大国家的10+个数据中心，为科学研究者提供多方位需求。无论是谷歌学术，还是ScienceDirect，使用{{$app_config['website_name']}}
+                            加速服务，均可完美支持！</h2>
+                        <div class="actions"><a class="btn btn-lg btn-primary-light"
+                                                href="{{url('/home/features')}}">查看{{$app_config['website_name']}}产品特性<i
+                                        class="zmdi zmdi-long-arrow-right"></i></a></div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-7 col-sm-6">
+                    <div class="banner-image"><span class="image image-bird-location image-shadow"></span></div>
+                </div>
+            </div>
+            <div style="padding-bottom: 20px;"> </div>
+        </div>
+    </div>
+    <div class="page-section section-center" style="padding-top: 20px;">
+        <div class="container">
+            <h3>我们是全球首家（且目前唯一）使用GeoTrust EV SSL证书的{{$app_config['website_name']}}概念加速服务商，从最大限度上确保网站的安全性。</h3><br><br>
             <div class="services">
                 <div class="row">
-                    <div class="col-sm-4">
-                        <a class="service" href="{{url('/home/features')}}">
-                            <i class="service-icon service-icon-dedicated image-shadow-sm animate zoomIn"></i>
-                            <div class="service-body">
-                                <h3>免费体验</h3>
-                                <p>最低至8毫秒的延迟，让您游戏体验如同本地宽带，酣畅淋漓。</p>
-                                <span class="btn btn-lg btn-link">普通速度节点，终身使用</span>
-                            </div>
-                        </a>
-                        <!--/ .service -->
-                    </div>
+
                     <div class="col-sm-4">
                         <a class="service" href="{{url('/home/datacenter')}}">
                             <i class="service-icon service-icon-compute image-shadow-sm animate zoomIn"></i>
@@ -47,6 +47,17 @@
                                 <h3>按量计费</h3>
                                 <p>提供单线路高达1Gbps的节点，为您快速访问网络的提供有力保障。</p>
                                 <span class="btn btn-lg btn-link">按量计费，30元/20GB起</span>
+                            </div>
+                        </a>
+                        <!--/ .service -->
+                    </div>
+                    <div class="col-sm-4">
+                        <a class="service" href="{{url('/home/features')}}">
+                            <i class="service-icon service-icon-dedicated image-shadow-sm animate zoomIn"></i>
+                            <div class="service-body">
+                                <h3>定制服务</h3>
+                                <p>提供专有线路，为您的需求量身定制，您可以任意选择服务器性能及位置</p>
+                                <span class="btn btn-lg btn-link">大客户专用，具体请咨询</span>
                             </div>
                         </a>
                         <!--/ .service -->
@@ -100,7 +111,8 @@
                     <div class="map"></div>
                 </div>
                 <div class="actions text-center">
-                    <a class="btn btn-lg btn-light btn-outline" href="{{url('/home/datacenter')}}">数据中心及线路更多信息<i class="zmdi zmdi-long-arrow-right"></i></a>
+                    <a class="btn btn-lg btn-light btn-outline" href="{{url('/home/datacenter')}}">数据中心及线路更多信息<i
+                                class="zmdi zmdi-long-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -112,7 +124,7 @@
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 text-center">
                     <h2 class="title-head" style="color:white;">适合哪些人群？</h2>
-                    <p class="desc">ShadowsocksR提供分布全球的加速服务，使得您可以在任何地方开展国际贸易、收发Gmail及观看视频。</p>
+                    <p class="desc">{{$app_config['website_name']}}提供分布全球的加速服务，使得您可以在任何地方开展国际贸易、收发Gmail及观看视频。</p>
                 </div>
             </div>
             <div class="empty_space" style="height: 30px"></div>
@@ -132,19 +144,22 @@
                 <div class="col-sm-6">
                     <div class="main wow fadeInLeft">
                         <h4 class="title-head" style="color:white;">游戏党、影视党</h4>
-                        <p>在索尼PS4，微软Xbox Live、Steam、Battle.net 和其它游戏私服比如魔兽世界和英雄联盟上享受低延迟的畅玩体验。在线观看高清Youtube、Netflix和Twitch。</p>
+                        <p>在索尼PS4，微软Xbox Live、Steam、Battle.net
+                            和其它游戏私服比如魔兽世界和英雄联盟上享受低延迟的畅玩体验。在线观看高清Youtube、Netflix和Twitch。</p>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="main wow fadeInRight">
                         <h4 class="title-head" style="color:white;">国外友人</h4>
-                        <p>在谷歌、Youtube、脸书、推特、Gmail、Instagram、Pinterest、Flickr、Netflix、Reddit、Wordpress blogs 等网站上的访问连接将被保护并提升访问速度。</p>
+                        <p>在谷歌、Youtube、脸书、推特、Gmail、Instagram、Pinterest、Flickr、Netflix、Reddit、Wordpress blogs
+                            等网站上的访问连接将被保护并提升访问速度。</p>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="main wow fadeInLeft">
                         <h4 class="title-head" style="color:white;">设计师、攻城狮</h4>
-                        <p>在Smashing Magazine、Flickr、DeviantArt 等网站上轻松获得设计素材。加入Github、Stack OverFlow、Reddit、Android.com 等编程社区自由交谈。</p>
+                        <p>在Smashing Magazine、Flickr、DeviantArt 等网站上轻松获得设计素材。加入Github、Stack OverFlow、Reddit、Android.com
+                            等编程社区自由交谈。</p>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -218,7 +233,6 @@
                 </div>
             </div>
             <!-- /.features -->
-
 
 
         </div>

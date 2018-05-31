@@ -6,10 +6,10 @@
             <div class="row">
                 <div class="col-lg-4 col-md-5 col-sm-6">
                     <div class="banner-slogan banner-slogan-hero">
-                        <h1 class="slogan-title">ShadowsocksR加速</h1>
-                        <h2 class="slogan-desc">ShadowsocksR加速服务拥有比业内平均速度快 5
-                            倍的体验！为您的所有设备添加ShadowsocksR高速服务，立即开启无碍网络体验！</h2>
-                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/user')}}">购买概念加速<i
+                        <h1 class="slogan-title">科研加速</h1>
+                        <h2 class="slogan-desc">{{$app_config['website_name']}}加速服务拥有比业内平均速度快 5
+                            倍的体验！为您的所有设备添加{{$app_config['website_name']}}服务，立即开启无碍网络体验！</h2>
+                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/user/index')}}">购买加速服务<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                 <div class="col-md-5 col-sm-6 col-sm-pull-6">
                     <h2 class="section-title">遍布全球的服务器</h2>
                     <p class="section-desc">
-                        ShadowsocksR提供分布全球的加速服务，使得您可以在任何地方开展国际贸易、收发Gmail及观看视频。位于西雅图、洛杉矶、达拉斯、亚特兰大、法兰克福、阿姆斯特丹、香港、日本、新加坡等九个城市。</p>
+                        {{$app_config['website_name']}}提供分布全球的加速服务，使得您可以在任何地方开展国际贸易、收发Gmail及观看视频。位于西雅图、洛杉矶、达拉斯、亚特兰大、法兰克福、阿姆斯特丹、香港、日本、新加坡等九个城市。</p>
                 </div>
             </div>
             <div class="features features-icon-left">
@@ -93,7 +93,7 @@
                     <div class="col-sm-4 col-xs-6">
                         <div class="feature"><i class="icon icon-lg icon-infinity animate zoomIn"></i>
                             <h3 class="h4">智能分流</h3>
-                            <p>连接点智能分流，多重负载均衡机制。在超过40个全球ShadowsocksR加速网络连接点间流动。</p>
+                            <p>连接点智能分流，多重负载均衡机制。在超过40个全球{{$app_config['website_name']}}加速网络连接点间流动。</p>
                         </div>
                     </div>
                     <div class="clear-xs"></div>
@@ -114,7 +114,7 @@
                     <div class="col-sm-4 col-xs-6">
                         <div class="feature"><i class="icon icon-lg icon-settings animate zoomIn"></i>
                             <h3 class="h4">强力服务器</h3>
-                            <p>所有ShadowsocksR服务器，均采用强劲Intel内核。不仅快速，更高效。</p>
+                            <p>所有{{$app_config['website_name']}}服务器，均采用强劲Intel内核。不仅快速，更高效。</p>
                         </div>
                     </div>
                     <div class="col-sm-4 col-xs-6">
@@ -135,9 +135,9 @@
                     <span class="bird-fast image-shadow-sm"><span class="bird-fast-lines"></span></span>
                 </div>
             </div>
-            <h2 class="section-title">ShadowsocksR概念加速服务比业内标准速度快 5 倍！</h2>
+            <h2 class="section-title">{{$app_config['website_name']}}概念加速服务比业内标准速度快 5 倍！</h2>
 
-            <p class="section-desc">为您的所有设备添加ShadowsocksR高速服务，立即开启无碍网络体验！</p>
+            <p class="section-desc">为您的所有设备添加{{$app_config['website_name']}}高速服务，立即开启无碍网络体验！</p>
 
             <div class="actions">
                 <a class="btn btn-light btn-outline btn-lg" href="{{url('/home/speedtest')}}">查看测速结果<i
@@ -163,7 +163,7 @@
                 </div>
                 <div class="col-md-5 col-sm-6 col-sm-pull-6">
                     <h2 class="section-title">一秒内开通，全天候售后</h2>
-                    <p class="section-desc">在您付款后，ShadowsocksR将在一秒内处理您的订单，并立即开通。快捷迅速。全天候售后支持，随时联系。</p>
+                    <p class="section-desc">在您付款后，{{$app_config['website_name']}}将在一秒内处理您的订单，并立即开通。快捷迅速。全天候售后支持，随时联系。</p>
                 </div>
             </div>
             <div class="section-row row">
@@ -181,7 +181,7 @@
                 <div class="col-md-5 col-sm-6 col-md-push-1">
                     <h2 class="section-title">先进的网络连接</h2>
                     <p class="section-desc">
-                        ShadowsocksR大多数机房，不仅可以在IPv4环境下使用，还支持与IPv6互通。在您的运营商部署IPv6之后，您即可使用更快捷的IPv6网络服务。</p>
+                        {{$app_config['website_name']}}大多数机房，不仅可以在IPv4环境下使用，还支持与IPv6互通。在您的运营商部署IPv6之后，您即可使用更快捷的IPv6网络服务。</p>
                 </div>
             </div>
             <div class="row">
@@ -195,7 +195,7 @@
                 </div>
                 <div class="col-md-5 col-sm-6 col-sm-pull-6">
                     <h2 class="section-title">更高权限</h2>
-                    <p class="section-desc">您可以自定义设置您的ShadowsocksR密码。此外，若您需要修改连接密码，仅需在后台简单操作即可。您完全掌握您的账户。</p>
+                    <p class="section-desc">您可以自定义设置您的{{$app_config['website_name']}}密码。此外，若您需要修改连接密码，仅需在后台简单操作即可。您完全掌握您的账户。</p>
                 </div>
             </div>
         </div>

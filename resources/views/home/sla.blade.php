@@ -5,7 +5,7 @@
         <div class="container">
             <div class="banner-slogan banner-slogan-hero">
                 <h1 class="slogan-title text-center">我们的正常运行时间保证</h1>
-                <h2 class="slogan-desc text-center">ShadowsocksR在其云服务平台的核心架构中提供多重冗余机制和智能分流 -
+                <h2 class="slogan-desc text-center">{{$app_config['website_name']}}在其云服务平台的核心架构中提供多重冗余机制和智能分流 -
                     负载均衡机制来保证服务的稳定运行。提供企业级的安全与稳定性。</h2>
                 <div class="actions text-center"><a href="{{url('/home/sla_full')}}" class="btn btn-lg btn-primary-light">阅读完整SLA<i
                                 class="zmdi zmdi-long-arrow-right"></i></a></div>
@@ -43,7 +43,7 @@
                 <div class="col-md-5 col-sm-6 col-sm-pull-6">
                     <h2 class="section-title">100%服务器在线保证</h2>
                     <p class="section-desc">
-                        ShadowsocksR提供的主机托管服务是为了最大稳定性而设计的，我们通过一套主动监测机制来发现问题并处理问题，使用ShadowsocksR的主机服务，阁下将无需担心线路的维护问题，所有环境问题和传输数据机制将由ShadowsocksR解决，通过多级灾难防止措施，最大程度地减少意外情况所带来的问题。</p>
+                        {{$app_config['website_name']}}提供的主机托管服务是为了最大稳定性而设计的，我们通过一套主动监测机制来发现问题并处理问题，使用{{$app_config['website_name']}}的主机服务，阁下将无需担心线路的维护问题，所有环境问题和传输数据机制将由{{$app_config['website_name']}}解决，通过多级灾难防止措施，最大程度地减少意外情况所带来的问题。</p>
                 </div>
             </div>
             <div class="section-row row">
@@ -58,8 +58,8 @@
                 </div>
                 <div class="col-md-5 col-sm-6">
                     <h2 class="section-title">100%加速网络在线保证</h2>
-                    <p class="section-desc">通过连接点冗余机制，和ShadowsocksR提供的智能分流 -
-                        负载均衡配置，将能够提供稳定的连接点在线时间保证。同时，通知边界网关协议，ShadowsocksR将能够通过ShadowsocksR™优化网络为阁下提供到户的最佳连接体验。</p>
+                    <p class="section-desc">通过连接点冗余机制，和{{$app_config['website_name']}}提供的智能分流 -
+                        负载均衡配置，将能够提供稳定的连接点在线时间保证。同时，通知边界网关协议，{{$app_config['website_name']}}将能够通过{{$app_config['website_name']}}™优化网络为阁下提供到户的最佳连接体验。</p>
                 </div>
             </div>
         </div>

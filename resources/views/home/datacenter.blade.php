@@ -7,8 +7,8 @@
                     <div class="banner-slogan banner-slogan-hero">
                         <h1 class="slogan-title">遍布全球的数据加速中心</h1>
                         <h2 class="slogan-desc">
-                            ShadowsocksR拥有分布在全球九大国家的10+个数据中心，为用户提供多方位需求。无论是限定IP的游戏，还是限定美区的Spotify，使用概念加速服务，均可完美支持！</h2>
-                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/home/speedtest')}}">查看ShadowsocksR加速速度评测<i
+                            {{$app_config['website_name']}}拥有分布在全球九大国家的10+个数据中心，为用户提供多方位需求。无论是限定IP的游戏，还是限定美区的Spotify，使用概念加速服务，均可完美支持！</h2>
+                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/home/speedtest')}}">查看{{$app_config['website_name']}}加速速度评测<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
             <div class="location-map-title">
                 <h2 class="section-title">遍布全球</h2>
                 <p class="section-desc">
-                    ShadowsocksR提供分布全球的加速服务，使得您可以在任何地方开展国际贸易、收发Gmail及观看视频。此外，使用社交网络更是一项基本功能。不仅节点繁多，更具有高出业界平均速度四倍的巨大优势！</p>
+                    {{$app_config['website_name']}}提供分布全球的加速服务，使得您可以在任何地方开展国际贸易、收发Gmail及观看视频。此外，使用社交网络更是一项基本功能。不仅节点繁多，更具有高出业界平均速度四倍的巨大优势！</p>
             </div>
             <div class="location-map location-map-lg location-map-grey">
                 <div class="location-container">
@@ -80,7 +80,7 @@
                     <span class="bird-fast image-shadow-sm"><span class="bird-fast-lines"></span></span>
                 </div>
             </div>
-            <h2 class="section-title">ShadowsocksR加速服务比业内平均速度快 5 倍！</h2>
+            <h2 class="section-title">{{$app_config['website_name']}}加速服务比业内平均速度快 5 倍！</h2>
 
             <p class="section-desc">为您的所有设备添加概念加速高速服务，立即开启无障碍的网络体验！</p>
 
@@ -138,7 +138,7 @@
                 </div>
                 <div class="col-md-5 col-sm-6 col-sm-pull-6">
                     <h2 class="section-title">全球互联</h2>
-                    <p class="section-desc">通过ShadowsocksR的全球加速网络，您可以便捷地访问全球网络资源，通过ShadowsocksR的智能分流 -
+                    <p class="section-desc">通过{{$app_config['website_name']}}的全球加速网络，您可以便捷地访问全球网络资源，通过{{$app_config['website_name']}}的智能分流 -
                         负载均衡技术，您将可以在无需任何操作的情况下自动连接到最快的连接点。</p>
                 </div>
             </div>
@@ -158,7 +158,7 @@
                 <div class="col-md-5 col-sm-6 col-md-push-1">
                     <h2 class="section-title">超低延迟</h2>
                     <p class="section-desc">
-                        ShadowsocksR概念加速提供100%的SLA。包含多条线路的游戏节点，保障您的放心使用。此外，ShadowsocksR节点，延迟最优均在8-40ms左右。快的令人惊奇。</p>
+                        {{$app_config['website_name']}}概念加速提供100%的SLA。包含多条线路的游戏节点，保障您的放心使用。此外，{{$app_config['website_name']}}节点，延迟最优均在8-40ms左右。快的令人惊奇。</p>
                 </div>
             </div>
             <div class="row">
@@ -176,7 +176,7 @@
                 <div class="col-md-5 col-sm-6 col-sm-pull-6">
                     <h2 class="section-title">TCP加速技术</h2>
                     <p class="section-desc">
-                        ShadowsocksR全球加速网络均部署了先进的TCP加速技术，用户无需下载任何额外软件，就可以享受到ShadowsocksR加速网络带来的高速度，令您的网络访问无需等待。</p>
+                        {{$app_config['website_name']}}全球加速网络均部署了先进的TCP加速技术，用户无需下载任何额外软件，就可以享受到{{$app_config['website_name']}}加速网络带来的高速度，令您的网络访问无需等待。</p>
                 </div>
             </div>
         </div>

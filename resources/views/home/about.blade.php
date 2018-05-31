@@ -5,7 +5,7 @@
     <div class="page-banner page-banner-subpage p-b-0">
         <div class="container">
             <div class="banner-slogan banner-slogan-hero">
-                <h1 class="slogan-title text-center">关于ShadowsocksR</h1>
+                <h1 class="slogan-title text-center">关于{{$app_config['website_name']}}</h1>
                 <h2 class="slogan-desc text-center">我们的使命：提供高效、稳定、可靠、安全的概念加速服务。</h2>
             </div>
             <div class="banner-tabs tabs-responsive">
@@ -44,28 +44,28 @@
                     <h2 class="section-title">一个颠覆传统、全球性的概念加速。</h2>
 
                     <p class="section-desc">
-                        ShadowsocksR提供了在亚洲、美洲和欧洲超过60个云节点，并且接近全球主要的城市，以便阁下可以在ShadowsocksR提供的服务下畅享全球的精彩内容。</p>
+                        {{$app_config['website_name']}}提供了在亚洲、美洲和欧洲超过60个云节点，并且接近全球主要的城市，以便阁下可以在{{$app_config['website_name']}}提供的服务下畅享全球的精彩内容。</p>
 
-                    <p class="section-desc">ShadowsocksR采用一系列措施来提高我们服务的可靠性，从ShadowsocksR
-                        的用户中心中启动ShadowsocksR的全球加速网络，如此简单，不需要任何额外的设置和特定的服务。</p>
+                    <p class="section-desc">{{$app_config['website_name']}}采用一系列措施来提高我们服务的可靠性，从{{$app_config['website_name']}}
+                        的用户中心中启动{{$app_config['website_name']}}的全球加速网络，如此简单，不需要任何额外的设置和特定的服务。</p>
                 </div>
             </div>
             <div class="features features-icon-left">
                 <div class="row">
                     <div class="col-sm-3 col-xs-6">
                         <div class="display-3 text-primary">1000+</div>
-                        <h3 class="h4">ShadowsocksR用户</h3>
-                        <p>我们的用户来自于中国不同的省份和国外不同城市，他们遍布全球。通过ShadowsocksR的全球加速网络来便捷地使用全球网络资源。</p>
+                        <h3 class="h4">{{$app_config['website_name']}}用户</h3>
+                        <p>我们的用户来自于中国不同的省份和国外不同城市，他们遍布全球。通过{{$app_config['website_name']}}的全球加速网络来便捷地使用全球网络资源。</p>
                     </div>
                     <div class="col-sm-3 col-xs-6">
                         <div class="display-3 text-primary">20PB+</div>
                         <h3 class="h4">流量消耗</h3>
-                        <p>ShadowsocksR和其子品牌已经稳定运行并向我们的客户提供了多年的加速服务，遍及全球的网络资源触手可及。</p>
+                        <p>{{$app_config['website_name']}}和其子品牌已经稳定运行并向我们的客户提供了多年的加速服务，遍及全球的网络资源触手可及。</p>
                     </div>
                     <div class="col-sm-3 col-xs-6">
                         <div class="display-3 text-primary">40+</div>
                         <h3 class="h4">加速节点</h3>
-                        <p>通过智能分流和负载均衡技术，ShadowsocksR和合作伙伴部署在全球各地的60余加速节点向所有的用户提供者稳定可靠的服务。</p>
+                        <p>通过智能分流和负载均衡技术，{{$app_config['website_name']}}和合作伙伴部署在全球各地的60余加速节点向所有的用户提供者稳定可靠的服务。</p>
                     </div>
                     <div class="col-sm-3 col-xs-6">
                         <div class="display-3 text-primary">600+</div>
@@ -85,7 +85,7 @@
                     <span class="bird bird-md image-shadow"><span class="lanch-flag"></span></span>
                 </div>
             </div>
-            <h2 class="section-title">ShadowsocksR开始于2014年</h2>
+            <h2 class="section-title">{{$app_config['website_name']}}开始于2014年</h2>
 
             <p class="section-desc m-b-30">
                 我们通过数年的加速服务提供经历，从向游戏玩家群体内部提供到向小微企业和外贸公司提供稳定国际互联线路，再到向个人用户提供公有云加速服务，我们经历了很多，并拥有丰富的经验。</p>
@@ -156,7 +156,7 @@
                 <li>
                     <div class="animate fadeInLeft" data-animation-delay="1.8s">
                         <h3 class="h4">2016年6月</h3>
-                        <p>正式启用www.ShadowsocksR.com域名，并对网站进行全新改版。</p>
+                        <p>正式启用www.{{$app_config['website_name']}}.com域名，并对网站进行全新改版。</p>
                     </div>
                     <span class="time-pin"></span>
                 </li>
@@ -183,7 +183,7 @@
 
                             <h3 class="h4">全球加速网络</h3>
 
-                            <p>ShadowsocksR及合作伙伴在全球部署的超过40个加速网络节点能够帮助用户突破网络审查并更快地使用国际网际网络资源，帮助您的业务更进一步！</p>
+                            <p>{{$app_config['website_name']}}及合作伙伴在全球部署的超过40个加速网络节点能够帮助用户突破网络审查并更快地使用国际网际网络资源，帮助您的业务更进一步！</p>
                         </div>
                     </div>
                     <div class="col-sm-4 col-xs-6">
@@ -192,7 +192,7 @@
                             <h3 class="h4">操作简易</h3>
 
                             <p>
-                                ShadowsocksR的服务无需配置繁杂的设置，只需要根据ShadowsocksR提供的帮助下载软件扫描二维码，就可以轻松地在任何地方连接到ShadowsocksR加速网络。</p>
+                                {{$app_config['website_name']}}的服务无需配置繁杂的设置，只需要根据{{$app_config['website_name']}}提供的帮助下载软件扫描二维码，就可以轻松地在任何地方连接到{{$app_config['website_name']}}加速网络。</p>
                         </div>
                     </div>
                     <div class="clear-xs"></div>
@@ -201,7 +201,7 @@
 
                             <h3 class="h4">智能分流</h3>
 
-                            <p>ShadowsocksR的加速网络通过智能分流 - 负载均衡技术，将用户的访问压力分配到各个连接点上，使得用户在无需变更任何设置的情况下就可以享受更快速度。</p>
+                            <p>{{$app_config['website_name']}}的加速网络通过智能分流 - 负载均衡技术，将用户的访问压力分配到各个连接点上，使得用户在无需变更任何设置的情况下就可以享受更快速度。</p>
                         </div>
                     </div>
                     <div class="clear-sm"></div>
@@ -210,7 +210,7 @@
 
                             <h3 class="h4">完善技术支持</h3>
 
-                            <p>通过购买ShadowsocksR的管理型服务，将可以获取ShadowsocksR的扩展技术支持，帮助您处理您在使用过程中遇到的任何问题，更加方便地使用各种服务。</p>
+                            <p>通过购买{{$app_config['website_name']}}的管理型服务，将可以获取{{$app_config['website_name']}}的扩展技术支持，帮助您处理您在使用过程中遇到的任何问题，更加方便地使用各种服务。</p>
                         </div>
                     </div>
                     <div class="clear-xs"></div>
@@ -219,7 +219,7 @@
 
                             <h3 class="h4">全平台支持</h3>
 
-                            <p>ShadowsocksR的云加速服务可以用于您的所有设备上，无论是Windows PC、Mac、iPhone、Android手机，甚至是路由器上，只需要一个帐号！</p>
+                            <p>{{$app_config['website_name']}}的云加速服务可以用于您的所有设备上，无论是Windows PC、Mac、iPhone、Android手机，甚至是路由器上，只需要一个帐号！</p>
                         </div>
                     </div>
                     <div class="col-sm-4 col-xs-6">
@@ -227,7 +227,7 @@
 
                             <h3 class="h4">正规商业运营</h3>
 
-                            <p>ShadowsocksR隶属于我的SS俱乐部，可以按照正规流程向企业用户提供正规的机打发票，以便您向企业和组织报销费用。</p>
+                            <p>{{$app_config['website_name']}}隶属于我的SS俱乐部，可以按照正规流程向企业用户提供正规的机打发票，以便您向企业和组织报销费用。</p>
                         </div>
                     </div>
                 </div>

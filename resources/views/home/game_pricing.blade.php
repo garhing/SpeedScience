@@ -6,7 +6,7 @@
                 <div class="banner-slogan">
                     <h1 class="slogan-title">游戏加速</h1>
 
-                    <h2 class="slogan-desc">ShadowsocksR云加速专业服务，精选千兆带宽服务器、日本IIJ中国电信直连线路、韩国直连线路、Windows Azure、LeaseWeb等国际知名数据中心最好网络，将最好的游戏加速服务带给用户。</h2>
+                    <h2 class="slogan-desc">{{$app_config['website_name']}}云加速专业服务，精选千兆带宽服务器、日本IIJ中国电信直连线路、韩国直连线路、Windows Azure、LeaseWeb等国际知名数据中心最好网络，将最好的游戏加速服务带给用户。</h2>
                 </div>
                 <!-- /.banner-slogan -->
                 <div class="banner-tabs banner-tabs-pricing">
@@ -64,7 +64,7 @@
                 <!-- /.packages -->
 
                 <div class="actions text-center">
-                    <a class="btn btn-primary btn-lg" href="#">立即注册使用高速服务<i class="zmdi zmdi-long-arrow-right"></i></a>
+                    <a class="btn btn-primary btn-lg" href="{{url('/user/goodsList')}}">立即注册使用高速服务<i class="zmdi zmdi-long-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
             <div class="container">
                 <h2 class="section-title">可靠性及延迟</h2>
 
-                <p class="section-desc">ShadowsocksR游戏加速提供100%的可用性。包含九条线路的游戏节点，保障您的放心使用。此外，ShadowsocksR游戏节点，延迟均在8-40ms左右。快的令人惊奇。</p>
+                <p class="section-desc">{{$app_config['website_name']}}游戏加速提供100%的可用性。包含九条线路的游戏节点，保障您的放心使用。此外，{{$app_config['website_name']}}游戏节点，延迟均在8-40ms左右。快的令人惊奇。</p>
 
                 <div class="section-image">
 
@@ -126,7 +126,7 @@
             <div class="container">
                 <h2 class="section-title">性能</h2>
 
-                <p class="section-desc">ShadowsocksR所提供的游戏加速，下载速度高达16M/s，节点延迟低至8ms！此外，游戏节点所采用服务器，均为高速SSD固态硬盘、Intel高性能CPU及高速网口。</p>
+                <p class="section-desc">{{$app_config['website_name']}}所提供的游戏加速，下载速度高达16M/s，节点延迟低至8ms！此外，游戏节点所采用服务器，均为高速SSD固态硬盘、Intel高性能CPU及高速网口。</p>
 
                 <div class="section-image">
                     <div class="image image-performance">

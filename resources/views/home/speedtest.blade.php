@@ -6,8 +6,8 @@
             <div class="row">
                 <div class="col-lg-4 col-md-5 col-sm-6">
                     <div class="banner-slogan banner-slogan-hero">
-                        <h1 class="slogan-title">ShadowsocksR概念加速服务比业内标准速度快 5 倍！</h1>
-                        <p class="slogan-desc">为您的所有设备添加ShadowsocksR高速服务，立即开启无碍网络体验！</p>
+                        <h1 class="slogan-title">{{$app_config['website_name']}}概念加速服务比业内标准速度快 5 倍！</h1>
+                        <p class="slogan-desc">为您的所有设备添加{{$app_config['website_name']}}高速服务，立即开启无碍网络体验！</p>
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-7 col-sm-6">
@@ -28,9 +28,9 @@
 
     <div class="page-section section-center">
         <div class="container">
-            <h2 class="section-title">ShadowsocksR概念加速服务测试</h2>
+            <h2 class="section-title">{{$app_config['website_name']}}概念加速服务测试</h2>
 
-            <p class="section-desc">我们将ShadowsocksR概念加速服务速度与业内平均水平作比较。</p>
+            <p class="section-desc">我们将{{$app_config['website_name']}}概念加速服务速度与业内平均水平作比较。</p>
 
             <div class="row">
                 <div class="col-sm-4">
@@ -53,7 +53,7 @@
                                 <ul class="graph-bars">
                                     <li>
                                         <div class="bar-holder">
-                                            <span class="bar bar-vultr animate"><span>ShadowsocksR</span></span>
+                                            <span class="bar bar-vultr animate"><span>{{$app_config['website_name']}}</span></span>
                                         </div>
                                     </li>
                                     <li>
@@ -79,7 +79,7 @@
                                 <li>0 Mbps</li>
                             </ul>
                             <ul class="axis axis-x">
-                                <li>ShadowsocksR</li>
+                                <li>{{$app_config['website_name']}}</li>
                                 <li>业内高端</li>
                                 <li>业内普通</li>
                             </ul>
@@ -108,7 +108,7 @@
                                 <ul class="graph-bars">
                                     <li>
                                         <div class="bar-holder">
-                                            <span class="bar bar-vultr animate"><span>ShadowsocksR</span></span>
+                                            <span class="bar bar-vultr animate"><span>{{$app_config['website_name']}}</span></span>
                                         </div>
                                     </li>
                                     <li>
@@ -134,7 +134,7 @@
                                 <li>0</li>
                             </ul>
                             <ul class="axis axis-x">
-                                <li>ShadowsocksR</li>
+                                <li>{{$app_config['website_name']}}</li>
                                 <li>业内高端</li>
                                 <li>业内普通</li>
                             </ul>
@@ -163,7 +163,7 @@
                                 <ul class="graph-bars">
                                     <li>
                                         <div class="bar-holder">
-                                            <span class="bar bar-vultr animate"><span>ShadowsocksR<sup>*</sup></span></span>
+                                            <span class="bar bar-vultr animate"><span>{{$app_config['website_name']}}<sup>*</sup></span></span>
                                         </div>
                                     </li>
                                     <li>
@@ -189,13 +189,13 @@
                                 <li>5%</li>
                             </ul>
                             <ul class="axis axis-x">
-                                <li>ShadowsocksR</li>
+                                <li>{{$app_config['website_name']}}</li>
                                 <li>业内高端</li>
                                 <li>业内普通</li>
                             </ul>
                         </div>
                         <!-- /.benchmark-graph -->
-                        * 针对ShadowsocksR 200位用户抽查
+                        * 针对{{$app_config['website_name']}} 200位用户抽查
                     </div>
                     <!-- /.benchmark -->
                 </div>
@@ -208,7 +208,7 @@
         <div class="container">
             <h2 class="section-title">游戏加速测试</h2>
 
-            <p class="section-desc">我们选取ShadowsocksR节点测试，所有结果取平均值。</p>
+            <p class="section-desc">我们选取{{$app_config['website_name']}}节点测试，所有结果取平均值。</p>
 
             <div class="row">
                 <div class="col-sm-4">
@@ -231,7 +231,7 @@
                                 <ul class="graph-bars">
                                     <li>
                                         <div class="bar-holder">
-                                            <span class="bar bar-vultr animate"><span>ShadowsocksR</span></span>
+                                            <span class="bar bar-vultr animate"><span>{{$app_config['website_name']}}</span></span>
                                         </div>
                                     </li>
                                     <li>
@@ -286,7 +286,7 @@
                                 <ul class="graph-bars">
                                     <li>
                                         <div class="bar-holder">
-                                            <span class="bar bar-vultr animate"><span>ShadowsocksR</span></span>
+                                            <span class="bar bar-vultr animate"><span>{{$app_config['website_name']}}</span></span>
                                         </div>
                                     </li>
                                     <li>
@@ -341,7 +341,7 @@
                                 <ul class="graph-bars">
                                     <li>
                                         <div class="bar-holder">
-                                            <span class="bar bar-vultr animate"><span>ShadowsocksR</span></span>
+                                            <span class="bar bar-vultr animate"><span>{{$app_config['website_name']}}</span></span>
                                         </div>
                                     </li>
                                     <li>
