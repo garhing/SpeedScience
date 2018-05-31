@@ -62,7 +62,7 @@
                             <a href="{{url('/')}}">首页</a>
                         </li>
                         <li class="dropdown">
-                            <a href="features.html" data-toggle="dropdown">产品特性</a>
+                            <a href="{{url('/home/features')}}" data-toggle="dropdown">产品特性</a>
                             <ul class="dropdown-menu">
                                 <li><a href="{{url('/home/features')}}">概念加速</a></li>
                                 <li><a href="{{url('/home/datacenter')}}">数据中心</a></li>
@@ -82,7 +82,7 @@
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="about.html" data-toggle="dropdown">关于与优惠</a>
+                            <a href="{{url('/home/about')}}" data-toggle="dropdown">关于与优惠</a>
                             <ul class="dropdown-menu">
                                 <li><a href="{{url('/home/about')}}">关于我们</a></li>
                                 <li><a href="{{url('/home/contact')}}">联系我们</a></li>
@@ -93,7 +93,7 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-buttons">
-                        <li><a href="{{url('/user')}}" class="btn btn-success" style="background-color: #5aa700;">用户中心</a></li>
+                        <li><a href="{{url('/login')}}" class="btn btn-success" style="background-color: #5aa700;">登录</a></li>
                         <li><a href="{{url('/register')}}" class="btn btn-dark">注册</a></li>
                     </ul>
                 </div>
@@ -106,7 +106,7 @@
     <div class="page-section section-blue section-center">
         <div class="container">
             <h2 align="center" class="section-title">使用概念加速，开启新的体验！</h2>
-            <a href="/auth/register">
+            <a href="{{url('/register')}}">
                 <button class="btn btn-primary-light btn-lg" type="submit">立即注册</button>
             </a>
         </div>
@@ -119,7 +119,7 @@
                     <div class="col-xs-3">
                         <h4>产品特性</h4>
                         <ul>
-                            <li><a href="game_pricing.html">游戏加速</a></li>
+                            <li><a href="{{url('/home/game_pricing')}}">游戏加速</a></li>
                             <li><a href="{{url('/home/features')}}">概念加速</a></li>
                             <li><a href="{{url('/home/datacenter')}}">数据中心</a></li>
                             <li><a href="{{url('/home/panel')}}">控制面板</a></li>

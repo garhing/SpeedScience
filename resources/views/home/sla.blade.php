@@ -7,15 +7,15 @@
                 <h1 class="slogan-title text-center">我们的正常运行时间保证</h1>
                 <h2 class="slogan-desc text-center">ShadowsocksR在其云服务平台的核心架构中提供多重冗余机制和智能分流 -
                     负载均衡机制来保证服务的稳定运行。提供企业级的安全与稳定性。</h2>
-                <div class="actions text-center"><a href="sla_full.html" class="btn btn-lg btn-primary-light">阅读完整SLA<i
+                <div class="actions text-center"><a href="{{url('/home/sla_full')}}" class="btn btn-lg btn-primary-light">阅读完整SLA<i
                                 class="zmdi zmdi-long-arrow-right"></i></a></div>
             </div>
             <div class="banner-tabs tabs-responsive">
                 <div class="tabs-container">
                     <ul class="nav nav-tabs text-center">
-                        <li><a href="about.html">关于我们</a></li>
-                        <li class="active"><a href="sla.html">服务协议</a></li>
-                        <li><a href="contact.html">联系我们</a></li>
+                        <li><a href="{{url('/home/about')}}">关于我们</a></li>
+                        <li class="active"><a href="{{url('/home/sla')}}">服务协议</a></li>
+                        <li><a href="{{url('/home/contact')}}">联系我们</a></li>
                     </ul>
                     <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab"><i
                                 class="zmdi zmdi-chevron-left"></i></button>

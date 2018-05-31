@@ -19,6 +19,7 @@ Route::group(['middleware' => ['forbidden']], function () {
     Route::any('home/contact', 'HomeController@contact');
     Route::any('home/coupons', 'HomeController@coupons');
     Route::any('home/aff', 'HomeController@aff');
+    Route::any('home/tos', 'HomeController@tos');
     Route::any('home/use_policy', 'HomeController@use_policy');
 });
 

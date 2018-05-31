@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\AutoExpireCouponJob::class,
         \App\Console\Commands\AutoExpireInviteJob::class,
         \App\Console\Commands\AutoReleasePortJob::class,
-        \App\Console\Commands\AutoRemoveDisabledUserLabelsJob::class,
+//        \App\Console\Commands\AutoRemoveDisabledUserLabelsJob::class,
         \App\Console\Commands\AutoReopenUserJob::class,
         \App\Console\Commands\AutoResetUserTrafficJob::class,
         \App\Console\Commands\AutoStatisticsNodeDailyTrafficJob::class,

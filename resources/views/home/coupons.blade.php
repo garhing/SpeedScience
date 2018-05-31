@@ -20,7 +20,7 @@
                     <p>ShadowsocksR提供业界顶级的加速网络，帮助我们的用户通过ShadowsocksR全球加速网络更快更安全地访问国际网际网络上的资源，并保护用户逇隐私。</p>
                 </div>
 
-                <a class="panel panel-coupon" href="coupons.html#20OFF" data-toggle="modal">
+                <a class="panel panel-coupon" href="{{url('/home/coupons')}}" data-toggle="modal">
                     <div class="coupon-desc">
                         <div class="display-2 text-primary"><b>年付9折</b> 优惠</div>
                         <p>
@@ -31,7 +31,7 @@
                     </div>
                 </a>
 
-                <a class="panel panel-coupon" href="aff.html">
+                <a class="panel panel-coupon" href="{{url('/home/aff')}}">
                     <div class="coupon-desc">
                         <div class="display-2 text-primary"><b>推介</b> 计划</div>
                         <p>
@@ -77,7 +77,7 @@
                 <div class="modal-body">
                     <input id="input-ssdvps" class="form-control input-lg" type="text" value="FREEINSTALL" readonly/>
                     <div class="actions p-b-0">
-                        <a href="index.html#" id="btn-copy-ssdvps" class="btn btn-block btn-lg btn-primary"
+                        <a href="{{url('/home/index')}}" id="btn-copy-ssdvps" class="btn btn-block btn-lg btn-primary"
                            data-dismiss="modal">复制到剪贴板</a>
                     </div>
                 </div>

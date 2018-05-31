@@ -1,27 +1,13 @@
 @extends('home.layouts')
 @section('main_content')
 
-
     <div class="page-banner page-banner-subpage p-b-0 text-center">
         <div class="container">
             <div class="banner-slogan banner-slogan-hero">
                 <h1 class="slogan-title">条约</h1>
             </div>
             <div class="banner-tabs tabs-responsive">
-                <div class="tabs-container">
-                    <ul class="nav nav-tabs text-center">
-                        <li class="active"><a href="tos.html">服务条款</a></li>
-                        <li><a href="privacy.html">隐私政策</a></li>
-                        <li><a href="use_policy.html">使用政策</a></li>
-                        <li><a href="sla_full.html">服务等级协议</a></li>
-                    </ul>
-                    <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab">
-                        <i class="zmdi zmdi-chevron-left"></i>
-                    </button>
-                    <button class="btn btn-icon btn-link btn-next" type="button" data-click="next-tab">
-                        <i class="zmdi zmdi-chevron-right"></i>
-                    </button>
-                </div>
+                @include('home.subpage.tos_sub')
             </div>
         </div>
     </div>
@@ -44,7 +30,7 @@
                     </p>
                     <ol class="standard-ol">
                         <li>
-                            ShadowsocksR Group China是网站<a href="index.html">https://#.com</a>（下称“ShadowsocksR”或“本站”）的拥有者及服务提供商。ShadowsocksR提供的是网络概念加速服务。
+                            ShadowsocksR Group China是网站<a href="{{url('/home/index')}}">https://#.com</a>（下称“ShadowsocksR”或“本站”）的拥有者及服务提供商。ShadowsocksR提供的是网络概念加速服务。
                             就本协议的目的，以下提及的产品或服务，包含概念加速服务等，均称作“产品”或“服务”。
                             <br/>
                             <br/> 当第一人称代词（ShadowsocksR，我们，我们的等）在本协议中使用，均指ShadowsocksR Group
@@ -64,10 +50,10 @@
                         尽管此协议代表主要的使用条款，其他准则和规则在此通过引用并入本文。这些文件可以在我们网站上找到，其中包含：
                     </p>
                     <p>
-                        我们的隐私政策 (<a href="privacy.html">https://#/privacy.html</a>)
+                        我们的隐私政策 (<a href="{{url('/home/privacy')}}">https://#/privacy.html</a>)
                     </p>
                     <p>
-                        我们的可接受使用策略 (<a href="use_policy.html">https://#/use_policy.html</a>)
+                        我们的可接受使用策略 (<a href="{{url('/home/use_policy')}}">https://#/use_policy.html</a>)
                     </p>
                 </div>
                 <div class="col-sm-4">
@@ -161,7 +147,7 @@
                     </p>
                     <p>
                         <b>4.2</b>&nbsp;&nbsp;&nbsp;您必须为我们提供一个主要的电子邮件地址，定期检查。所有通知和我们之间的通信将被发送到您提供的电子邮件地址，因此，您需要保持这个地址畅通，如果您的地址更改，请通知我们。如果您的联系和/或帐单信息发生变化，您应该通知我们，以便我们可以更新您的帐户。它确保我们的域名<a
-                                href="index.html">https://ShadowsocksR.com</a>不包括在由你或你的邮件提供商使用任何垃圾邮件阻止列表之内。
+                                href="{{url('/home/index')}}">https://ShadowsocksR.com</a>不包括在由你或你的邮件提供商使用任何垃圾邮件阻止列表之内。
                     <p>
                         <b>4.3</b>&nbsp;&nbsp;&nbsp;提供任何种类的错误或不准确的联系信息，依据本协议3中相关条款，可能会导致你的帐户被终止。
                     </p>
@@ -218,7 +204,7 @@
                     <h2>6. 内容及可接受使用政策</h2>
                     <p>
                         <b>6.1</b>&nbsp;&nbsp;&nbsp;您同意遵守ShadowsocksR的可接受使用策略，它可以通过访问ShadowsocksR的网站<a
-                                href="use_policy.html">https://#/use_policy.html</a>被找到。其中部分并入本文作为参考并作为本文不可或缺的一部分。ShadowsocksR在网站上张贴修改后的政策，并保留在任何时间修改可接受使用策略的权力。您同意定期访问ShadowsocksR网站并查看最新的可接受使用策略，在任何可接受使用策略更改日志后继续使用ShadowsocksR服务，则代表您接受新的可接受使用策略并受到它的约束。如果最终用户的行为违反服务条款或者可接受使用策略，ShadowsocksR将有权在任何时间中止您对服务的访问。
+                                href="{{url('/home/use_policy')}}">https://#/use_policy.html</a>被找到。其中部分并入本文作为参考并作为本文不可或缺的一部分。ShadowsocksR在网站上张贴修改后的政策，并保留在任何时间修改可接受使用策略的权力。您同意定期访问ShadowsocksR网站并查看最新的可接受使用策略，在任何可接受使用策略更改日志后继续使用ShadowsocksR服务，则代表您接受新的可接受使用策略并受到它的约束。如果最终用户的行为违反服务条款或者可接受使用策略，ShadowsocksR将有权在任何时间中止您对服务的访问。
                     </p>
                     <p>
                         <b>6.2</b>&nbsp;&nbsp;&nbsp;ShadowsocksR不会主动侦测最终用户在ShadowsocksR服务上所使用的内容，虽然ShadowsocksR可以自行决定，以技术手段监测客户在ShadowsocksR网络上所使用的服务，并在法律、法规或政府组织要求的情况下透露您账户的任何必要信息。ShadowsocksR将调查侵犯第三方权利或违反可接受使用策略的投诉。ShadowsocksR将试图减少对ShadowsocksR服务的滥用。ShadowsocksR将有权与执法机关合作，并保留通知该机关的权力，如果执法机关怀疑您和您的最终用户进行违反的您和服务器所在地区法律、法规和相关政策的活动。本节包含的所有条款，是为了授予第三方权利，但没有第三方有权强制执行本协议的任何条款。

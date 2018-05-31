@@ -19,7 +19,7 @@
             <div class="services">
                 <div class="row">
                     <div class="col-sm-4">
-                        <a class="service" href="/features.html">
+                        <a class="service" href="{{url('/home/features')}}">
                             <i class="service-icon service-icon-dedicated image-shadow-sm animate zoomIn"></i>
                             <div class="service-body">
                                 <h3>免费体验</h3>
@@ -30,7 +30,7 @@
                         <!--/ .service -->
                     </div>
                     <div class="col-sm-4">
-                        <a class="service" href="/datacenter.html">
+                        <a class="service" href="{{url('/home/datacenter')}}">
                             <i class="service-icon service-icon-compute image-shadow-sm animate zoomIn"></i>
                             <div class="service-body">
                                 <h3>按月计费</h3>
@@ -41,7 +41,7 @@
                         <!--/ .service -->
                     </div>
                     <div class="col-sm-4">
-                        <a class="service" href="/panel.html">
+                        <a class="service" href="{{url('/home/panel')}}">
                             <i class="service-icon service-icon-storage image-shadow-sm animate zoomIn"></i>
                             <div class="service-body">
                                 <h3>按量计费</h3>
@@ -100,7 +100,7 @@
                     <div class="map"></div>
                 </div>
                 <div class="actions text-center">
-                    <a class="btn btn-lg btn-light btn-outline" href="datacenter.html">数据中心及线路更多信息<i class="zmdi zmdi-long-arrow-right"></i></a>
+                    <a class="btn btn-lg btn-light btn-outline" href="{{url('/home/datacenter')}}">数据中心及线路更多信息<i class="zmdi zmdi-long-arrow-right"></i></a>
                 </div>
             </div>
         </div>

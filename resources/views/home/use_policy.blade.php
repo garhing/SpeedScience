@@ -8,20 +8,7 @@
                 <h1 class="slogan-title">条约</h1>
             </div>
             <div class="banner-tabs tabs-responsive">
-                <div class="tabs-container">
-                    <ul class="nav nav-tabs text-center">
-                        <li><a href="tos.html">服务条款</a></li>
-                        <li><a href="privacy.html">隐私政策</a></li>
-                        <li class="active"><a href="use_policy.html">使用政策</a></li>
-                        <li><a href="sla_full.html">服务等级协议</a></li>
-                    </ul>
-                    <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab">
-                        <i class="zmdi zmdi-chevron-left"></i>
-                    </button>
-                    <button class="btn btn-icon btn-link btn-next" type="button" data-click="next-tab">
-                        <i class="zmdi zmdi-chevron-right"></i>
-                    </button>
-                </div>
+                @include('home.subpage.tos_sub')
             </div>
         </div>
     </div>

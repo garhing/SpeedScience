@@ -17,11 +17,11 @@
                         <span><i class="service-icon service-icon-compute image-shadow-sm"></i><span>标准加速</span></span>
                     </li>
                     <li>
-                        <a href="game_pricing.html"><i
+                        <a href="{{url('/home/game_pricing')}}"><i
                                     class="service-icon service-icon-storage image-shadow-sm"></i><span>游戏加速</span></a>
                     </li>
                     <li>
-                        <a href="host_pricing.html"><i
+                        <a href="{{url('/home/host_pricing')}}"><i
                                     class="service-icon service-icon-dedicated image-shadow-sm"></i><span>Linux主机</span></a>
                     </li>
                 </ul>
@@ -209,7 +209,7 @@
             <p class="section-desc">ShadowsocksR测试标准服务与同类型供应商速度。查看为何ShadowsocksR加速服务生而不同！</p>
 
             <div class="actions">
-                <a class="btn btn-light btn-outline btn-lg" href="speedtest.html">查看测试结果<i
+                <a class="btn btn-light btn-outline btn-lg" href="{{url('/home/speedtest')}}">查看测试结果<i
                             class="zmdi zmdi-long-arrow-right"></i></a>
             </div>
         </div>
@@ -281,7 +281,7 @@
             </div>
             <!-- /.features -->
             <div class="actions">
-                <a class="btn btn-lg btn-primary btn-outline" href="features.html">查看所有特性<i
+                <a class="btn btn-lg btn-primary btn-outline" href="{{url('/home/features')}}">查看所有特性<i
                             class="zmdi zmdi-long-arrow-right"></i></a>
             </div>
         </div>

@@ -115,7 +115,7 @@
             </div>
             <div class="section-row text-center">
                 <h2 class="section-title">有任何问题？我们随时准备协助您！</h2>
-                <div class="actions"><a class="btn btn-lg btn-primary btn-outline" href="contact.html">联系我们<i
+                <div class="actions"><a class="btn btn-lg btn-primary btn-outline" href="{{url('/home/contact')}}">联系我们<i
                                 class="zmdi zmdi-long-arrow-right"></i></a></div>
             </div>
         </div>

@@ -8,7 +8,7 @@
                         <h1 class="slogan-title">遍布全球的10+个加速数据中心</h1>
                         <h2 class="slogan-desc">
                             ShadowsocksR拥有分布在全球九大国家的10+个数据中心，为用户提供多方位需求。无论是限定IP的游戏，还是限定美区的Spotify，使用概念加速服务，均可完美支持！</h2>
-                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="speedtest.html">查看ShadowsocksR加速速度评测<i
+                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/home/speedtest')}}">查看ShadowsocksR加速速度评测<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
                     </div>
                 </div>
@@ -19,11 +19,11 @@
             <div class="banner-tabs tabs-responsive">
                 <div class="tabs-container">
                     <ul class="nav nav-tabs">
-                        <li><a href="features.html">概念加速</a></li>
-                        <li class="active"><a href="datacenter.html">数据中心</a></li>
-                        <li><a href="panel.html">控制面板</a></li>
-                        <li><a href="client.html">推荐软件</a></li>
-                        <li><a href="game_pricing.html">游戏加速</a></li>
+                        <li><a href="{{url('/home/features')}}">概念加速</a></li>
+                        <li class="active"><a href="{{url('/home/datacenter')}}">数据中心</a></li>
+                        <li><a href="{{url('/home/panel')}}">控制面板</a></li>
+                        <li><a href="{{url('/home/client')}}">推荐软件</a></li>
+                        <li><a href="{{url('/home/game_pricing')}}">游戏加速</a></li>
                     </ul>
                     <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab"><i
                                 class="zmdi zmdi-chevron-left"></i></button>
@@ -97,7 +97,7 @@
             <p class="section-desc">为您的所有设备添加概念加速高速服务，立即开启无障碍的网络体验！</p>
 
             <div class="actions">
-                <a class="btn btn-light btn-outline btn-lg" href="speedtest.html">查看测速结果<i
+                <a class="btn btn-light btn-outline btn-lg" href="{{url('/home/speedtest')}}">查看测速结果<i
                             class="zmdi zmdi-long-arrow-right"></i></a>
             </div>
         </div>

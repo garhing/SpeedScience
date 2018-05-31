@@ -12,8 +12,8 @@
                 <div class="tabs-container">
                     <ul class="nav nav-tabs text-center">
                         <li class="active"><a href="about/index.html">关于我们</a></li>
-                        <li><a href="sla.html">服务协议</a></li>
-                        <li><a href="contact.html">联系我们</a></li>
+                        <li><a href="{{url('/home/sla')}}">服务协议</a></li>
+                        <li><a href="{{url('/home/contact')}}">联系我们</a></li>
                     </ul>
                     <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab"><i
                                 class="zmdi zmdi-chevron-left"></i></button>
@@ -239,11 +239,11 @@
         <div class="container">
             <h2 class="section-title text-center">我们的合作伙伴</h2>
             <div class="partner-logos">
-                <div><img src="img/services/telecom.svg" alt="Telecom"/></div>
-                <div><img src="img/services/alicloud.svg" alt="AliCloud"/></div>
-                <div><img src="img/services/azure.svg" alt="Azure"/></div>
-                <div><img src="img/services/linode.svg" alt="Linode"/></div>
-                <div><img src="img/services/idcf.svg" alt="IDCF"/></div>
+                <div><img src="/home/img/services/telecom.svg" alt="Telecom"/></div>
+                <div><img src="/home/img/services/alicloud.svg" alt="AliCloud"/></div>
+                <div><img src="/home/img/services/azure.svg" alt="Azure"/></div>
+                <div><img src="/home/img/services/linode.svg" alt="Linode"/></div>
+                <div><img src="/home/img/services/idcf.svg" alt="IDCF"/></div>
             </div>
         </div>
     </div>

@@ -120,6 +120,11 @@ class HomeController extends Controller
         $view = [];
         return Response::view('home/aff', $view);
     }
+    public function tos(Request $request)
+    {
+        $view = [];
+        return Response::view('home/tos', $view);
+    }
     public function use_policy(Request $request)
     {
         $view = [];

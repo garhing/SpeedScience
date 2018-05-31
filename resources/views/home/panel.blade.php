@@ -9,7 +9,7 @@
                     <div class="banner-slogan banner-slogan-hero">
                         <h1 class="slogan-title">简单面板，方便易用</h1>
                         <h2 class="slogan-desc">查看及管理连接信息及查看流量使用状况。</h2>
-                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="pricing.html">立即购买概念加速服务<i
+                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/home/pricing')}}">立即购买概念加速服务<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
                     </div>
                 </div>
@@ -22,11 +22,11 @@
             <div class="banner-tabs tabs-responsive">
                 <div class="tabs-container">
                     <ul class="nav nav-tabs">
-                        <li><a href="features.html">概念加速</a></li>
-                        <li><a href="datacenter.html">数据中心</a></li>
-                        <li class="active"><a href="panel.html">控制面板</a></li>
-                        <li><a href="client.html">推荐软件</a></li>
-                        <li><a href="game_pricing.html">游戏加速</a></li>
+                        <li><a href="{{url('/home/features')}}">概念加速</a></li>
+                        <li><a href="{{url('/home/datacenter')}}">数据中心</a></li>
+                        <li class="active"><a href="{{url('/home/panel')}}">控制面板</a></li>
+                        <li><a href="{{url('/home/client')}}">推荐软件</a></li>
+                        <li><a href="{{url('/home/game_pricing')}}">游戏加速</a></li>
                     </ul>
                     <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab"><i
                                 class="zmdi zmdi-chevron-left"></i></button>

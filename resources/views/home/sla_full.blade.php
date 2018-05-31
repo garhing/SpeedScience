@@ -7,20 +7,7 @@
                 <h1 class="slogan-title">条约</h1>
             </div>
             <div class="banner-tabs tabs-responsive">
-                <div class="tabs-container">
-                    <ul class="nav nav-tabs text-center">
-                        <li><a href="tos.html">服务条款</a></li>
-                        <li><a href="privacy.html">隐私政策</a></li>
-                        <li><a href="use_policy.html">使用政策</a></li>
-                        <li class="active"><a href="sla_full.html">服务等级协议</a></li>
-                    </ul>
-                    <button class="btn btn-icon btn-link btn-prev" type="button" data-click="prev-tab">
-                        <i class="zmdi zmdi-chevron-left"></i>
-                    </button>
-                    <button class="btn btn-icon btn-link btn-next" type="button" data-click="next-tab">
-                        <i class="zmdi zmdi-chevron-right"></i>
-                    </button>
-                </div>
+                @include('home.subpage.tos_sub')
             </div>
         </div>
     </div>
@@ -34,7 +21,7 @@
             <div class="section-row row">
                 <div class="col-sm-8">
                     <h2>100%的全网正常运行时间保证</h2>
-                    ShadowsocksR提供基于网络和节点主机100%的正常运行时间保证，总的来说，这些保证是作为<a href="tos.html">服务条款</a>的一个补充。阁下成为ShadowsocksR的客户时，这些条款就将自动生效，并成为ShadowsocksR整个服务周期中不可或缺的一部分。<br/>
+                    ShadowsocksR提供基于网络和节点主机100%的正常运行时间保证，总的来说，这些保证是作为<a href="{{url('/home/tos')}}">服务条款</a>的一个补充。阁下成为ShadowsocksR的客户时，这些条款就将自动生效，并成为ShadowsocksR整个服务周期中不可或缺的一部分。<br/>
                     <br/> 这些保证适用于阁下的每一个产品 / 服务，而不是适用于所有账单。以下情况不适用于该SLA。
                     <br/>1) 阁下所购买服务的正常例行维护，我们会提前通知阁下，并通知调整流量策略和DNS策略临时迁移阁下的服务到可以正常使用的部分。但由于阁下网络服务提供商造成的调整延迟；
                     <br/>2) ShadowsocksR提供的API、控制面板和中继服务器、路由器插件等；
@@ -133,7 +120,7 @@
                     <br/>
                     阁下可以通过工单发起这样的一个补偿请求，阁下必须要提供一个ShadowsocksR的产品编号，并且该工单中要描述服务中断的问题和发生时间，中断时长（正如前文所述）。这将帮助ShadowsocksR判断是否发生了对应的服务中断问题。如果ShadowsocksR主动意识到了服务中断问题，阁下仍然可以通过工单来要求“补偿时间”的补偿，以便ShadowsocksR知道阁下发生了服务中断的问题。值得注意的是，阁下必须拥有受到SLA保证的服务，才能向ShadowsocksR请求“补偿时间”补偿。
                     <br/>
-                    <br/> 阁下必须同意并承认其他所有条款、限制、免责声明、例外情况和 <a href="tos.html">服务条款</a> 才能适用于本服务等级协议。
+                    <br/> 阁下必须同意并承认其他所有条款、限制、免责声明、例外情况和 <a href="{{url('/home/tos')}}">服务条款</a> 才能适用于本服务等级协议。
                 </div>
                 <div class="col-sm-4">
                     <p class="h6 m-t-h2">更简单地说：</p>
