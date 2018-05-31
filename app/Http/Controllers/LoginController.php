@@ -98,11 +98,11 @@ class LoginController extends Controller
             $request->session()->put('user', $userInfo->toArray());
 
             // 根据权限跳转
-            if ($user->is_admin) {
-                return Redirect::to('admin')->cookie('remember', $remember_token, 36000);
-            }
+//            if ($user->is_admin) {
+//                return Redirect::to('admin')->cookie('remember', $remember_token, 36000);
+//            }
 
-            return Redirect::to('user')->cookie('remember', $remember_token, 36000);
+            return Redirect::to('/')->cookie('remember', $remember_token, 36000);
         } else {
             if ($request->cookie("remember")) {
                 $u = User::query()->where("remember_token", $request->cookie("remember"))->first();
@@ -129,7 +129,7 @@ class LoginController extends Controller
     {
         $request->session()->flush();
 
-        return Redirect::to('login')->cookie('remember', "", 36000);
+        return Redirect::to('/')->cookie('remember', "", 36000);
     }
 
 }

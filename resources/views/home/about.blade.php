@@ -236,12 +236,13 @@
             </div>
         </div>
     </div>
+    <a name="contact_us"></a>
     <!-- /.page-section -->
     <div class="page-section section-center">
         <div class="container">
             <h2 class="section-title text-center">希望寻求合作或是定制服务？</h2>
             <div class="partner-logos">
-                希望寻求合作或是定制服务？请通过 <a href="{{url('/user/ticketList')}}">工单系统</a> 联系我们
+                希望寻求合作或是定制服务？请通过 <a href="{{url('/user/ticketList')}}">工单系统</a> 联系我们或者QQ交流群：<a>674788156 </a>
             </div>
         </div>
     </div>

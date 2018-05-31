@@ -37,6 +37,24 @@
             font-weight: normal;
             font-style: normal;
         }
+        .navbar-main > li > a.user_font{
+            color: #fff;
+            font-weight: bold;
+        }
+        @media (max-width: 1199px){
+            .navbar-main > li > a.user_font{
+                color: #fff;
+                font-weight: bold;
+            }
+        }
+        @media (max-width: 767px){
+            .navbar-main > li > a.user_font{
+                color: #363b40;
+                font-weight: bold;
+            }
+        }
+
+
     </style>
     <!--[if lt IE 9]>
     <script src="/home/js/selectivizr-min.js"></script>
@@ -90,8 +108,8 @@
                         </li>
                         <li><a href="{{url('/home/aff')}}">推介计划</a></li>
                         @if(Session::get('user'))
-                            <li><a href="{{url('/user/index')}}" style="color: #fff;font-weight: bold;">我的主页</a></li>
-                            <li><a href="{{url('/logout')}}" style="color: #fff;font-weight: bold;">退出登录</a></li>
+                            <li><a href="{{url('/user/index')}}" class="user_font">我的主页</a></li>
+                            <li><a href="{{url('/logout')}}"class="user_font">退出登录</a></li>
                         @endif
                     </ul>
                     @if(!Session::get('user'))
@@ -115,7 +133,7 @@
 <!-- /.page-section -->
     <div class="page-section section-blue section-center">
         <div class="container">
-            <h2 align="center" class="section-title">使用{{$app_config['website_name']}}，开启全新科研体验！</h2>
+            <h2 align="center" class="section-title">立即加入{{$app_config['website_name']}} 开启全新科研体验！</h2>
             <a href="{{url('/register')}}">
                 <button class="btn btn-primary-light btn-lg" type="submit">立即注册</button>
             </a>
@@ -133,8 +151,7 @@
                             <li><a href="{{url('/home/features')}}">概念加速</a></li>
                             <li><a href="{{url('/home/datacenter')}}">数据中心</a></li>
                             <li><a href="{{url('/home/game_pricing')}}">游戏加速</a></li>
-                            <li><a href="{{url('/home/panel')}}">控制面板</a></li>
-                            <li><a href="{{url('/home/sla')}}">质量保证</a></li>
+
                         </ul>
                     </div>
                     <div class="col-xs-3">
@@ -149,17 +166,15 @@
                         <h4>关于与优惠</h4>
                         <ul>
                             <li><a href="{{url('/home/about')}}">关于我们</a></li>
-                            <li><a href="{{url('/home/contact')}}">联系我们</a></li>
                             <li><a href="{{url('/home/coupons')}}">优惠代码</a></li>
                             <li><a href=""{{url('/home/aff')}}>推介计划</a></li>
                         </ul>
                     </div>
                     <div class="col-xs-3">
-                        <h4>软件与教程</h4>
+                        <h4>其他特性</h4>
                         <ul>
-                            <li><a href="{{url('/home/client')}}">软件下载</a></li>
-                            <li><a href="{{url('/home/speedtest')}}">速度测试</a></li>
-                            <li><a href="{{url('/home/status')}}">线路状态</a></li>
+                            <li><a href="{{url('/home/panel')}}">控制面板</a></li>
+                            <li><a href="{{url('/home/sla')}}">质量保证</a></li>
                         </ul>
                     </div>
                 </div>
@@ -169,7 +184,7 @@
             <div class="container text-center">
                 <div class="row">
                     <div class="col-md-12">
-                        <p class="footer-copyright"> Copyright © 2014-2020 {{$app_config['website_name']}}. QQ交流群：<a>674788156 </a>
+                        <p class="footer-copyright"> 京ICP备17039089号  ©2014-2020 <a href="{{url('/')}}">{{$app_config['website_name']}}</a>.
                         </p>
                     </div>
                 </div>
