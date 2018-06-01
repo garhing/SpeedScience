@@ -16,19 +16,28 @@
     <meta content="" name="author"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta name="keywords"
-          content="Shadowsocks,Surge,Shadowrocket,Youtube,Twitter,Facebook,Telegram,Instagram等app及网站加速,GTA5,战地,Steam等游戏加速">
-    <meta name="description" content="Youtube,Twitter,Facebook,Telegram,Instagram等app及网站加速,GTA5,战地,Steam等游戏加速">
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+          content="Shadowsocks,Surge,Shadowrocket,Youtube,Twitter,Facebook,Telegram,Instagram等app及网站加速,GTA5,战地,Steam等游戏加速"/>
+    <meta name="description" content="Youtube,Twitter,Facebook,Telegram,Instagram等app及网站加速,GTA5,战地,Steam等游戏加速"/>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <meta http-equiv="Content-Language" content="zh"/>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <!-- Fix chrome language detection -->
 
     <!-- Styles -->
-    <link href="/home/css/core.css" rel="stylesheet">
-    <link href="/home/css/main.css" rel="stylesheet">
-    <link href="/home/css/panel.css" rel="stylesheet">
-    <link href="/home/css/global.css" rel="stylesheet">
-    <link href="/home/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/home/css/core.css" rel="stylesheet"/>
+    <link href="/home/css/main.css" rel="stylesheet"/>
+    <link href="/home/css/panel.css" rel="stylesheet"/>
+    <link href="/home/css/global.css" rel="stylesheet"/>
+    <link href="/home/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="{{asset('favicon.png')}}" rel="shortcut icon" />
+
+
+    <!--[if lt IE 9]>
+    <script src="/home/js/selectivizr-min.js"></script>
+    <script src="/home/js/html5shiv.min.js"></script>
+    <script src="/home/js/respond.min.js"></script>
+    <![endif]-->
+    @yield('css')
     <style>
         @font-face {
             font-family: 'icons';
@@ -37,31 +46,26 @@
             font-weight: normal;
             font-style: normal;
         }
-        .navbar-main > li > a.user_font{
+
+        .navbar-main > li > a.user_font {
             color: #fff;
             font-weight: bold;
         }
-        @media (max-width: 1199px){
-            .navbar-main > li > a.user_font{
+
+        @media (max-width: 1199px) {
+            .navbar-main > li > a.user_font {
                 color: #fff;
                 font-weight: bold;
             }
         }
-        @media (max-width: 767px){
-            .navbar-main > li > a.user_font{
+
+        @media (max-width: 767px) {
+            .navbar-main > li > a.user_font {
                 color: #363b40;
                 font-weight: bold;
             }
         }
-
-
     </style>
-    <!--[if lt IE 9]>
-    <script src="/home/js/selectivizr-min.js"></script>
-    <script src="/home/js/html5shiv.min.js"></script>
-    <script src="/home/js/respond.min.js"></script>
-    <![endif]-->
-    @yield('css')
 </head>
 
 <body>
@@ -109,7 +113,7 @@
                         <li><a href="{{url('/home/aff')}}">推介计划</a></li>
                         @if(Session::get('user'))
                             <li><a href="{{url('/user/index')}}" class="user_font">我的主页</a></li>
-                            <li><a href="{{url('/logout')}}"class="user_font">退出登录</a></li>
+                            <li><a href="{{url('/logout')}}" class="user_font">退出登录</a></li>
                         @endif
                     </ul>
                     @if(!Session::get('user'))
@@ -184,7 +188,8 @@
             <div class="container text-center">
                 <div class="row">
                     <div class="col-md-12">
-                        <p class="footer-copyright"> 京ICP备17039089号  ©2014-2020 <a href="{{url('/')}}">{{$app_config['website_name']}}</a>.
+                        <p class="footer-copyright"> 京ICP备17039089号 ©2014-2020 <a
+                                    href="{{url('/')}}">{{$app_config['website_name']}}</a>.
                         </p>
                     </div>
                 </div>

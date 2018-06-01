@@ -8,7 +8,9 @@
                     <div class="banner-slogan banner-slogan-hero">
                         <h1 class="slogan-title">科研网络加速平台<br>为您的科研注入全新力量</h1>
                         <h2 class="slogan-desc">
-                            {{$app_config['website_name']}}拥有分布在全球九大国家的10+个数据中心，为科学研究者提供多方位需求。无论是谷歌学术，还是ScienceDirect，使用{{$app_config['website_name']}}加速服务，均可完美支持！</h2>
+                            {{$app_config['website_name']}}
+                            拥有分布在全球九大国家的10+个数据中心，为科学研究者提供多方位需求。无论是谷歌学术，还是ScienceDirect，使用{{$app_config['website_name']}}
+                            加速服务，均可完美支持！</h2>
                         <div class="actions"><a class="btn btn-lg btn-primary-light"
                                                 href="{{url('/home/features')}}">查看{{$app_config['website_name']}}产品特性<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
@@ -18,7 +20,7 @@
                     <div class="banner-image"><span class="image image-bird-location image-shadow"></span></div>
                 </div>
             </div>
-            <div style="padding-bottom: 20px;"> </div>
+            <div style="padding-bottom: 20px;"></div>
         </div>
     </div>
     <div class="page-section section-center" style="padding-top: 20px;">

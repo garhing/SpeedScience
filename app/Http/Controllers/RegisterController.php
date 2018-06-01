@@ -38,6 +38,10 @@ class RegisterController extends Controller
             $register_token = $request->get('register_token');
             $aff = intval($request->get('aff', 0));
 
+            //取出之前存贮的推广人链接，但优先级较低
+            $his_aff_id = $request->cookie('aff_id',0);
+            $aff  = $aff ? $aff : $his_aff_id;
+
             // 防止重复提交
             $session_register_token = $request->session()->get('register_token');
             if (empty($register_token) || $register_token != $session_register_token) {

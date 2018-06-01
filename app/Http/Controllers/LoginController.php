@@ -110,10 +110,10 @@ class LoginController extends Controller
                     $request->session()->put('user', $u->toArray());
 
                     if ($u->is_admin) {
-                        return Redirect::to('admin');
+                        return Redirect::to('/');
                     }
 
-                    return Redirect::to('user');
+                    return Redirect::to('user/index');
                 }
             }
 

@@ -31,7 +31,7 @@
     <link href="/assets/layouts/layout4/css/custom.min.css" rel="stylesheet" type="text/css" />
     <link href="/css/project.css" rel="stylesheet" type="text/css" />
     <!-- END THEME LAYOUT STYLES -->
-    <link rel="shortcut icon" href="{{asset('favicon.ico')}}" />
+    <link href="{{asset('favicon.png')}}" rel="shortcut icon" />
 </head>
 
 <body class="page-container-bg-solid page-header-fixed page-sidebar-closed-hide-logo">

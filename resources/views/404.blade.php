@@ -4,7 +4,6 @@
 <!--[if !IE]><!-->
 <html lang="{{app()->getLocale()}}">
 <!--<![endif]-->
-<!-- BEGIN HEAD -->
 
 <head>
     <meta charset="utf-8" />
@@ -28,7 +27,7 @@
     <!-- END PAGE LEVEL STYLES -->
     <!-- BEGIN THEME LAYOUT STYLES -->
     <!-- END THEME LAYOUT STYLES -->
-    <link rel="shortcut icon" href="{{asset('favicon.ico')}}" /> </head>
+    <link href="{{asset('favicon.png')}}" rel="shortcut icon" /> </head>
 <!-- END HEAD -->
 
 <body class="page-500-full-page">

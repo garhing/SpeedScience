@@ -3,7 +3,7 @@
 Route::get('s/{code}', 'SubscribeController@index'); // 节点订阅地址
 
 
-Route::group(['middleware' => ['forbidden']], function () {
+Route::group(['middleware' => ['forbidden','aff']], function () {
     Route::any('/', 'HomeController@index'); // 用户首页
     Route::any('home/index', 'HomeController@index'); // 用户首页
     Route::any('home/features', 'HomeController@features');
@@ -23,7 +23,7 @@ Route::group(['middleware' => ['forbidden']], function () {
     Route::any('home/use_policy', 'HomeController@use_policy');
 });
 
-Route::group(['middleware' => ['forbidden']], function () {
+Route::group(['middleware' => ['forbidden','aff']], function () {
     Route::get('lang/{locale}', 'UserController@switchLang'); // 语言切换
     Route::any('login', 'LoginController@index'); // 登录
     Route::get('logout', 'LoginController@logout'); // 退出

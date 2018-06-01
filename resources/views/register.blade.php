@@ -27,7 +27,7 @@
     <!-- END PAGE LEVEL STYLES -->
     <!-- BEGIN THEME LAYOUT STYLES -->
     <!-- END THEME LAYOUT STYLES -->
-    <link rel="shortcut icon" href="{{asset('favicon.ico')}}" />
+    <link href="{{asset('favicon.png')}}" rel="shortcut icon" />
 </head>
 
 <body class=" login">
