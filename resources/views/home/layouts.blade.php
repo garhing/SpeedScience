@@ -171,7 +171,7 @@
                         <ul>
                             <li><a href="{{url('/home/about')}}">关于我们</a></li>
                             <li><a href="{{url('/home/coupons')}}">优惠代码</a></li>
-                            <li><a href=""{{url('/home/aff')}}>推介计划</a></li>
+                            <li><a href="{{url('/home/aff')}}">推介计划</a></li>
                         </ul>
                     </div>
                     <div class="col-xs-3">

@@ -9,13 +9,13 @@
     <div class="page-section">
         <div class="container">
 
-            <p>最后更新：2016年6月12日</p>
+            <p>最后更新：2018年4月12日</p>
 
             <div class="section-row row">
                 <div class="col-sm-8">
 
                     <p>
-                        该服务条款是约束由我的SS俱乐部提供(以下简称“{{$app_config['website_name']}}”) 的所有产品和服务，以下是条款和条件：
+                        该服务条款是约束由{{$app_config['website_name']}}提供的所有产品和服务，以下是条款和条件：
                     </p>
                     <br/>
                     <p>
@@ -23,7 +23,7 @@
                     </p>
                     <ol class="standard-ol">
                         <li>
-                            {{$app_config['website_name']}} Group China是网站<a href="{{url('/home/index')}}"> {{$app_config['website_url']}}</a>（下称“{{$app_config['website_name']}}”或“本站”）的拥有者及服务提供商。{{$app_config['website_name']}}提供的是网络加速服务。
+                            {{$app_config['website_name']}}<a href="{{url('/home/index')}}"> {{url('/')}}</a>（下称“{{$app_config['website_name']}}”或“本站”）的拥有者及服务提供商。{{$app_config['website_name']}}提供的是网络加速服务。
                             就本协议的目的，以下提及的产品或服务，均称作“产品”或“服务”。
                             <br/>
                             <br/> 当第一人称代词（{{$app_config['website_name']}}，我们，我们的等）在本协议中使用，均指{{$app_config['website_name']}} Group
@@ -137,7 +137,7 @@
                     </p>
                     <p>
                         <b>4.2</b>&nbsp;&nbsp;&nbsp;您必须为我们提供一个主要的电子邮件地址，定期检查。所有通知和我们之间的通信将被发送到您提供的电子邮件地址，因此，您需要保持这个地址畅通，如果您的地址更改，请通知我们。如果您的联系和/或帐单信息发生变化，您应该通知我们，以便我们可以更新您的帐户。它确保我们的域名<a
-                                href="{{url('/home/index')}}">https://{{$app_config['website_name']}}.com</a>不包括在由你或你的邮件提供商使用任何垃圾邮件阻止列表之内。
+                                href="{{url('/')}}"> {{url('/')}} </a>不包括在由你或你的邮件提供商使用任何垃圾邮件阻止列表之内。
                     <p>
                         <b>4.3</b>&nbsp;&nbsp;&nbsp;提供任何种类的错误或不准确的联系信息，依据本协议3中相关条款，可能会导致你的帐户被终止。
                     </p>
@@ -194,7 +194,7 @@
                     <h2>6. 内容及可接受使用政策</h2>
                     <p>
                         <b>6.1</b>&nbsp;&nbsp;&nbsp;您同意遵守{{$app_config['website_name']}}的可接受使用策略，它可以通过访问{{$app_config['website_name']}}的网站<a
-                                href="{{url('/home/use_policy')}}"> {{url('/home/use_policy')}} </a>被找到。其中部分并入本文作为参考并作为本文不可或缺的一部分。{{$app_config['website_name']}}在网站上张贴修改后的政策，并保留在任何时间修改可接受使用策略的权力。您同意定期访问{{$app_config['website_name']}}网站并查看最新的可接受使用策略，在任何可接受使用策略更改日志后继续使用{{$app_config['website_name']}}服务，则代表您接受新的可接受使用策略并受到它的约束。如果最终用户的行为违反服务条款或者可接受使用策略，{{$app_config['website_name']}}将有权在任何时间中止您对服务的访问。
+                                href="{{url('/home/use_policy')}}"> 使用政策 </a>中被找到。其中部分并入本文作为参考并作为本文不可或缺的一部分。{{$app_config['website_name']}}在网站上张贴修改后的政策，并保留在任何时间修改可接受使用策略的权力。您同意定期访问{{$app_config['website_name']}}网站并查看最新的可接受使用策略，在任何可接受使用策略更改日志后继续使用{{$app_config['website_name']}}服务，则代表您接受新的可接受使用策略并受到它的约束。如果最终用户的行为违反服务条款或者可接受使用策略，{{$app_config['website_name']}}将有权在任何时间中止您对服务的访问。
                     </p>
                     <p>
                         <b>6.2</b>&nbsp;&nbsp;&nbsp;{{$app_config['website_name']}}不会主动侦测最终用户在{{$app_config['website_name']}}服务上所使用的内容，虽然{{$app_config['website_name']}}可以自行决定，以技术手段监测客户在{{$app_config['website_name']}}网络上所使用的服务，并在法律、法规或政府组织要求的情况下透露您账户的任何必要信息。{{$app_config['website_name']}}将调查侵犯第三方权利或违反可接受使用策略的投诉。{{$app_config['website_name']}}将试图减少对{{$app_config['website_name']}}服务的滥用。{{$app_config['website_name']}}将有权与执法机关合作，并保留通知该机关的权力，如果执法机关怀疑您和您的最终用户进行违反的您和服务器所在地区法律、法规和相关政策的活动。本节包含的所有条款，是为了授予第三方权利，但没有第三方有权强制执行本协议的任何条款。
@@ -210,7 +210,7 @@
                     </p>
                     <p>
                         <b>6.6</b>&nbsp;&nbsp;&nbsp;如果您怀疑{{$app_config['website_name']}}网络被托管了儿童色情内容，我们鼓励您立即向{{$app_config['website_name']}}的滥用投诉邮箱
-                        <a href="mailto:abuse@#.com">abuse@#.com</a>或者通过客户中心的工单系统向滥用投诉部门投诉，并包括客户的文件名或URL（或其他位置点）、受害者（如果知道的话）、出生日期、生产日期以及有关可疑图像（多个）和其他任何信息。或者，您可以使用CyberTipline报告可疑的儿童色情制品，涉及不由{{$app_config['website_name']}}托管的儿童色情内容应该直接向执法部门或者该网站投诉：
+                        <a href="mailto:{{$app_config['crash_warning_email']}}"> {{$app_config['crash_warning_email']}} </a>或者通过客户中心的工单系统向滥用投诉部门投诉，并包括客户的文件名或URL（或其他位置点）、受害者（如果知道的话）、出生日期、生产日期以及有关可疑图像（多个）和其他任何信息。或者，您可以使用CyberTipline报告可疑的儿童色情制品，涉及不由{{$app_config['website_name']}}托管的儿童色情内容应该直接向执法部门或者该网站投诉：
                         <a href="https://www.asacp.org/index.php?content=report">https://www.asacp.org/index.php?content=report</a>.
                     </p>
                     <p>
@@ -388,7 +388,7 @@
                 <div class="col-sm-8">
                     <h2>12. 价格变化</h2>
                     <p>
-                        您支付的服务在一定时间内不会改变价格。我们保留在任何时候更改{{$app_config['website_name']}}.com的服务价格，恕不另行通知，并保留修改提供给用户的资源数量的权利。此外，如果我们终止，而无需根据该协议第3.2段因本协议，您明白，如果我们同意提供服务给您的未来，你在任何先验项或时间段支付的金额是不是决定性的金额你工资应该我们向您再次提供服务。这是你的责任，检查我们的计划或价格变动的网站如果你想采取哪些可能发生的计划或价格变化的优势。
+                        您支付的服务在一定时间内不会改变价格。我们保留在任何时候更改{{$app_config['website_name']}}服务价格的权利，恕不另行通知，并保留修改提供给用户的资源数量的权利。此外，如果我们终止，而无需根据该协议第3.2段因本协议，您明白，如果我们同意提供服务给您的未来，你在任何先验项或时间段支付的金额是不是决定性的金额你工资应该我们向您再次提供服务。这是你的责任，检查我们的计划或价格变动的网站如果你想采取哪些可能发生的计划或价格变化的优势。
                         {{$app_config['website_name']}}不会自动更新你的计划。所有的升级或降级将根据您的要求进行，可能包括修改费或要求与我们重新发起服务。
                     </p>
                 </div>

@@ -6,9 +6,7 @@
         <div class="container">
             <div class="banner-slogan banner-slogan-hero">
                 <h1 class="slogan-title text-center">关于{{$app_config['website_name']}}</h1>
-                <h2 class="slogan-desc text-center">我们的使命：提供高效、稳定、可靠、安全的概念加速服务。<br/>
-                    {{$app_config['website_name']}}开始于2014年
-                    我们通过数年的加速服务提供经历，从向游戏玩家群体内部提供到向小微企业和外贸公司提供稳定国际互联线路，再到向个人用户提供公有云加速服务，我们经历了很多，并拥有丰富的经验。</h2>
+                <h2 class="slogan-desc text-center">我们的使命：为<b style="color: #FFFFFF;"> 科研人员及高学历人员 </b>提供高效、稳定、可靠、安全的概念加速服务。{{$app_config['website_name']}}开始于2014年，我们通过数年的加速服务提供经历，从向游戏玩家群体内部提供到向小微企业和外贸公司提供稳定国际互联线路，再到向个人用户提供公有云加速服务，我们经历了很多，并拥有丰富的经验。</h2>
             </div>
         </div>
         <!-- /.banner-tabs -->
@@ -75,7 +73,6 @@
                 </div>
             </div>
             <h2 class="section-title">{{$app_config['website_name']}}开始于2014年</h2>
-
             <p class="section-desc m-b-30">
                 我们通过数年的加速服务提供经历，从向游戏玩家群体内部提供到向小微企业和外贸公司提供稳定国际互联线路，再到向个人用户提供公有云加速服务，我们经历了很多，并拥有丰富的经验。</p>
             <ul class="time-line">
@@ -94,7 +91,7 @@
                     <span class="time-pin"></span>
                 </li>
                 <li>
-                    <div class="time-date animate fadeInLeft" data-animation-delay="0.4s">
+                    <div class="time-date animate fadeInLeft textright" data-animation-delay="0.4s">
                         <h3 class="h4">2015年1月</h3>
                         <p>我们向路由器用户提供可运行于路由的SSH管道服务。</p>
                     </div>
@@ -110,7 +107,7 @@
                 <li>
                     <div class="animate fadeInLeft" data-animation-delay="0.8s">
                         <h3 class="h4">2015年6月</h3>
-                        <p>我的SS俱乐部myss.club成立，开始面向公开用户提供加速服务。</p>
+                        <p>我的SS俱乐部成立，开始面向公开用户提供加速服务。</p>
                     </div>
                     <span class="time-pin"></span>
                 </li>
@@ -131,7 +128,7 @@
                 <li>
                     <div class="animate fadeInRight textleft" data-animation-delay="1.4s">
                         <h3 class="h4">2016年1月</h3>
-                        <p>正式启用www.myssvpn.com域名，并为用户提供更佳的线路和体验。</p>
+                        <p>正式启用www.izhangxm.com域名，并为用户提供更佳的线路和体验。</p>
                     </div>
                     <span class="time-pin"></span>
                 </li>
@@ -145,7 +142,7 @@
                 <li>
                     <div class="animate fadeInLeft" data-animation-delay="1.8s">
                         <h3 class="h4">2016年6月</h3>
-                        <p>正式启用www.{{$app_config['website_name']}}.com域名，并对网站进行全新改版。</p>
+                        <p>对网站进行全新改版。</p>
                     </div>
                     <span class="time-pin"></span>
                 </li>

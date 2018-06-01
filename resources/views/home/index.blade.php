@@ -8,9 +8,7 @@
                     <div class="banner-slogan banner-slogan-hero">
                         <h1 class="slogan-title">科研网络加速平台<br>为您的科研注入全新力量</h1>
                         <h2 class="slogan-desc">
-                            {{$app_config['website_name']}}
-                            拥有分布在全球九大国家的10+个数据中心，为科学研究者提供多方位需求。无论是谷歌学术，还是ScienceDirect，使用{{$app_config['website_name']}}
-                            加速服务，均可完美支持！</h2>
+                            {{$app_config['website_name']}}拥有分布在全球九大国家的10+个数据中心，为科学研究者提供多方位需求。无论是谷歌学术，还是ScienceDirect，使用{{$app_config['website_name']}}加速服务，均可完美支持！</h2>
                         <div class="actions"><a class="btn btn-lg btn-primary-light"
                                                 href="{{url('/home/features')}}">查看{{$app_config['website_name']}}产品特性<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
@@ -57,7 +55,7 @@
                             <div class="service-body">
                                 <h3>定制服务</h3>
                                 <p>提供专有线路，为您的需求量身定制，您可以任意选择服务器性能及位置</p>
-                                <span class="btn btn-lg btn-link">大客户专用，具体请咨询</span>
+                                <span class="btn btn-lg btn-link">大客户专用</span>
                             </div>
                         </a>
                         <!--/ .service -->
@@ -122,8 +120,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 text-center">
-                    <h2 class="title-head" style="color:white;">适合哪些人群？</h2>
-                    <p class="desc">{{$app_config['website_name']}}提供分布全球的加速服务，使得您可以在任何地方开展国际贸易、收发Gmail及观看视频。</p>
+                    <h2 class="title-head" style="color:white;">适合哪些人群？在校研究生、硕士及以上学历的人员！</h2>
+                    <p class="desc">{{$app_config['website_name']}}提供分布全球的加速服务，使得您可以在谷歌学术、ScienceDirect、BASE Search、Amazon A9等网站上快速搜索学术论文资料，开展国际学术交流。
+                        <b style="color: #FFFFFF;">请注意，我们只提供给在校研究生或具有硕士及以上学历的人员使用，任何不符合此身份的人员我们有清除其账号的权利，并且没有通知义务。</b></p>
                 </div>
             </div>
             <div class="empty_space" style="height: 30px"></div>
@@ -143,8 +142,7 @@
                 <div class="col-sm-6">
                     <div class="main wow fadeInLeft">
                         <h4 class="title-head" style="color:white;">游戏党、影视党</h4>
-                        <p>在索尼PS4，微软Xbox Live、Steam、Battle.net
-                            和其它游戏私服比如魔兽世界和英雄联盟上享受低延迟的畅玩体验。在线观看高清Youtube、Netflix和Twitch。</p>
+                        <p>在索尼PS4，微软Xbox Live、Steam、Battle.net和其它游戏私服比如魔兽世界和英雄联盟上享受低延迟的畅玩体验</p>
                     </div>
                 </div>
                 <div class="col-sm-6">

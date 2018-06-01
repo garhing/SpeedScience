@@ -6,7 +6,7 @@
                 <div class="col-lg-4 col-md-5 col-sm-6">
                     <div class="banner-slogan banner-slogan-hero">
                         <h1 class="slogan-title">加入{{$app_config['website_name']}}推介计划！</h1>
-                        <h2 class="slogan-desc">通过推荐他人使用{{$app_config['website_name']}}服务来获取10%收益！</h2>
+                        <h2 class="slogan-desc">通过推荐他人使用{{$app_config['website_name']}}服务来获取高达<b>{{$app_config['referral_percent']*100}}%</b> 的收益！通过推介计划，您甚至可以免费使用问道科研服务。</h2>
                         <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/user/referral')}}">现在就加入推介计划！<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
                     </div>
@@ -50,24 +50,26 @@
                 <div class="col-md-5 col-sm-6 col-sm-pull-6">
                     <h2 class="section-title">推介系统如何工作？</h2>
                     <p class="section-desc">
-                        加入推介计划后，您将获得一个独一无二的链接，当您的朋友通过该链接访问{{$app_config['website_name']}}后，将会有一个Cookies存入他们的浏览器。在90天内，只要该用户注册了{{$app_config['website_name']}}并购买了服务，您将可以从中获得10%的推介收益。无论他是否是第一次访问或直接保存{{$app_config['website_name']}}的直达链接。</p>
+                        加入推介计划后，您将获得一个独一无二的链接，当您的朋友通过该链接访问{{$app_config['website_name']}}后，将会有一个Cookies存入他们的浏览器。在90天内，只要该用户注册了{{$app_config['website_name']}}，之后的任何消费您将可以从中获得消费金额<b> {{$app_config['referral_percent']*100}}% </b>的推介收益。无论他是否是第一次访问或直接保存{{$app_config['website_name']}}的直达链接。
+                        请注意，之后若该用户点击了另外的推广链接，您的推广会被覆盖。
+                        <a href="{{url('/user/referral')}}">查看我的推广链接</a></p>
                 </div>
             </div>
             <div class="section-row row">
 
                 <div class="col-sm-4">
                     <h3 class="h4">推介收益将何时到账？</h3>
-                    <p>推介收益的我们将会在用户购买产品服务后立即结算该推介佣金。您始终可以通过用户中心查看到您的推介情况。</p>
+                    <p>推介收益的我们将会在用户购买产品服务后立即记录该推介佣金，您始终可以通过用户中心查看到您的推介情况。如果需要提现该佣金，需要您进一步填写提现申请。<a href="{{url('/user/referral')}}">查看我的提现申请</a></p>
                 </div>
 
                 <div class="col-sm-4">
                     <h3 class="h4">我是否可以提现推介佣金？</h3>
-                    <p>当然可以！您只需要在推介佣金提现的工单中写入您的收款账户（支付宝账户），我们就会在处理中直接将佣金打入您的账户中。</p>
+                    <p>当然可以！您只需要在推介佣金界面发起提现申请，并填写具体到账账户，不论是微信还是支付宝，我们就会在处理中直接将佣金打入您的账户中。<a href="{{url('/user/referral')}}">立即提现</a></p>
                 </div>
 
                 <div class="col-sm-4">
                     <h3 class="h4">推介佣金是否可以用于购买{{$app_config['website_name']}}服务？</h3>
-                    <p>我们默认情况下会提现推介佣金到您的{{$app_config['website_name']}}账户，可以用于购买{{$app_config['website_name']}}的任何服务！通过推介计划，您甚至可以免费使用{{$app_config['website_name']}}服务。</p>
+                    <p>我们也可以提现推介佣金到您的{{$app_config['website_name']}}账户，可以用于购买{{$app_config['website_name']}}的任何服务！通过推介计划，您甚至可以免费使用{{$app_config['website_name']}}服务。</p>
                 </div>
             </div>
         </div>
