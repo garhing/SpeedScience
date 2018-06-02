@@ -12,6 +12,7 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        "payment/*"
+        "payment/*",
+        "pullcode_hook"
     ];
 }
