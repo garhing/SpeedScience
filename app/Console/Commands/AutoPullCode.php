@@ -40,8 +40,7 @@ class AutoPullCode extends Command
         $path = base_path();
         $command = 'cd '.$path.' && '.'git pull origin master';
         $output= shell_exec($command);
-        $this->info($command);
-        $this->info($output);
-        $this->info("Successful!");
+        echo $command.'  ';
+        echo $output;
     }
 }
