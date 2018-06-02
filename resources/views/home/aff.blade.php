@@ -51,7 +51,7 @@
                     <h2 class="section-title">推介系统如何工作？</h2>
                     <p class="section-desc">
                         加入推介计划后，您将获得一个独一无二的链接，当您的朋友通过该链接访问{{$app_config['website_name']}}后，将会有一个Cookies存入他们的浏览器。在90天内，只要该用户注册了{{$app_config['website_name']}}，之后的任何消费您将可以从中获得消费金额<b> {{$app_config['referral_percent']*100}}% </b>的推介收益。无论他是否是第一次访问或直接保存{{$app_config['website_name']}}的直达链接。
-                        请注意，之后若该用户点击了另外的推广链接，您的推广会被覆盖。
+                        请注意，若用户在注册之前点击了他人的推广链接，您的推广会被覆盖。
                         <a href="{{url('/user/referral')}}">查看我的推广链接</a></p>
                 </div>
             </div>
