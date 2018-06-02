@@ -105,6 +105,7 @@ class RegisterController extends Controller
 
                     return Redirect::back()->withInput($request->except(['code']));
                 }
+                $aff = $code->uid;
             }
 
             // 24小时内同IP注册限制

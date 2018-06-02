@@ -25,6 +25,7 @@
                     <div class="portlet-body form">
                         <div class="mt-clipboard-container">
                             <p>{{trans('home.promote', ['traffic' => $referral_traffic, 'referral_percent' => $referral_percent * 100])}}</p>
+                            <b><a href="{{url('home/aff')}}">了解推介计划</a></b><br><br>
                             <input type="text" id="mt-target-1" class="form-control" value="{{$link}}" />
                             <a href="javascript:;" class="btn blue mt-clipboard" data-clipboard-action="copy" data-clipboard-target="#mt-target-1">
                                 <i class="icon-note"></i> {{trans('home.referral_button')}}

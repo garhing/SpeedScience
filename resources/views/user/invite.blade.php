@@ -7,30 +7,23 @@
     <div class="page-content" style="padding-top:0;">
         <!-- BEGIN PAGE BASE CONTENT -->
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="tab-pane active">
                     <div class="portlet light bordered">
                         <div class="portlet-title">
                             <div class="caption">
-                                <span class="caption-subject font-dark bold">{{trans('home.invite_code_make')}}</span>
+                                <span class="caption-subject font-dark bold">{{trans('home.invite_code_my_codes')}} <strong> 剩余{{$num}}个 </strong></span>
+                            </div>
+                            <div class="actions pull-right">
+                                <button type="button" class="btn blue" onclick="makeInvite()" @if(!$num) disabled @endif>生成1个邀请码</button>
                             </div>
                         </div>
-                        <div class="portlet-body">
-                            <div class="alert alert-info">
-                                <i class="fa fa-warning"></i>
-                                {{trans('home.invite_code_tips1')}} <strong> {{$num}} </strong> {{trans('home.invite_code_tips2')}}
-                            </div>
-                            <button type="button" class="btn blue" onclick="makeInvite()" @if(!$num) disabled @endif> {{trans('home.invite_code_button')}} </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="tab-pane active">
-                    <div class="portlet light bordered">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject font-dark bold">{{trans('home.invite_code_my_codes')}}</span>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <b style="font-size: 1.2em;color: #ed6b75;">通过您的邀请码注册的用户一定是您的推广用户，您可以获得他们消费金额{{$app_config['referral_percent']*100}}%的收益。</b><br>
+                                <b style="font-size: 1.2em;color: red;">请注意，邀请码将会过期，请谨慎生成。</b><br><br>
+                                <a type="button" class="label label-info" href="{{url('/home/aff')}}">了解推介计划</a>
+                                <a type="button" class="label  label-info" href="{{url('/user/referral')}}">查看我的推广</a>
                             </div>
                         </div>
                         <div class="portlet-body">

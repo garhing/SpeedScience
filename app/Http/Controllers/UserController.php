@@ -44,6 +44,30 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $user = $request->session()->get('user');
+        //订阅地址
+        // 如果没有唯一码则生成一个
+        $subscribe = UserSubscribe::query()->where('user_id', $user['id'])->first();
+        if (!$subscribe) {
+            $code = $this->makeSubscribeCode();
+
+            $obj = new UserSubscribe();
+            $obj->user_id = $user['id'];
+            $obj->code = $code;
+            $obj->times = 0;
+            $obj->save();
+        } else {
+            $code = $subscribe->code;
+        }
+
+        $view['subscribe_status'] = !$subscribe ? 1 : $subscribe->status;
+        $view['link'] = $this->config['subscribe_domain'] ? $this->config['subscribe_domain'] . '/s/' . $code : $this->config['website_url'] . '/s/' . $code;
+
+
+        return $this->view('user/index', $view);
+    }
+
+    public function userAccount(Request $request){
+        $user = $request->session()->get('user');
 
         $user = User::query()->where('id', $user['id'])->first();
         $user->totalTransfer = flowAutoShow($user->transfer_enable);
@@ -130,8 +154,24 @@ class UserController extends Controller
         }
 
         $view['nodeList'] = $nodeList;
+        //订阅地址
+        // 如果没有唯一码则生成一个
+        $subscribe = UserSubscribe::query()->where('user_id', $user['id'])->first();
+        if (!$subscribe) {
+            $code = $this->makeSubscribeCode();
 
-        return $this->view('user/index', $view);
+            $obj = new UserSubscribe();
+            $obj->user_id = $user['id'];
+            $obj->code = $code;
+            $obj->times = 0;
+            $obj->save();
+        } else {
+            $code = $subscribe->code;
+        }
+
+        $view['subscribe_status'] = !$subscribe ? 1 : $subscribe->status;
+        $view['link'] = $this->config['subscribe_domain'] ? $this->config['subscribe_domain'] . '/s/' . $code : $this->config['website_url'] . '/s/' . $code;
+        return $this->view('user/user_account', $view);
     }
 
     // 公告详情
@@ -1075,7 +1115,7 @@ class UserController extends Controller
             $code = $subscribe->code;
         }
 
-                        $view['subscribe_status'] = !$subscribe ? 1 : $subscribe->status;
+        $view['subscribe_status'] = !$subscribe ? 1 : $subscribe->status;
         $view['link'] = $this->config['subscribe_domain'] ? $this->config['subscribe_domain'] . '/s/' . $code : $this->config['website_url'] . '/s/' . $code;
 
         return $this->view('/user/subscribe', $view);
@@ -1188,5 +1228,13 @@ class UserController extends Controller
 
         return Redirect::back();
     }
+    public function articleList(Request $request){
+
+        $view['articleList'] = Article::query()->where('is_del', 0)->orderBy('sort', 'desc')->paginate(15)->appends($request->except('page'));
+
+        return $this->view('user/articleList', $view);
+
+    }
+
 
 }

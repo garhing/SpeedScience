@@ -9,7 +9,7 @@
                     <div class="banner-slogan banner-slogan-hero">
                         <h1 class="slogan-title">简单面板，方便易用</h1>
                         <h2 class="slogan-desc">查看及管理连接信息及查看流量使用状况，后台管理非常简单，不论是查看加速服务连接信息，还是查询流量使用情况，界面的依然那么简单易用，让人惊喜连连。</h2>
-                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/home/pricing')}}">立即购买概念加速服务<i
+                        <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/user/goodsList')}}">立即购买概念加速服务<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
                     </div>
                 </div>

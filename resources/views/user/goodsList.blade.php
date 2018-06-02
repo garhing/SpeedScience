@@ -17,9 +17,6 @@
 
         <div class="row">
             <div class="col-md-12">
-
-            </div>
-            <div class="col-md-12">
                 <div class="portlet light bordered">
                     <div class="portlet-title">
                         <div class="caption">
@@ -32,6 +29,9 @@
                             流量可购买多次，每次购买会叠加流量；<br>
                             套餐购买会导致之前购买的套餐失效，请谨慎购买！<br>
                             购买任一服务后，凭账单号码加QQ群：674788156 获得后续增值服务或报告异常。<br>
+                            <b style="font-size: 1.2em;color: red;">如果您遇到任何问题，<b><a href="{{url('user/ticketList')}}">点我发起服务单，</a></b>我们会第一时间处理您的请求。</b><br>
+                            <b style="font-size: 1.2em;color: brown;">您的任何消费，将会给您的推介人带来您消费金额{{$app_config['referral_percent']*100}}%的收益；</b><br>
+                            <b style="font-size: 1.2em;color: brown;">同样的，您的推介也会给您带来可提现的收益。<a href="{{url('home/aff')}}">了解推介计划</a></b><br>
                         </div>
                     </div>
                     <div class="portlet-body">

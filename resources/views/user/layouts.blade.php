@@ -109,11 +109,19 @@
             <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
             <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
             <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-                <li class="nav-item start {{in_array(Request::path(), ['/', 'user','user/index', 'user/subscribe', 'user/profile', 'user/article']) ? 'active open' : ''}}">
+                <li class="nav-item start {{in_array(Request::path(), ['/', 'user','user/index', ]) ? 'active open' : ''}}">
                     <a href="{{url('user')}}" class="nav-link nav-toggle">
                         <i class="icon-home"></i>
-                        <span class="title">{{trans('home.home')}}</span>
+                        {{--<span class="title">{{trans('home.home')}}</span>--}}
+                        <span class="title">快速开始</span>
                         <span class="selected"></span>
+                    </a>
+                </li>
+                <li class="nav-item start {{in_array(Request::path(), ['user/userAccount','user/profile']) ? 'active open' : ''}}">
+                    <a href="{{url('user/userAccount')}}" class="nav-link nav-toggle">
+                        <i class="icon-check"></i>
+                        {{--<span class="title">{{trans('home.home')}}</span>--}}
+                        <span class="title">账户信息</span>
                     </a>
                 </li>
                 <li class="nav-item {{in_array(Request::path(), ['user/goodsList', 'user/addOrder']) || Request::segment(1) == 'payment' ? 'active open' : ''}}">
@@ -126,6 +134,12 @@
                     <a href="{{url('user/orderList')}}" class="nav-link nav-toggle">
                         <i class="icon-wallet"></i>
                         <span class="title">{{trans('home.invoices')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item {{in_array(Request::path(), ['user/articleList', 'user/article']) ? 'active open' : ''}}">
+                    <a href="{{url('user/articleList')}}" class="nav-link nav-toggle">
+                        <i class="icon-bag"></i>
+                        <span class="title">文章教程</span>
                     </a>
                 </li>
                 <li class="nav-item {{in_array(Request::path(), ['user/ticketList', 'user/replyTicket']) ? 'active open' : ''}}">
