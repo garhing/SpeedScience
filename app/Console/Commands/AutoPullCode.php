@@ -38,9 +38,10 @@ class AutoPullCode extends Command
     public function handle()
     {
         $path = base_path();
-        $command = 'cd '.$path.' && '.'git pull origin master';
-        $output= shell_exec($command);
-        echo $command.'  ';
-        echo $output;
+        $command = 'cd '.$path.' && '.'git pull origin master && git reset --hard origin/master';
+        echo $command.' ';
+        echo shell_exec($command);
+//        echo system($command,$output);
+//        echo $output;
     }
 }
