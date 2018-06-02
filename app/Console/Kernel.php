@@ -34,6 +34,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\UserExpireWarningJob::class,
         \App\Console\Commands\UserTrafficAbnormalWarningJob::class,
         \App\Console\Commands\UserTrafficWarningJob::class,
+        \App\Console\Commands\AutoPullCode::class,
     ];
 
     /**

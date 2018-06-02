@@ -6,3 +6,4 @@ Route::group(['namespace' => 'Api'], function () {
 
     Route::get('login', 'LoginController@login');
 });
+

@@ -1,8 +1,10 @@
 <?php
 
 Route::get('s/{code}', 'SubscribeController@index'); // 节点订阅地址
-
-
+Route::any('pullcode_hook', function () {
+    $exitCode = Artisan::call('webauto:pullcode');
+    echo $exitCode;
+});
 Route::group(['middleware' => ['forbidden','aff']], function () {
     Route::any('/', 'HomeController@index'); // 用户首页
     Route::any('home/index', 'HomeController@index'); // 用户首页
