@@ -7,7 +7,7 @@
                     <div class="banner-slogan banner-slogan-hero">
                         <h1 class="slogan-title">遍布全球的数据加速中心</h1>
                         <h2 class="slogan-desc">
-                            {{$app_config['website_name']}}拥有分布在全球九大国家的10+个数据中心，为用户提供多方位需求。无论是限定IP的游戏，还是限定美区的Spotify，使用概念加速服务，均可完美支持！</h2>
+                            {{$app_config['website_name']}}拥有分布在全球九大国家的10+个数据中心，为用户提供多方位需求。无论是限定IP的游戏，还是限定美区的Spotify，使用{{$app_config['website_name']}}加速服务，均可完美支持！</h2>
                         <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/home/speedtest')}}">查看{{$app_config['website_name']}}加速速度评测<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
                     </div>
