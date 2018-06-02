@@ -110,18 +110,14 @@
             </div>
             <div class="pull-right forget-password-block">
                 <a href="{{url('resetPassword')}}" class="forget-password">{{trans('login.forget_password')}}</a>
+                @if($is_register)
+                    <a href="{{url('register')}}" class="forget-password">{{trans('login.register')}}</a>
+                @endif
             </div>
         </div>
         <div class="form-actions">
             <button type="submit" class="btn red btn-block uppercase">{{trans('login.login')}}</button>
         </div>
-        @if($is_register)
-            <div class="create-account">
-                <p>
-                    <a href="{{url('register')}}" class="btn-primary btn">{{trans('login.register')}}</a>
-                </p>
-            </div>
-        @endif
     </form>
     <!-- END LOGIN FORM -->
 </div>
