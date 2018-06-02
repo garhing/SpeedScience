@@ -15,14 +15,14 @@
     </div>
 
 
-
     <div class="page-section section-center">
         <div class="container">
+            <p class="section-desc">{{$app_config['website_name']}}概念加速服务在多平台均可使用，完美支持iOS9、安卓、Windows、macOS等操作系统，甚至可以在极路由（搭配SS插件）、Openwrt、支持梅林固件的路由器上面直接配置使用。</p>
             <div class="blocks row">
                 <div class="col-sm-4">
                     <a class="panel panel-block panel-block-icon"
                        href="https://itunes.apple.com/cn/app/potatso-qiang-da-wang-luo/id1070901416">
-                        <div class="panel-icon"><img src="img/clients/potatso.svg"></div>
+                        <div class="panel-icon animate zoomIn"><img src="/home/img/clients/potatso.svg"></div>
                         <div class="panel-body">
                             <h3 class="panel-title h4">Potatso for iOS</h3>
                             <span class="link">App Store购买下载</span>
@@ -32,7 +32,7 @@
                 <div class="col-sm-4">
                     <a class="panel panel-block panel-block-icon"
                        href="https://itunes.apple.com/cn/app/shadowrocket-for-shadowsocks/id932747118">
-                        <div class="panel-icon"><img src="img/clients/shadowrocket.svg"></div>
+                        <div class="panel-icon animate zoomIn"><img src="/home/img/clients/shadowrocket.svg"></div>
                         <div class="panel-body">
                             <h3 class="panel-title h4">Shadowrocket for iOS</h3>
                             <span class="link">App Store购买下载</span>
@@ -42,7 +42,7 @@
                 <div class="col-sm-4">
                     <a class="panel panel-block panel-block-icon"
                        href="https://itunes.apple.com/cn/app/surge-web-developer-tool-proxy/id1040100637">
-                        <div class="panel-icon"><img src="img/clients/surge.svg"></div>
+                        <div class="panel-icon animate zoomIn"><img src="/home/img/clients/surge.svg"></div>
                         <div class="panel-body">
                             <h3 class="panel-title h4">Surge for iOS</h3>
                             <span class="link">App Store购买下载</span>
@@ -50,8 +50,8 @@
                     </a>
                 </div>
                 <div class="col-sm-4">
-                    <a class="panel panel-block panel-block-icon" href="http://home.ustc.edu.cn/~mmmwhy/ssr-win.7z">
-                        <div class="panel-icon"><img src="img/clients/ss-windows.svg"></div>
+                    <a class="panel panel-block panel-block-icon" href="{{url('/downloads/ssr-win.7z')}}">
+                        <div class="panel-icon animate zoomIn"><img src="/home/img/clients/ss-windows.svg"></div>
                         <div class="panel-body">
                             <h3 class="panel-title h4">{{$app_config['website_name']}} for Windows</h3>
                             <span class="link">立即下载</span>
@@ -60,8 +60,8 @@
                 </div>
                 <div class="col-sm-4">
                     <a class="panel panel-block panel-block-icon"
-                       href="http://home.ustc.edu.cn/~mmmwhy/ssr-android.apk">
-                        <div class="panel-icon"><img src="img/clients/ss-android.png"></div>
+                       href="{{url('/downloads/ssr-android.apk')}}">
+                        <div class="panel-icon animate zoomIn"><img src="/home/img/clients/ss-android.png"></div>
                         <div class="panel-body">
                             <h3 class="panel-title h4">{{$app_config['website_name']}} for Android</h3>
                             <span class="link">立即下载</span>
@@ -69,15 +69,14 @@
                     </a>
                 </div>
                 <div class="col-sm-4">
-                    <a class="panel panel-block panel-block-icon" href="http://home.ustc.edu.cn/~mmmwhy/ssr-mac.dmg">
-                        <div class="panel-icon"><img src="img/clients/ss-mac.svg"></div>
+                    <a class="panel panel-block panel-block-icon" href="{{url('/downloads/ssr-mac.dmg')}}">
+                        <div class="panel-icon animate zoomIn"><img src="/home/img/clients/ss-mac.svg"></div>
                         <div class="panel-body">
                             <h3 class="panel-title h4">{{$app_config['website_name']}} for MacOS</h3>
                             <span class="link">立即下载</span>
                         </div>
                     </a>
                 </div>
-
 
             </div>
         </div>

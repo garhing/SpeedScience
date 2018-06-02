@@ -6,9 +6,9 @@
             <div class="row">
                 <div class="col-lg-4 col-md-5 col-sm-6">
                     <div class="banner-slogan banner-slogan-hero">
-                        <h1 class="slogan-title">科研加速</h1>
+                        <h1 class="slogan-title">科研加速 快得令人惊奇</h1>
                         <h2 class="slogan-desc">{{$app_config['website_name']}}加速服务拥有比业内平均速度快 5
-                            倍的体验！为您的所有设备添加{{$app_config['website_name']}}服务，立即开启无碍网络体验！</h2>
+                            倍的体验！为您的所有设备添加{{$app_config['website_name']}}服务，无论是谷歌学术，还是ScienceDirect，立即开启无碍网络体验！</h2>
                         <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/user/index')}}">购买加速服务<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
                     </div>
