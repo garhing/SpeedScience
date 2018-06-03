@@ -2184,7 +2184,7 @@ class AdminController extends Controller
             $unActive = $request->get('unActive', null); //15日内不活跃用户
             $expireWarning = $request->get('expireWarning', null);
             $labels = $request->get('labels', null);
-            $query = User::query();
+            $query = DB::table('user');
             if ($username != '') {
                 $query->where('username', 'like', '%' . $username . '%');
             }
@@ -2207,19 +2207,18 @@ class AdminController extends Controller
             }
 
             if($labels){
-
-                $query->whereIn('status', [0, 1]);
-
+                $userIds = UserLabel::query()->whereIn('label_id',$labels)->distinct()->pluck('user_id');
+                $query->whereIn('id', $userIds);
             }
 
             $user_email_List = $query->select(['username'])->get();
             $mail_list_string = '';
             foreach ($user_email_List as $user) {
                 // 用户名不是邮箱的跳过
-                if (false === filter_var($user['username'], FILTER_VALIDATE_EMAIL)) {
+                if (false === filter_var($user->username, FILTER_VALIDATE_EMAIL)) {
                     continue;
                 }
-                $mail_list_string = $mail_list_string . $user['username'] . "\n";
+                $mail_list_string = $mail_list_string . $user->username . "\n";
             }
 
             return $this->json(['status' => 'success', 'data' => $mail_list_string, 'message' => '查询成功']);

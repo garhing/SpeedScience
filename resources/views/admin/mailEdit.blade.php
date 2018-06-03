@@ -58,7 +58,6 @@
                                   class="form-horizontal"  style="margin:0 4px" id="query_form">
                                 <div class="form-group">
                                     <label class="control-label col-md-1">筛选条件</label>
-
                                     <div class="col-md-2 col-sm-2">
                                         <input type="text" class="col-md-4 form-control input-sm" name="username"
                                                value="{{Request::get('username')}}" id="username" placeholder="用户名" >
@@ -89,16 +88,33 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="col-md-3 col-sm-3">
+                                    <div class="col-md-4 col-sm-4">
                                         <select id="initial_labels_for_user" class="form-control select2-multiple"
-                                                name="labels" multiple="multiple">
+                                                name="labels[]" multiple="multiple">
                                             @foreach($labels as $label)
                                                 <option value="{{$label->id}}">{{$label->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-2 col-sm-2">
-                                        <button type="button" class="btn btn-sm blue" onclick="do_query();">查询
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-1"></label>
+                                    <div class="col-md-2 col-sm-2" >
+                                        <select class="form-control input-sm" name="expireWarning" >
+                                            <option value="" >临近过期状态</option>
+                                            <option value="1">非临近过期</option>
+                                            <option value="1">临近过期</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2" >
+                                        <select class="form-control input-sm" name="unActive" >
+                                            <option value="" >15日活跃状态</option>
+                                            <option value="1">15日不活跃</option>
+                                            <option value="0">15日活跃</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 text-right ">
+                                        <button type="button" class="btn btn-sm blue" onclick="do_query();" style="width: 100%">查询
                                         </button>
                                     </div>
                                 </div>
@@ -111,7 +127,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-1">收件人</label>
                                         <div class="col-md-11">
-                                                <textarea class="form-control" id="userEmails" placeholder="Email" rows="5" name="email_addresses"> </textarea>
+                                                <textarea class="form-control" id="userEmails" placeholder="收件人列表，可通过上面的条件进行筛选，支持手动添加和删除" rows="5" name="email_addresses"></textarea>
                                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                                         </div>
                                     </div>
@@ -166,6 +182,7 @@
             autoClearinitialContent: false, //是否自动清除编辑器初始内容
         });
         function do_submit() {
+            layer.load(2);
             $.ajax({
                 type: "POST",
                 url: "{{url('admin/mailSend')}}",
@@ -179,7 +196,6 @@
                 },
                 success: function (ret) {
                     layer.msg(ret.message, {time:1000},function () {
-
                         if(ret.status == 'success'){
                             window.location.href="{{url('admin/mailEdit')}}";
                         }
@@ -190,7 +206,7 @@
                     layer.msg('服务器发生未知异常', {time:1000});
                 },
                 complete:function (ret) {
-                    layer.close(index);
+                    layer.closeAll('loading');
                 }
             });
 
@@ -198,24 +214,23 @@
 
         // 搜索
         function do_query() {
-
+            layer.load(2);
             $.ajax({
                 type: "POST",
                 url: "{{url('admin/mailQuery')}}",
-                async: false,
+                async: true,
                 data: $("#query_form").serializeArray(),
                 dataType: 'json',
-                beforeSend: function () {
-                    index = layer.load(1, {
-                        shade: [0.7,'#CCC']
-                    });
-                },
                 success: function (ret) {
+
                     layer.msg(ret.message, {time:1000});
                     $('#userEmails').val(ret.data);
                 },
+                error:function (ret) {
+                    layer.msg('服务器发生未知异常', {time:1000});
+                },
                 complete:function (ret) {
-                    layer.close(index);
+                    layer.closeAll('loading');
                 }
             });
 
