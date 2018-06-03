@@ -153,6 +153,34 @@
                         <span class="title">订单管理</span>
                     </a>
                 </li>
+                <li class="nav-item {{in_array(Request::path(), ['admin/mailEdit']) ? 'active open' : ''}}">
+                    <a href="{{url('admin/mailEdit')}}" class="nav-link nav-toggle">
+                        <i class="fa fa-mail-forward"></i>
+                        <span class="title">邮件管理</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item {{in_array(Request::path(), ['admin/mailEdit']) ? 'active open' : ''}}">
+                            <a href="{{url('admin/mailEdit')}}" class="nav-link ">
+                                <i class="fa fa-file-archive-o"></i>
+                                <span class="title">邮件群发</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{in_array(Request::path(), ['admin/mailSettings']) ? 'active open' : ''}}">
+                            <a href="{{url('admin/articleList')}}" class="nav-link ">
+                                <i class="fa fa-file-archive-o"></i>
+                                <span class="title">邮件配置</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{in_array(Request::path(), ['admin/mailSettings']) ? 'active open' : ''}}">
+                            <a href="{{url('admin/articleList')}}" class="nav-link ">
+                                <i class="fa fa-file-archive-o"></i>
+                                <span class="title">邮件测试</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
                 <li class="nav-item {{in_array(Request::path(), ['admin/articleList', 'admin/addArticle', 'admin/editArticle', 'admin/articleLogList']) ? 'active open' : ''}}">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-file-word-o"></i>

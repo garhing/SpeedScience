@@ -6,7 +6,7 @@
                 <div class="col-lg-4 col-md-5 col-sm-6">
                     <div class="banner-slogan banner-slogan-hero">
                         <h1 class="slogan-title">加入{{$app_config['website_name']}}推介计划！</h1>
-                        <h2 class="slogan-desc">通过推荐他人使用{{$app_config['website_name']}}服务来获取高达<b>{{$app_config['referral_percent']*100}}%</b> 的收益！通过推介计划，您甚至可以免费使用问道科研服务。</h2>
+                        <h2 class="slogan-desc">通过推荐他人使用{{$app_config['website_name']}}服务来获取高达<b>{{$app_config['referral_percent']*100}}%</b> 的收益！通过推介计划，您甚至可以免费使用{{$app_config['website_name']}}服务。</h2>
                         <div class="actions"><a class="btn btn-lg btn-primary-light" href="{{url('/user/referral')}}">现在就加入推介计划！<i
                                         class="zmdi zmdi-long-arrow-right"></i></a></div>
                     </div>

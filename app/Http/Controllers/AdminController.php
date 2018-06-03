@@ -9,7 +9,6 @@ use App\Http\Models\Invite;
 use App\Http\Models\Label;
 use App\Http\Models\Level;
 use App\Http\Models\Order;
-use App\Http\Models\OrderGoods;
 use App\Http\Models\ReferralApply;
 use App\Http\Models\ReferralLog;
 use App\Http\Models\SsConfig;
@@ -30,12 +29,14 @@ use App\Http\Models\UserTrafficDaily;
 use App\Http\Models\UserTrafficHourly;
 use App\Http\Models\UserTrafficLog;
 use App\Jobs\SendReminderEmail;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Mail\mailReminder;
+use DB;
 use Illuminate\Http\Request;
+use Log;
+use Maatwebsite\Excel\Facades\Excel;
+use Mockery\Exception;
 use Redirect;
 use Response;
-use Log;
-use DB;
 
 class AdminController extends Controller
 {
@@ -333,29 +334,29 @@ class AdminController extends Controller
             DB::beginTransaction();
             try {
                 $data = [
-                    'username'             => $username,
-                    'port'                 => $port,
-                    'passwd'               => $passwd,
-                    'transfer_enable'      => toGB($transfer_enable),
-                    'enable'               => $status < 0 ? 0 : $enable, // 如果禁止登陆则同时禁用SSR
-                    'method'               => $method,
-                    'protocol'             => $protocol,
-                    'protocol_param'       => $protocol_param,
-                    'obfs'                 => $obfs,
-                    'obfs_param'           => $obfs_param,
-                    'speed_limit_per_con'  => $speed_limit_per_con,
+                    'username' => $username,
+                    'port' => $port,
+                    'passwd' => $passwd,
+                    'transfer_enable' => toGB($transfer_enable),
+                    'enable' => $status < 0 ? 0 : $enable, // 如果禁止登陆则同时禁用SSR
+                    'method' => $method,
+                    'protocol' => $protocol,
+                    'protocol_param' => $protocol_param,
+                    'obfs' => $obfs,
+                    'obfs_param' => $obfs_param,
+                    'speed_limit_per_con' => $speed_limit_per_con,
                     'speed_limit_per_user' => $speed_limit_per_user,
-                    'gender'               => $gender,
-                    'wechat'               => $wechat,
-                    'qq'                   => $qq,
-                    'usage'                => $usage,
-                    'pay_way'              => $pay_way,
-                    'status'               => $status,
-                    'enable_time'          => empty($enable_time) ? date('Y-m-d') : $enable_time,
-                    'expire_time'          => empty($expire_time) ? date('Y-m-d', strtotime("+365 days")) : $expire_time,
-                    'remark'               => $remark,
-                    'level'                => $level,
-                    'is_admin'             => $is_admin
+                    'gender' => $gender,
+                    'wechat' => $wechat,
+                    'qq' => $qq,
+                    'usage' => $usage,
+                    'pay_way' => $pay_way,
+                    'status' => $status,
+                    'enable_time' => empty($enable_time) ? date('Y-m-d') : $enable_time,
+                    'expire_time' => empty($expire_time) ? date('Y-m-d', strtotime("+365 days")) : $expire_time,
+                    'remark' => $remark,
+                    'level' => $level,
+                    'is_admin' => $is_admin
                 ];
 
                 if (!empty($password)) {
@@ -589,33 +590,33 @@ class AdminController extends Controller
             DB::beginTransaction();
             try {
                 $data = [
-                    'name'            => $name,
-                    'group_id'        => $group_id,
-                    'country_code'    => $country_code,
-                    'server'          => $server,
-                    'ip'              => $ip,
-                    'ipv6'            => $ipv6,
-                    'desc'            => $desc,
-                    'method'          => $method,
-                    'protocol'        => $protocol,
-                    'protocol_param'  => $protocol_param,
-                    'obfs'            => $obfs,
-                    'obfs_param'      => $obfs_param,
-                    'traffic_rate'    => $traffic_rate,
-                    'bandwidth'       => $bandwidth,
-                    'traffic'         => $traffic,
-                    'monitor_url'     => $monitor_url,
-                    'is_subscribe'    => $is_subscribe,
-                    'compatible'      => $compatible,
-                    'single'          => $single,
-                    'single_force'    => $single ? $single_force : 0,
-                    'single_port'     => $single ? $single_port : '',
-                    'single_passwd'   => $single ? $single_passwd : '',
-                    'single_method'   => $single ? $single_method : '',
+                    'name' => $name,
+                    'group_id' => $group_id,
+                    'country_code' => $country_code,
+                    'server' => $server,
+                    'ip' => $ip,
+                    'ipv6' => $ipv6,
+                    'desc' => $desc,
+                    'method' => $method,
+                    'protocol' => $protocol,
+                    'protocol_param' => $protocol_param,
+                    'obfs' => $obfs,
+                    'obfs_param' => $obfs_param,
+                    'traffic_rate' => $traffic_rate,
+                    'bandwidth' => $bandwidth,
+                    'traffic' => $traffic,
+                    'monitor_url' => $monitor_url,
+                    'is_subscribe' => $is_subscribe,
+                    'compatible' => $compatible,
+                    'single' => $single,
+                    'single_force' => $single ? $single_force : 0,
+                    'single_port' => $single ? $single_port : '',
+                    'single_passwd' => $single ? $single_passwd : '',
+                    'single_method' => $single ? $single_method : '',
                     'single_protocol' => $single ? $single_protocol : '',
-                    'single_obfs'     => $single ? $single_obfs : '',
-                    'sort'            => $sort,
-                    'status'          => $status
+                    'single_obfs' => $single ? $single_obfs : '',
+                    'sort' => $sort,
+                    'status' => $status
                 ];
 
                 SsNode::query()->where('id', $id)->update($data);
@@ -732,12 +733,12 @@ class AdminController extends Controller
         }
 
         $view['trafficDaily'] = [
-            'nodeName'  => $node->name,
+            'nodeName' => $node->name,
             'dailyData' => "'" . implode("','", $dailyData) . "'"
         ];
 
         $view['trafficHourly'] = [
-            'nodeName'   => $node->name,
+            'nodeName' => $node->name,
             'hourlyData' => "'" . implode("','", $hourlyData) . "'"
         ];
 
@@ -787,11 +788,11 @@ class AdminController extends Controller
             $content = $request->get('content');
 
             $data = [
-                'title'   => $title,
-                'type'    => $type,
-                'author'  => $author,
+                'title' => $title,
+                'type' => $type,
+                'author' => $author,
                 'content' => $content,
-                'sort'    => $sort
+                'sort' => $sort
             ];
 
             $ret = Article::query()->where('id', $id)->update($data);
@@ -862,7 +863,7 @@ class AdminController extends Controller
             $level = $request->get('level');
 
             $data = [
-                'name'  => $name,
+                'name' => $name,
                 'level' => $level
             ];
 
@@ -1041,18 +1042,18 @@ class AdminController extends Controller
             $data = [];
             foreach ($content->port_password as $port => $passwd) {
                 $data[] = [
-                    'd'               => 0,
-                    'enable'          => 1,
-                    'method'          => $method,
-                    'obfs'            => $obfs,
-                    'obfs_param'      => empty($obfs_param) ? "" : $obfs_param,
-                    'passwd'          => $passwd,
-                    'port'            => $port,
-                    'protocol'        => $protocol,
-                    'protocol_param'  => empty($protocol_param) ? "" : $protocol_param,
+                    'd' => 0,
+                    'enable' => 1,
+                    'method' => $method,
+                    'obfs' => $obfs,
+                    'obfs_param' => empty($obfs_param) ? "" : $obfs_param,
+                    'passwd' => $passwd,
+                    'port' => $port,
+                    'protocol' => $protocol,
+                    'protocol_param' => empty($protocol_param) ? "" : $protocol_param,
                     'transfer_enable' => toGB($transfer_enable),
-                    'u'               => 0,
-                    'user'            => date('Ymd') . '_IMPORT_' . $port,
+                    'u' => 0,
+                    'user' => date('Ymd') . '_IMPORT_' . $port,
                 ];
             }
 
@@ -1322,12 +1323,12 @@ class AdminController extends Controller
             }
 
             $trafficDaily[$node->id] = [
-                'nodeName'  => $node->name,
+                'nodeName' => $node->name,
                 'dailyData' => "'" . implode("','", $dailyData) . "'"
             ];
 
             $trafficHourly[$node->id] = [
-                'nodeName'   => $node->name,
+                'nodeName' => $node->name,
                 'hourlyData' => "'" . implode("','", $hourlyData) . "'"
             ];
         }
@@ -1347,7 +1348,7 @@ class AdminController extends Controller
         $config = $this->systemConfig();
 
         $ok_port = -1;
-        for($port=$config['min_port'];$port <=$config['max_port'];$port++){
+        for ($port = $config['min_port']; $port <= $config['max_port']; $port++) {
 
             if (!in_array($port, $exists_port) and !in_array($port, $deny_port)) {
                 $ok_port = $port;
@@ -1918,7 +1919,7 @@ class AdminController extends Controller
         $status = $request->get('status');
         $bill_num = $request->get('bill_num');
 
-        $ret = ReferralApply::query()->where('id', $id)->update(['status' => $status,'bill_num'=>$bill_num]);
+        $ret = ReferralApply::query()->where('id', $id)->update(['status' => $status, 'bill_num' => $bill_num]);
         if ($ret) {
             // 审核申请的时候将关联的
             $referralApply = ReferralApply::query()->where('id', $id)->first();
@@ -1927,8 +1928,7 @@ class AdminController extends Controller
                 ReferralLog::query()->whereIn('id', $log_ids)->update(['status' => 1]);
             } else if ($referralApply && $status == 2) {
                 ReferralLog::query()->whereIn('id', $log_ids)->update(['status' => 2]);
-            }
-            else if ($referralApply && $status == -1) {
+            } else if ($referralApply && $status == -1) {
                 ReferralLog::query()->whereIn('id', $log_ids)->update(['status' => 0]);
             }
 
@@ -2118,12 +2118,124 @@ class AdminController extends Controller
         }
     }
 
-    //邮件营销
-    public  function mailSend(Request $request){
+    //邮件发送
+    public function mailSend(Request $request)
+    {
 
-        $job = (new SendReminderEmail());
-        dispatch($job);
-        return $this->json(['status' => 'success', 'data' => '', 'message' => '请求成功']);
+        try {
+
+            $addresses =  explode("\n",$request->get('email_addresses'));
+            $title =  $request->get('email_title');
+            $content=  $request->get('email_content');
+
+            if(sizeof($addresses)==0){
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '请至少填写1位收件人']);
+            }
+            if(!$title){
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '请填写邮件标题']);
+            }
+            if(!$content){
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '请填写邮件内容']);
+            }
+
+            $now = \Carbon\Carbon::now();
+            foreach ($addresses as $addr){
+                $addr = str_replace("\r","",$addr);
+                $addr = str_replace("\n","",$addr);
+                // 用户名不是邮箱的跳过
+                if (false === filter_var($addr, FILTER_VALIDATE_EMAIL)) {
+                    continue;
+                }
+                $now = $now->addSecond(1);
+                $send_config['addr'] =  $addr;
+                $send_config['title'] =  $title;
+                $send_config['content'] =  $content;
+                $send_config['app_config'] =  $this->config;
+                $message = (new mailReminder($send_config))->subject($title) ->delay($now);
+                \Mail::to($send_config['addr'])->queue($message);
+
+            }
+
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '邮件已进入发送队列']);
+        }catch (Exception $exception){
+
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '请求失败'.$exception->getMessage()]);
+        }
+
+    }
+
+    //邮件群发
+    public function mailEdit(Request $request)
+    {
+        $view = [];
+        $labels = Label::query()->get();
+        $view['labels'] = $labels;
+        return $this->view('admin/mailEdit', $view);
+    }
+
+    public function mailQuery(Request $request)
+    {
+
+        try {
+
+            $username = $request->get('username', null);
+            $status = $request->get('status', null);
+            $enable = $request->get('enable', null);
+            $unActive = $request->get('unActive', null); //15日内不活跃用户
+            $expireWarning = $request->get('expireWarning', null);
+            $labels = $request->get('labels', null);
+            $query = User::query();
+            if ($username != '') {
+                $query->where('username', 'like', '%' . $username . '%');
+            }
+            if ($status != '') {
+                $query->where('status', intval($status));
+            }
+
+            if ($enable != '') {
+                $query->where('enable', intval($enable));
+            }
+
+            // 临近过期提醒
+            if ($expireWarning) {
+                $query->whereIn('status', [0, 1])->where('expire_time', '<=', date('Y-m-d', strtotime("+" . $this->config['expire_days'] . " days")));
+            }
+
+            // 不活跃用户
+            if ($unActive) {
+                $query->where('t', '<=', strtotime(date('Y-m-d', strtotime("-" . $this->config['expire_days'] . " days"))))->where('enable', 1);
+            }
+
+            if($labels){
+
+                $query->whereIn('status', [0, 1]);
+
+            }
+
+            $user_email_List = $query->select(['username'])->get();
+            $mail_list_string = '';
+            foreach ($user_email_List as $user) {
+                // 用户名不是邮箱的跳过
+                if (false === filter_var($user['username'], FILTER_VALIDATE_EMAIL)) {
+                    continue;
+                }
+                $mail_list_string = $mail_list_string . $user['username'] . "\n";
+            }
+
+            return $this->json(['status' => 'success', 'data' => $mail_list_string, 'message' => '查询成功']);
+        } catch (Exception $exception) {
+
+            return $this->json(['status' => 'failed', 'data' => '', 'message' => $exception->getMessage()]);
+        }
+
+    }
+
+    public function mailSettings(Request $request)
+    {
+
+
+        return $this->view('');
+
     }
 
 }

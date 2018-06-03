@@ -8,19 +8,25 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Mockery\Exception;
+use App\Http\Models\EmailLog;
+use App\Http\Models\Config;
+use App\Mail\mailReminder;
+use Mail;
+use Log;
 
 class SendReminderEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     public $tries = 5;
+    public $sendConfigs;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($sendConfigs)
     {
-        //
+        $this->sendConfigs = $sendConfigs;
     }
 
     /**
@@ -30,13 +36,14 @@ class SendReminderEmail implements ShouldQueue
      */
     public function handle()
     {
-        echo date('h:i:s')."\n";
         sleep(1);
-        echo "1 send email successful\n";
+        Mail::to($this->sendConfigs['addr']);
     }
+
     public function failed(Exception $exception)
     {
         // 给用户发送失败通知，等等...
         echo $exception->getMessage();
     }
+
 }

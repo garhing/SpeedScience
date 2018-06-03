@@ -1043,14 +1043,16 @@ class UserController extends Controller
     {
         // 生成个人推广链接
         $user = $request->session()->get('user');
+        $user = User::query()->where('id',$user['id'])->first();
 
-                        $view['referral_traffic'] = flowAutoShow($this->config['referral_traffic'] * 1048576);
+        $view['referral_traffic'] = flowAutoShow($this->config['referral_traffic'] * 1048576);
         $view['referral_percent'] = $this->config['referral_percent'];
         $view['referral_money'] = $this->config['referral_money'];
         $view['totalAmount'] = ReferralLog::query()->where('ref_user_id', $user['id'])->sum('ref_amount') / 100;
         $view['canAmount'] = ReferralLog::query()->where('ref_user_id', $user['id'])->where('status', 0)->sum('ref_amount') / 100;
         $view['link'] = $this->config['website_url'] . '/register?aff=' . $user['id'];
         $view['referralLogList'] = ReferralLog::query()->where('ref_user_id', $user['id'])->with('user')->paginate(10);
+        $view['affUser'] = User::query()->where('id',$user['referral_uid'])->first();
 
         $view['applyList'] = ReferralApply::where('user_id',$user['id']) ->orderBy('id', 'desc')->paginate(15)->appends($request->except('page'));
         return $this->view('user/referral', $view);

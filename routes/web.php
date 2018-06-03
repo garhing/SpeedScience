@@ -64,7 +64,9 @@ Route::group(['middleware' => ['forbidden', 'user', 'admin']], function () {
     Route::get('ticket/ticketList', 'TicketController@ticketList'); // 工单列表
     Route::any('ticket/replyTicket', 'TicketController@replyTicket'); // 回复工单
     Route::get('admin/orderList', 'AdminController@orderList'); // 订单列表
-    Route::get('admin/mailSend', 'AdminController@mailSend'); // 邮件群发
+    Route::any('admin/mailSend', 'AdminController@mailSend'); // 邮件发送
+    Route::any('admin/mailEdit', 'AdminController@mailEdit'); // 邮件群发界面
+    Route::any('admin/mailQuery', 'AdminController@mailQuery'); // 邮件地址查询
     Route::post('ticket/closeTicket', 'TicketController@closeTicket'); // 关闭工单
     Route::get('admin/inviteList', 'AdminController@inviteList'); // 邀请码列表
     Route::post('admin/makeInvite', 'AdminController@makeInvite'); // 生成邀请码

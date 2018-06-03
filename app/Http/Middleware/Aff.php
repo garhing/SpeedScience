@@ -23,16 +23,10 @@ class Aff
     public function handle($request, Closure $next)
     {
 
-
-//        $yiyou =  $request->cookie('aff_id');
-//        echo '============='.$yiyou.'<br>';
-
         $aff_id = trim($request->get('aff',0));
         if($aff_id){
             Cookie::queue('aff_id', $aff_id, 129600);
         }
-//        echo '+++++++++++++'.$aff_id.'<br>';
-
         return $next($request);;
     }
 }
