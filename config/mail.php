@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => 'smtp',
+    'driver' => env('MAIL_DRIVER','smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => 'smtp.exmail.qq.com',
+    'host' => env('MAIL_HOST','smtp.mailtrap.io'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'port' => 465,
+    'port' => env('MAIL_PORT',25),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => 'xxx@qq.com',
-        'name' => '重置密码',
+        'address' => env('MAIL_FROM_ADDRESS','xxx@qq.com'),
+        'name' => env('MAIL_FROM_NAME','xxx'),
     ],
 
     /*
@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'encryption' => 'ssl',
+    'encryption' => env('MAIL_ENCRYPTION','ssl'),
 
     /*
     |--------------------------------------------------------------------------
@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => 'xxx@qq.com',
+    'username' => env('MAIL_USERNAME','xxxx'),
 
-    'password' => 'xxxxxx',
+    'password' => env('MAIL_PASSWORD','xxx'),
 
     /*
     |--------------------------------------------------------------------------

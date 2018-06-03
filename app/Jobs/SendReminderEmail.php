@@ -30,9 +30,9 @@ class SendReminderEmail implements ShouldQueue
      */
     public function handle()
     {
-        //
+        echo date('h:i:s')."\n";
+        sleep(1);
         echo "1 send email successful\n";
-        throw new Exception("++++exception\n");
     }
     public function failed(Exception $exception)
     {
