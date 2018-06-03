@@ -30,7 +30,6 @@ class Controller extends BaseController
 
     public function json($data = array(), $status = 200, $headers = array(), $options = 0){
 
-        $data['app_config'] = $this->config;
         return Response::json( $data,$status,$headers,$options);
     }
 

@@ -29,6 +29,7 @@ use App\Http\Models\UserSubscribe;
 use App\Http\Models\UserTrafficDaily;
 use App\Http\Models\UserTrafficHourly;
 use App\Http\Models\UserTrafficLog;
+use App\Jobs\SendReminderEmail;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Redirect;
@@ -2116,4 +2117,13 @@ class AdminController extends Controller
             return $this->json(['status' => 'fail', 'data' => '', 'message' => '删除失败：' . $e->getMessage()]);
         }
     }
+
+    //邮件营销
+    public  function mailSend(Request $request){
+
+        $job = (new SendReminderEmail());
+        dispatch($job);
+        return $this->json(['status' => 'success', 'data' => '', 'message' => '请求成功']);
+    }
+
 }

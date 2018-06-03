@@ -34,6 +34,7 @@ class LoginController extends Controller
 
             // 是否校验验证码
             if ($this->config['is_captcha']) {
+                $request->session()->put('captcha.sensitive', false);
                 if (!Captcha::check($captcha)) {
                     $request->session()->flash('errorMsg', '验证码错误，请重新输入');
 
