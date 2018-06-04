@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-
+use File;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
@@ -39,7 +39,13 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        //
+        //加载测试路由
+        if(File::exists(base_path('routes/tests.php'))){
+            //不使用csrf验证
+            Route::middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/tests.php'));
+        }
     }
 
     /**

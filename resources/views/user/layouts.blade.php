@@ -160,7 +160,7 @@
                         <span class="title">{{trans('home.traffic_log')}}</span>
                     </a>
                 </li>
-                @if(Session::get('referral_status'))
+                @if($app_config['referral_status'])
                 <li class="nav-item {{in_array(Request::path(), ['user/referral']) ? 'active open' : ''}}">
                     <a href="{{url('user/referral')}}" class="nav-link nav-toggle">
                         <i class="icon-diamond"></i>

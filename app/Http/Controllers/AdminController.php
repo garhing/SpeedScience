@@ -2152,7 +2152,7 @@ class AdminController extends Controller
                 $send_config['content'] =  $content;
                 $send_config['app_config'] =  $this->config;
                 $message = (new mailReminder($send_config))->subject($title) ->delay($now);
-                \Mail::to($send_config['addr'])->queue($message);
+                \Mail::to($send_config['addr'])->send($message);
 
             }
 

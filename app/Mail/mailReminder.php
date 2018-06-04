@@ -7,10 +7,10 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class mailReminder extends Mailable
+class mailReminder extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-    public $tries = 5;
+    public $tries = 2;
     public $sendConfigs;
     /**
      * Create a new message instance.
@@ -31,8 +31,7 @@ class mailReminder extends Mailable
      */
     public function build()
     {
-
-        return $this->view('emails/mailReminder')->with($this->sendConfigs);
+        return $this->view('emails.narrative.welcome')->with($this->sendConfigs);
     }
 
     /**

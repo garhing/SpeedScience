@@ -119,9 +119,9 @@
                     @if(!Session::get('user'))
                         <ul class="nav navbar-buttons">
                             <li></li>
-                            <li><a href="{{url('/login')}}" class="btn btn-success"
-                                   style="background-color: #5aa700;">登录</a></li>
-                            <li><a href="{{url('/register')}}" class="btn btn-dark">注册</a></li>
+                            <li><a href="{{url('/login')}}" class="btn btn-success login-btn"
+                                   style="background-color: #5aa700;padding:4px 15px; margin: 12px 0;">登录</a></li>
+                            <li><a href="{{url('/register')}}" style="padding:4px 15px; margin: 12px 0;"class="btn btn-dark login-btn">注册</a></li>
                             <li></li>
                         </ul>
                     @endif
