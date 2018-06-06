@@ -87,12 +87,30 @@ class UserController extends Controller
             $request->session()->put('referral_status', $this->config['referral_status']);
         }
 
+        //订阅地址
+        // 如果没有唯一码则生成一个
+        $subscribe = UserSubscribe::query()->where('user_id', $user['id'])->first();
+        if (!$subscribe) {
+            $code = $this->makeSubscribeCode();
+
+            $obj = new UserSubscribe();
+            $obj->user_id = $user['id'];
+            $obj->code = $code;
+            $obj->times = 0;
+            $obj->save();
+        } else {
+            $code = $subscribe->code;
+        }
+
+        $view['subscribe_status'] = !$subscribe ? 1 : $subscribe->status;
+        $view['link'] = $this->config['subscribe_domain'] ? $this->config['subscribe_domain'] . '/s/' . $code : $this->config['website_url'] . '/s/' . $code;
+
         // 节点列表
         $userLabelIds = UserLabel::query()->where('user_id', $user['id'])->pluck('label_id');
         if ($user['status'] ==-1 || $user['enable']<=0 || empty($userLabelIds)) {
             $view['nodeList'] = [];
 
-            return $this->view('user/index', $view);
+            return $this->view('user/user_account', $view);
         }
 
         $nodeList = DB::table('ss_node')
@@ -154,23 +172,8 @@ class UserController extends Controller
         }
 
         $view['nodeList'] = $nodeList;
-        //订阅地址
-        // 如果没有唯一码则生成一个
-        $subscribe = UserSubscribe::query()->where('user_id', $user['id'])->first();
-        if (!$subscribe) {
-            $code = $this->makeSubscribeCode();
 
-            $obj = new UserSubscribe();
-            $obj->user_id = $user['id'];
-            $obj->code = $code;
-            $obj->times = 0;
-            $obj->save();
-        } else {
-            $code = $subscribe->code;
-        }
 
-        $view['subscribe_status'] = !$subscribe ? 1 : $subscribe->status;
-        $view['link'] = $this->config['subscribe_domain'] ? $this->config['subscribe_domain'] . '/s/' . $code : $this->config['website_url'] . '/s/' . $code;
         return $this->view('user/user_account', $view);
     }
 
