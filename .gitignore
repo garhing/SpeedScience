@@ -13,4 +13,4 @@ npm-debug.log
 .DS_Store
 .phpstorm.meta.php
 routes/tests.php
-_ide_helper.php
+/_ide_helper.php

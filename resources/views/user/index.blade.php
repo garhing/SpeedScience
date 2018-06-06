@@ -76,7 +76,7 @@
                                             <a href="#tab_1" data-toggle="tab"> Mac</a>
                                         </li>
                                         <li>
-                                            <a href="#tab_2" data-toggle="tab"> Windowns</a>
+                                            <a href="#tab_2" data-toggle="tab"> Windows</a>
                                         </li>
                                         <li>
                                             <a href="#tab_3" data-toggle="tab"> Android</a>
