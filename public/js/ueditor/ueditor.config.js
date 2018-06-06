@@ -362,7 +362,7 @@
 		//output xss过滤
 		,outputXssFilter: true
 		// xss过滤白名单 名单来源: https://raw.githubusercontent.com/leizongmin/js-xss/master/lib/default.js
-		,whitList: {
+		,whiteList: {
         	div:[],
             iframe:['src','quality','width','height','align','allowScriptAccess','type','frameborder','allowfullscreen'],
             embed:['src','quality','width','height','align','allowScriptAccess','type'],

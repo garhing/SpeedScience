@@ -159,7 +159,7 @@
                                        class="col-md-4 control-label">{{trans('home.payment_method')}}</label>
                                 <div class="col-md-6">
                                     <select class="form-control" name="charge_type" id="charge_type">
-                                        <option value="1" selected>{{trans('home.coupon')}}</option>
+                                        <option value="1" selected>充值券</option>
                                     </select>
                                 </div>
                             </div>
@@ -168,7 +168,7 @@
                                        class="col-md-4 control-label"> {{trans('home.coupon_code')}} </label>
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" name="charge_coupon" id="charge_coupon"
-                                           placeholder="{{trans('home.please_input_coupon')}}">
+                                           placeholder="请输入您的充值码">
                                 </div>
                             </div>
                         </div>
