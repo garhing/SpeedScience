@@ -100,9 +100,9 @@
                                             <td class="center"> {{empty($user->t) ? '未使用' : date('Y-m-d H:i:s', $user->t)}} </td>
                                             <td class="center">
                                                 @if ($user->expireWarning)
-                                                    <span class="label label-warning"> {{$user->expire_time}} </span>
+                                                    <span class="label label-warning"> {{$user->userExpireTime()}}</span>
                                                 @else
-                                                    {{$user->expire_time}}
+                                                    {{$user->userExpireTime()}}
                                                 @endif
                                             </td>
                                             <td>

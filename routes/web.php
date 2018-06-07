@@ -119,6 +119,7 @@ Route::group(['middleware' => ['forbidden', 'user']], function () {
     Route::any('user', 'UserController@index'); // 用户首页
     Route::any('user/index', 'UserController@index'); // 用户首页
     Route::any('user/article', 'UserController@article'); // 文章详情
+    Route::any('user/activeOrder', 'UserController@activeOrder'); // 激活套餐
     Route::any('user/articleList', 'UserController@articleList'); // 文章列表
     Route::any('user/userAccount', 'UserController@userAccount'); // 账户详情
     Route::get('user/subscribe', 'UserController@subscribe'); // 节点订阅

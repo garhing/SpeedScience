@@ -136,6 +136,15 @@
                                         <span class="help-block"> 到期后会自动从总流量扣减对应的流量 </span>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">流量扣减优先级</label>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="order" value="0" id="order" placeholder="" required="">
+                                        </div>
+                                        <span class="help-block">使用的流量扣减顺序,数字越大优先级越高</span>
+                                    </div>
+                                </div>
                                 <div class="form-group last">
                                     <label class="control-label col-md-3">状态</label>
                                     <div class="col-md-6">

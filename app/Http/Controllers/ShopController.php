@@ -42,6 +42,7 @@ class ShopController extends Controller
             $score = $request->get('score', 0);
             $type = $request->get('type', 1);
             $days = $request->get('days', 90);
+            $order = $request->get('order', 0);
             $labels = $request->get('labels');
             $status = $request->get('status');
 
@@ -61,6 +62,13 @@ class ShopController extends Controller
             // 套餐有效天数必须大于90天
             if ($type == 2 && $days < 90) {
                 $request->session()->flash('errorMsg', '套餐有效天数必须不能少于90天');
+
+                return Redirect::back()->withInput();
+            }
+
+            // 优先级必须大于等于0
+            if ($order < 0) {
+                $request->session()->flash('errorMsg', '优先级必须大于等于0');
 
                 return Redirect::back()->withInput();
             }
@@ -93,6 +101,7 @@ class ShopController extends Controller
                 $goods->score = $score;
                 $goods->type = $type;
                 $goods->days = $days;
+                $goods->order = $order;
                 $goods->is_del = 0;
                 $goods->status = $status;
                 $goods->save();
@@ -138,6 +147,7 @@ class ShopController extends Controller
             $desc = $request->get('desc');
             $price = $request->get('price', 0);
             $labels = $request->get('labels');
+            $order = $request->get('order');
             $status = $request->get('status');
 
             $goods = Goods::query()->where('id', $id)->first();
@@ -149,6 +159,13 @@ class ShopController extends Controller
 
             if (empty($name)) {
                 $request->session()->flash('errorMsg', '请填写完整');
+
+                return Redirect::back()->withInput();
+            }
+
+            // 优先级必须大于等于0
+            if ($order < 0) {
+                $request->session()->flash('errorMsg', '优先级必须大于等于0');
 
                 return Redirect::back()->withInput();
             }
@@ -177,7 +194,8 @@ class ShopController extends Controller
                     'desc'   => $desc,
                     'logo'   => $logo,
                     'price'  => $price * 100,
-                    'status' => $status
+                    'status' => $status,
+                    'order' => $order
                 ];
 
                 Goods::query()->where('id', $id)->update($data);

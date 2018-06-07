@@ -7,6 +7,7 @@ use App\Http\Models\Goods;
 use App\Http\Models\Order;
 use App\Http\Models\Payment;
 use App\Http\Models\PaymentCallback;
+use App\Http\Models\User;
 use Illuminate\Http\Request;
 use Response;
 use Redirect;
@@ -22,6 +23,7 @@ class PaymentController extends Controller
         $goods_id = intval($request->get('goods_id'));
         $coupon_sn = $request->get('coupon_sn');
         $user = $request->session()->get('user');
+        $coupon_id = -1;
 
         $goods = Goods::query()->where('id', $goods_id)->where('status', 1)->first();
         if (!$goods) {
@@ -49,6 +51,7 @@ class PaymentController extends Controller
             // 计算实际应支付总价
             $amount = $coupon->type == 2 ? $goods->price * $coupon->discount / 10 : $goods->price - $coupon->amount;
             $amount = $amount > 0 ? $amount : 0;
+            $coupon_id = $coupon->id;
         } else {
             $amount = $goods->price;
         }
@@ -58,59 +61,13 @@ class PaymentController extends Controller
             return $this->json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：合计价格为0，无需使用在线支付']);
         }
 
-        DB::beginTransaction();
-        try {
-            $user = $request->session()->get('user');
-            $orderSn = date('ymdHis') . mt_rand(100000, 999999);
-            $sn = makeRandStr(12);
-
-            // 生成订单
-            $order = new Order();
-            $order->order_sn = $orderSn;
-            $order->user_id = $user['id'];
-            $order->goods_id = $goods_id;
-            $order->coupon_id = !empty($coupon) ? $coupon->id : 0;
-            $order->origin_amount = $goods->price;
-            $order->amount = $amount;
-            $order->expire_at = date("Y-m-d H:i:s", strtotime("+" . $goods->days . " days"));
-            $order->is_expire = 0;
-            $order->pay_way = 2;
-            $order->status = 0;
-            $order->save();
-
-            // 生成支付单
-            $yzy = new Yzy();
-            $result = $yzy->createQrCode($goods->name, $amount * 100, $orderSn);
-            if (isset($result['error_response'])) {
-                Log::error('【有赞云】创建二维码失败：' . $result['error_response']['msg']);
-
-                throw new \Exception($result['error_response']['msg']);
-            }
-
-            $payment = new Payment();
-            $payment->sn = $sn;
-            $payment->user_id = $user['id'];
-            $payment->oid = $order->oid;
-            $payment->order_sn = $orderSn;
-            $payment->pay_way = 1;
-            $payment->amount = $amount;
-            $payment->qr_id = $result['response']['qr_id'];
-            $payment->qr_url = $result['response']['qr_url'];
-            $payment->qr_code = $result['response']['qr_code'];
-            $payment->qr_local_url = $this->base64ImageSaver($result['response']['qr_code']);
-            $payment->status = 0;
-            $payment->save();
-
-            DB::commit();
-
-            return $this->json(['status' => 'success', 'data' => $sn, 'message' => '创建支付单成功']);
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            Log::error('创建支付订单失败：' . $e->getMessage());
-
-            return $this->json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：' . $e->getMessage()]);
+        $result = User::addOrder($user['id'],$goods_id, $coupon_id, $amount,0,2);
+        if($result['status']=='fail'){
+            return $this->json($result);
         }
+        $result['data'] = $result['data']['sn'];
+        $result['message'] = '订单创建成功，正在转到付款页面，请稍后';
+        return $this->json($result);
     }
 
     // 支付单详情

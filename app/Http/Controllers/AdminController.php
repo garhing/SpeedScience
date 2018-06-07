@@ -158,7 +158,7 @@ class AdminController extends Controller
         foreach ($userList as &$user) {
             $user->transfer_enable = flowAutoShow($user->transfer_enable);
             $user->used_flow = flowAutoShow($user->u + $user->d);
-            $user->expireWarning = $user->expire_time <= date('Y-m-d', strtotime("+ 30 days")) ? 1 : 0; // 临近过期提醒
+            $user->expireWarning = Order::getUserExpireTime($user->id)<= date('Y-m-d', strtotime("+ 30 days")) ? 1 : 0; // 临近过期提醒
 
             // 流量异常警告
             $time = date('Y-m-d H:i:s', time() - 24 * 60 * 60);

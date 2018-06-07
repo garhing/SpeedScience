@@ -38,6 +38,7 @@
                                     <!-- <th> 图片 </th> -->
                                     <th> 内含流量 </th>
                                     <th> 售价 </th>
+                                    <th> 到期扣减优先级 </th>
                                     <!-- <th> 所需积分 </th> -->
                                     <th> 状态 </th>
                                     <th style="text-align: center;"> 操作 </th>
@@ -57,6 +58,7 @@
                                             <!-- <td> @if($goods->logo) <a href="{{$goods->logo}}" class="fancybox"><img src="{{$goods->logo}}"/></a> @endif </td> -->
                                             <td> {{$goods->traffic}} </td>
                                             <td> {{$goods->price}}元 </td>
+                                            <td> {{$goods->order}} </td>
                                             <!-- <td> {{$goods->score}} </td> -->
                                             <td>
                                                 @if($goods->status)

@@ -30,6 +30,7 @@ use App\Mail\activeUser;
 use App\Mail\newTicket;
 use App\Mail\replyTicket;
 use App\Mail\resetPassword;
+use App\Mail\userExpireWarning;
 use Illuminate\Http\Request;
 use Redirect;
 use Response;
@@ -74,6 +75,8 @@ class UserController extends Controller
         $user->usedTransfer = flowAutoShow($user->u + $user->d);
         $user->usedPercent = $user->transfer_enable > 0 ? round(($user->u + $user->d) / $user->transfer_enable, 2) : 1;
         $user->levelName = Level::query()->where('level', $user['level'])->first()['level_name'];
+        $user->expireWarning = Order::getUserExpireTime($user->id)<= date('Y-m-d', strtotime("+ 30 days")) ? 1 : 0; // 临近过期提醒
+        $user->expire_time = $user->userExpireTime();
 
         $view['info'] = $user->toArray();
         $view['notice'] = Article::query()->where('type', 2)->where('is_del', 0)->orderBy('id', 'desc')->first();
@@ -106,7 +109,7 @@ class UserController extends Controller
         $view['link'] = $this->config['subscribe_domain'] ? $this->config['subscribe_domain'] . '/s/' . $code : $this->config['website_url'] . '/s/' . $code;
 
         // 节点列表
-        $userLabelIds = UserLabel::query()->where('user_id', $user['id'])->pluck('label_id');
+        $userLabelIds = Order::getUserLabels($user['id']);
         if ($user['status'] ==-1 || $user['enable']<=0 || empty($userLabelIds)) {
             $view['nodeList'] = [];
 
@@ -841,6 +844,7 @@ class UserController extends Controller
 
         $user = $request->session()->get('user');
 
+        $coupon_id = -1;
         if ($request->method() == 'POST') {
             $goods = Goods::query()->with(['label'])->where('id', $goods_id)->where('status', 1)->first();
             if (empty($goods)) {
@@ -857,6 +861,8 @@ class UserController extends Controller
                 // 计算实际应支付总价
                 $amount = $coupon->type == 2 ? $goods->price * $coupon->discount / 10 : $goods->price - $coupon->amount;
                 $amount = $amount > 0 ? $amount : 0;
+
+                $coupon_id = $coupon->id;
             } else {
                 $amount = $goods->price;
             }
@@ -867,123 +873,9 @@ class UserController extends Controller
                 return $this->json(['status' => 'fail', 'data' => '', 'message' => '支付失败：您的余额不足，请先充值']);
             }
 
-            DB::beginTransaction();
-            try {
-                // 生成订单
-                $order = new Order();
-                $order->order_sn = date('ymdHis') . mt_rand(100000, 999999);
-                $order->user_id = $user->id;
-                $order->goods_id = $goods_id;
-                $order->coupon_id = !empty($coupon) ? $coupon->id : 0;
-                $order->origin_amount = $goods->price;
-                $order->amount = $amount;
-                $order->expire_at = date("Y-m-d H:i:s", strtotime("+" . $goods->days . " days"));
-                $order->is_expire = 0;
-                $order->pay_way = 1;
-                $order->status = 2;
-                $order->save();
+            $result = User::addOrder($user->id, $goods_id,$coupon_id, $amount, $status=2, $pay_way=1);
+            return $this->json($result);
 
-                // 扣余额
-                User::query()->where('id', $user->id)->decrement('balance', $amount * 100);
-
-                // 记录余额操作日志
-                $userBalanceLog = new UserBalanceLog();
-                $userBalanceLog->user_id = $user->id;
-                $userBalanceLog->order_id = $order->oid;
-                $userBalanceLog->before = $user->balance;
-                $userBalanceLog->after = $user->balance - $amount;
-                $userBalanceLog->amount = -1 * $amount;
-                $userBalanceLog->desc = '购买服务：' . $goods->name;
-                $userBalanceLog->created_at = date('Y-m-d H:i:s');
-                $userBalanceLog->save();
-
-                // 优惠券置为已使用
-                if (!empty($coupon)) {
-                    if ($coupon->usage == 1) {
-                        $coupon->status = 1;
-                        $coupon->save();
-                    }
-
-                    // 写入日志
-                    $couponLog = new CouponLog();
-                    $couponLog->coupon_id = $coupon->id;
-                    $couponLog->goods_id = $goods_id;
-                    $couponLog->order_id = $order->oid;
-                    $couponLog->save();
-                }
-
-                // 如果买的是套餐，则先将之前购买的所有套餐置都无效，并扣掉之前所有套餐的流量，并移除之前所有套餐的标签
-                if ($goods->type == 2) {
-                    $existOrderList = Order::query()->with('goods')->whereHas('goods', function ($q) {
-                        $q->where('type', 2);
-                    })->where('user_id', $user->id)->where('oid', '<>', $order->oid)->where('is_expire', 0)->where('status', 2)->get();
-                    foreach ($existOrderList as $vo) {
-                        Order::query()->where('oid', $vo->oid)->update(['is_expire' => 1]);
-                        User::query()->where('id', $user->id)->decrement('transfer_enable', $vo->goods->traffic * 1048576);
-
-                        //todo：移除之前套餐的标签（需要注意：有些套餐和流量包用同一个标签，所以移除完套餐的标签后需要补齐流量包的标签）
-                    }
-
-                    // 重置已用流量
-                    User::query()->where('id', $user->id)->update(['u' => 0, 'd' => 0]);
-                }
-
-                // 把商品的流量加到账号上
-                User::query()->where('id', $user->id)->increment('transfer_enable', $goods->traffic * 1048576);
-
-                // 更新账号过期时间、流量重置日
-                User::query()->where('id', $user->id)->update(['enable' => 1, 'status'=>1]);
-                if ($goods->type == 2) {
-                    $traffic_reset_day = in_array(date('d'), [29, 30, 31]) ? 28 : abs(date('d'));
-                    User::query()->where('id', $user->id)->update(['traffic_reset_day' => $traffic_reset_day, 'expire_time' => date('Y-m-d', strtotime("+" . $goods->days . " days"))]);
-                } else {
-                    $lastCanUseDays = floor(round(strtotime($user->expire_time) - strtotime(date('Y-m-d H:i:s'))) / 3600 / 24);
-                    if ($lastCanUseDays < $goods->days) {
-                        User::query()->where('id', $user->id)->update(['expire_time' => date('Y-m-d', strtotime("+" . $goods->days . " days"))]);
-                    }
-                }
-
-                // 写入用户标签
-                if ($goods->label) {
-                    // 取出现有的标签
-                    $userLabels = UserLabel::query()->where('user_id', $user->id)->pluck('label_id')->toArray();
-                    $goodsLabels = GoodsLabel::query()->where('goods_id', $goods_id)->pluck('label_id')->toArray();
-                    $newUserLabels = array_merge($userLabels, $goodsLabels);
-
-                    // 删除用户所有标签
-                    UserLabel::query()->where('user_id', $user->id)->delete();
-
-                    // 生成标签
-                    foreach ($newUserLabels as $vo) {
-                        $obj = new UserLabel();
-                        $obj->user_id = $user->id;
-                        $obj->label_id = $vo;
-                        $obj->save();
-                    }
-                }
-
-                // 写入返利日志
-                if ($user->referral_uid) {
-                    $referralLog = new ReferralLog();
-                    $referralLog->user_id = $user->id;
-                    $referralLog->ref_user_id = $user->referral_uid;
-                    $referralLog->order_id = $order->oid;
-                    $referralLog->amount = $amount;
-                    $referralLog->ref_amount = $amount * $this->config['referral_percent'];
-                    $referralLog->status = 0;
-                    $referralLog->save();
-                }
-
-                DB::commit();
-
-                return $this->json(['status' => 'success', 'data' => '', 'message' => '支付成功']);
-            } catch (\Exception $e) {
-                DB::rollBack();
-
-                Log::error('支付订单失败：' . $e->getMessage());
-
-                return $this->json(['status' => 'fail', 'data' => '', 'message' => '支付失败：' . $e->getMessage()]);
-            }
         } else {
             $goods = Goods::query()->where('id', $goods_id)->where('status', 1)->first();
             if (empty($goods)) {
@@ -1238,6 +1130,37 @@ class UserController extends Controller
         $view['articleList'] = Article::query()->where('is_del', 0)->orderBy('sort', 'desc')->paginate(15)->appends($request->except('page'));
 
         return $this->view('user/articleList', $view);
+
+    }
+
+    public function activeOrder(Request $request){
+        $oid = $request->get('oid');
+        $user = $request->session()->get('user');
+
+        DB::beginTransaction();
+        try {
+
+            $result= Order::updateOrderStatus($oid,2);
+            if($result['status']== 'fail'){
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '激活失败'.$result['message']]);
+            }
+            $result = User::deactiveUserOrder($user['id']);
+            if($result['status']== 'fail'){
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '激活失败'.$result['message']]);
+            }
+
+            $result = User::updateUserStatus($user['id']);
+            if($result['status']== 'fail'){
+                return $this->json(['status' => 'fail', 'data' => '', 'message' => '激活失败'.$result['message']]);
+            }
+
+            DB::commit();
+            return $this->json(['status' => 'success', 'data' => '', 'message' => '激活成功']);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            DB::rollBack();
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '激活失败'.$e->getMessage()]);
+        }
 
     }
 

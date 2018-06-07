@@ -67,7 +67,7 @@
                                         <th> 原价 </th>
                                         <th> 实价 </th>
                                         <th> 支付方式 </th>
-                                        <th> 订单状态 </th>
+                                        <th> 商品状态 </th>
                                         <th> 创建时间 </th>
                                     </tr>
                                 </thead>
@@ -83,21 +83,13 @@
                                                 <td> {{$order->order_sn}} </td>
                                                 <td> {{$order->user->username}} </td>
                                                 <td> {{$order->goods->name}} </td>
-                                                <td> {{$order->is_expire ? '已过期' : $order->expire_at}} </td>
-                                                <td> {{$order->coupon ? $order->coupon->name . ' - ' . $order->coupon->sn : ''}} </td>
+                                                <td> {{$order->expireAt()}} </td>
+                                                <td> {{$order->coupon ? $order->coupon->name . ' - ' . $order->coupon->sn : '无'}} </td>
                                                 <td> ￥{{$order->origin_amount}} </td>
                                                 <td> ￥{{$order->amount}} </td>
-                                                <td> {{$order->pay_way == '1' ? '余额支付' : '有赞云支付'}} </td>
+                                                <td> {{$order->hpayWay()}} </td>
                                                 <td>
-                                                    @if($order->status == '-1')
-                                                        已关闭
-                                                    @elseif ($order->status == '0')
-                                                        待支付
-                                                    @elseif ($order->status == '1')
-                                                        已支付待确认
-                                                    @else
-                                                        已完成
-                                                    @endif
+                                                    {{$order->hstatus()}}
                                                 </td>
                                                 <td> {{$order->created_at}} </td>
                                             </tr>

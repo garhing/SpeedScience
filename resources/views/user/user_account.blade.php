@@ -45,10 +45,7 @@
                             <div class="col-md-12">
                                 <ul class="list-group">
                                     <li class="list-group-item">
-                                        服务状态：{{$info['status']!=-1 ? trans('home.enabled') : trans('home.disabled') }}
-                                    </li>
-                                    <li class="list-group-item">
-                                        账户状态：{{$info['enable'] ? trans('home.enabled') : trans('home.disabled') }}
+                                        SSR状态：{{$info['status']!=-1 ? trans('home.enabled') : trans('home.disabled') }}
                                     </li>
                                     @if($login_add_score)
                                         <li class="list-group-item">
@@ -68,7 +65,11 @@
                                     </li>
                                     <li class="list-group-item">
                                         {{trans('home.account_expire')}}
-                                        ：{{date('Y-m-d 0:0:0') > $info['expire_time'] ? trans('home.expired') : $info['expire_time'].' 24:00:00'}}
+                                        ：@if ($info['expireWarning'])
+                                            <span class="label label-warning">{{$info['expire_time']}}</span>
+                                        @else
+                                            {{$info['expire_time']}}
+                                        @endif
                                     </li>
                                     <li class="list-group-item">
                                         {{trans('home.account_last_usage')}}
@@ -96,13 +97,14 @@
                                 </ul>
                             </div>
                             <div class="col-md-12">
-                            <p style="font-size: 1.2em">根据您购买的服务，下面是您的可用节点。您更新订阅时，客户端服务器列表跟下面保持一致。</p>
-                            <p style="font-size: 1.2em;color: red;">如果您看不到任何节点信息，<b><a href="{{url('user/goodsList')}}">请点我购买服务</a></b> </p>
+                                <p style="font-size: 1.2em">根据您购买的服务，下面是您的可用节点。您更新订阅时，客户端服务器列表跟下面保持一致。</p>
+                                <p style="font-size: 1.2em;color: red;">如果您看不到任何节点信息，<b><a
+                                                href="{{url('user/goodsList')}}">请点我购买服务</a></b></p>
 
                             </div>
-                        @foreach($nodeList as $node)
+                            @foreach($nodeList as $node)
                                 <div class="col-md-6">
-                                    <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 light bordered portlet" >
+                                    <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 light bordered portlet">
                                         <h4 class="widget-thumb-heading">{{$node->name}}</h4>
                                         <div class="widget-thumb-wrap">
                                             <div style="float:left;display: inline-block;padding-right:15px;">
@@ -334,31 +336,32 @@
 
             return false;
         }
+
     </script>
 
     <script type="text/javascript">
         var UIModals = function () {
             var n = function () {
                 @foreach($nodeList as $node)
-                $("#txt_{{$node->id}}").draggable({handle: ".modal-header"});
+            $("#txt_{{$node->id}}").draggable({handle: ".modal-header"});
                 $("#qrcode_{{$node->id}}").draggable({handle: ".modal-header"});
                 @endforeach
-            };
+        };
 
-            return {
-                init: function () {
-                    n()
-                }
+        return {
+            init: function () {
+                n()
             }
-        }();
+        }
+    }();
 
-        jQuery(document).ready(function () {
-            UIModals.init()
-        });
+    jQuery(document).ready(function () {
+        UIModals.init()
+    });
 
-        // 循环输出节点scheme用于生成二维码
-        @foreach ($nodeList as $node)
-        $('#qrcode_ssr_img_{{$node->id}}').qrcode("{{$node->ssr_scheme}}");
+    // 循环输出节点scheme用于生成二维码
+@foreach ($nodeList as $node)
+            $('#qrcode_ssr_img_{{$node->id}}').qrcode("{{$node->ssr_scheme}}");
         $('#qrcode_ss_img_{{$node->id}}').qrcode("{{$node->ss_scheme}}");
         @endforeach
 
@@ -386,5 +389,6 @@
                 layer.close(index);
             });
         }
+
     </script>
 @endsection

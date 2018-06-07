@@ -176,18 +176,18 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label for="default_traffic" class="col-md-3 control-label">初始流量</label>
+                                                            <label for="default_traffic" class="col-md-3 control-label">注册赠送商品ID</label>
                                                             <div class="col-md-9">
                                                                 <div class="input-group">
-                                                                    <input class="form-control" type="text" name="default_traffic" value="{{$default_traffic}}" id="default_traffic" />
-                                                                    <span class="input-group-addon">MiB</span>
+                                                                    <input class="form-control" type="text" name="initial_good_ids" value="{{$app_config['initial_good_ids']}}" id="initial_good_ids" />
                                                                     <span class="input-group-btn">
-                                                                    <button class="btn btn-success" type="button" onclick="setDefaultTraffic()">修改</button>
+                                                                    <button class="btn btn-success" type="button" onclick="setInitialGoodIds()">修改</button>
                                                                 </span>
                                                                 </div>
-                                                                <span class="help-block"> 用户注册时默认可用流量 </span>
+                                                                <span class="help-block"> 注册时系统自动赠送的商品ID，用英文分号分隔 </span>
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="col-md-6">
@@ -264,21 +264,6 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="col-md-6">
-                                                            <label for="initial_labels_for_user" class="col-md-3 control-label">用户初始标签</label>
-                                                            <div class="col-md-9">
-                                                                <select id="initial_labels_for_user" class="form-control select2-multiple" name="initial_labels_for_user" multiple="multiple">
-                                                                    @foreach($label_list as $label)
-                                                                        <option value="{{$label->id}}"
-                                                                            @if (in_array($label->id, explode(',', $initial_labels_for_user)))
-                                                                            selected
-                                                                            @endif
-                                                                        >{{$label->name}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                <span class="help-block"> 注册用户时的初始标签 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
                                                             <label for="register_ip_limit" class="col-md-3 control-label">同IP注册限制</label>
                                                             <div class="col-md-9">
                                                                 <div class="input-group">
@@ -347,16 +332,15 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label for="referral_traffic" class="col-md-3 control-label">注册送流量</label>
+                                                            <label for="referral_traffic" class="col-md-3 control-label">推广赠送商品ID</label>
                                                             <div class="col-md-9">
                                                                 <div class="input-group">
-                                                                    <input class="form-control" type="text" name="referral_gift_traffic" value="{{$referral_traffic}}" id="referral_traffic" />
-                                                                    <span class="input-group-addon">MiB</span>
+                                                                    <input class="form-control" type="text" name="referral_good_ids" value="{{$app_config['referral_good_ids']}}" id="referral_good_ids" />
                                                                     <span class="input-group-btn">
-                                                                    <button class="btn btn-success" type="button" onclick="setReferralTraffic()">修改</button>
+                                                                    <button class="btn btn-success" type="button" onclick="setReferralGoodIds()">修改</button>
                                                                 </span>
                                                                 </div>
-                                                                <span class="help-block"> 根据推广链接注册则送多少流量（叠加在默认流量上） </span>
+                                                                <span class="help-block"> 根据推广链接注册赠送的商品ID，用英文分号分隔 </span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1468,6 +1452,19 @@
             });
         }
 
+        // 推广成功赠送的商品
+        function setReferralGoodIds() {
+            var referral_good_ids = parseInt($("#referral_good_ids").val());
+
+            $.post("{{url('admin/setConfig')}}", {_token:'{{csrf_token()}}', name:'referral_good_ids', value:referral_good_ids}, function (ret) {
+                layer.msg(ret.message, {time:1000}, function() {
+                    if (ret.status == 'fail') {
+                        window.location.reload();
+                    }
+                });
+            });
+        }
+
         // 设置根据推广链接注册人每产生一笔消费，则推广人可以获得的返利比例
         function setReferralPercent() {
             var referral_percent = $("#referral_percent").val();
@@ -1503,5 +1500,18 @@
                 });
             });
         }
+        // 设置返利满多少元才可以提现
+        function setInitialGoodIds() {
+            var initial_good_ids = $("#initial_good_ids").val();
+
+            $.post("{{url('admin/setConfig')}}", {_token:'{{csrf_token()}}', name:'initial_good_ids', value:initial_good_ids}, function (ret) {
+                layer.msg(ret.message, {time:1000}, function() {
+                    if (ret.status == 'fail') {
+                        window.location.reload();
+                    }
+                });
+            });
+        }
+
     </script>
 @endsection
