@@ -11,7 +11,7 @@
  Target Server Version : 50722
  File Encoding         : 65001
 
- Date: 09/06/2018 12:03:37
+ Date: 10/06/2018 05:14:06
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,7 @@ CREATE TABLE `article` (
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for config
@@ -53,7 +53,7 @@ INSERT INTO `config` VALUES (1, 'is_rand_port', '0');
 INSERT INTO `config` VALUES (2, 'is_user_rand_port', '0');
 INSERT INTO `config` VALUES (3, 'invite_num', '20');
 INSERT INTO `config` VALUES (4, 'is_register', '1');
-INSERT INTO `config` VALUES (5, 'is_invite_register', '0');
+INSERT INTO `config` VALUES (5, 'is_invite_register', '1');
 INSERT INTO `config` VALUES (6, 'website_name', '本地开发');
 INSERT INTO `config` VALUES (7, 'is_reset_password', '0');
 INSERT INTO `config` VALUES (8, 'reset_password_times', '3');
@@ -94,7 +94,7 @@ INSERT INTO `config` VALUES (42, 'subscribe_ban_times', '20');
 INSERT INTO `config` VALUES (43, 'paypal_status', '0');
 INSERT INTO `config` VALUES (44, 'paypal_client_id', '');
 INSERT INTO `config` VALUES (45, 'paypal_client_secret', '');
-INSERT INTO `config` VALUES (46, 'is_free_code', '0');
+INSERT INTO `config` VALUES (46, 'is_free_code', '1');
 INSERT INTO `config` VALUES (47, 'is_forbid_robot', '1');
 INSERT INTO `config` VALUES (48, 'subscribe_domain', '');
 INSERT INTO `config` VALUES (49, 'auto_release_port', '0');
@@ -201,23 +201,14 @@ CREATE TABLE `coupon` (
   `goods_ids` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '限定指定商品才能使用',
   `amount` bigint(20) NOT NULL DEFAULT '0' COMMENT '金额，单位分',
   `discount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '折扣',
-  `available_start` int(11) NOT NULL DEFAULT '0' COMMENT '有效期开始',
-  `available_end` int(11) NOT NULL DEFAULT '0' COMMENT '有效期结束',
+  `available_start` int(11) NOT NULL DEFAULT '-1' COMMENT '有效期开始',
+  `available_end` int(11) NOT NULL DEFAULT '-1' COMMENT '有效期结束',
   `is_del` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否已删除：0-未删除、1-已删除',
   `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态：0-未使用、1-已使用',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='优惠券';
-
--- ----------------------------
--- Records of coupon
--- ----------------------------
-BEGIN;
-INSERT INTO `coupon` VALUES (11, '8折优惠券', '', 'KYIWVFJ', 2, 1, NULL, NULL, NULL, 0, 0.80, 1528387200, 1529251199, 0, 0, '2018-06-09 04:22:41', '2018-06-09 04:22:41');
-INSERT INTO `coupon` VALUES (12, '7折抵用券', '', 'F7FCKJU', 1, 1, '1;2', '1;2', '2;3', 1200, 0.00, 1528128000, 1528646399, 0, 0, '2018-06-09 11:26:04', '2018-06-09 11:26:04');
-INSERT INTO `coupon` VALUES (13, '7折抵用券', '', 'MMNAFVJ', 1, 1, '1;2', '1;2', '2;3', 1200, 0.00, 1528128000, 1528646399, 0, 0, '2018-06-09 11:26:04', '2018-06-09 11:26:04');
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='优惠券';
 
 -- ----------------------------
 -- Table structure for coupon_log
@@ -231,14 +222,7 @@ CREATE TABLE `coupon_log` (
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='优惠券使用日志';
-
--- ----------------------------
--- Records of coupon_log
--- ----------------------------
-BEGIN;
-INSERT INTO `coupon_log` VALUES (6, 10, 3, 67, '2018-06-09 00:01:00', '2018-06-09 00:01:00');
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='优惠券使用日志';
 
 -- ----------------------------
 -- Table structure for email_log
@@ -253,7 +237,7 @@ CREATE TABLE `email_log` (
   `error` text COLLATE utf8mb4_unicode_ci COMMENT '发送失败抛出的异常信息',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='邮件投递记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='邮件投递记录';
 
 -- ----------------------------
 -- Table structure for goods
@@ -279,18 +263,7 @@ CREATE TABLE `goods` (
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品信息表';
-
--- ----------------------------
--- Records of goods
--- ----------------------------
-BEGIN;
-INSERT INTO `goods` VALUES (1, 'S00001', '超值包年超级会员', '', 30720, 0, 2, 12900, '有效期一年，获得北美高级VPI服务器使用权限，每个月流量30GB，根据购买日期每月自动重置。', 0, -1, 365, 0, 0, 0, 1, '2018-05-25 16:01:29', '2018-06-05 21:12:36');
-INSERT INTO `goods` VALUES (3, 'S00003', '1GB流量日包测试', '', 1024, 0, 1, 200, '购买后向账户添加流量1GB，该流量包可使用VIP服务器，注意当日失效', 3, -1, 1, 0, 0, 0, 1, '2018-05-26 19:07:41', '2018-06-06 13:17:57');
-INSERT INTO `goods` VALUES (5, 'S00005', '超值季度包', '', 30720, 0, 2, 5000, '获得VIP服务器90天的使用权限，每个月流量30GB，根据购买日期自动重置。', 0, -1, 90, 0, 0, 0, 1, '2018-06-02 12:35:15', '2018-06-02 12:35:15');
-INSERT INTO `goods` VALUES (6, 'S00006', '1GB流量两天体验包', '', 1024, 0, 1, 200, '购买后向账户添加流量1GB，该流量包可使用VIP服务器，注意两天有效期', 0, -1, 2, 0, -1, -1, 1, '2018-06-06 00:07:09', '2018-06-09 04:20:50');
-INSERT INTO `goods` VALUES (8, 'S00008', '25GBVIP高速流量月包', '', 25000, 0, 1, 980, '只要2元，让你畅游整个互联网世界。北美高速VIP服务器稳定安全，4K视频秒开，全局翻墙，支持win,mac，ios,android等主流平台，再也不用为翻墙谷歌烦恼。分享给有需要的优秀的你们。', 1, -1, 30, 0, -1, -1, 1, '2018-06-06 08:29:48', '2018-06-09 04:20:59');
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品信息表';
 
 -- ----------------------------
 -- Table structure for goods_label
@@ -304,21 +277,7 @@ CREATE TABLE `goods_label` (
   KEY `idx` (`goods_id`,`label_id`),
   KEY `idx_goods_id` (`goods_id`),
   KEY `idx_label_id` (`label_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品标签';
-
--- ----------------------------
--- Records of goods_label
--- ----------------------------
-BEGIN;
-INSERT INTO `goods_label` VALUES (30, 1, 1);
-INSERT INTO `goods_label` VALUES (31, 1, 2);
-INSERT INTO `goods_label` VALUES (3, 2, 1);
-INSERT INTO `goods_label` VALUES (39, 3, 1);
-INSERT INTO `goods_label` VALUES (26, 4, 4);
-INSERT INTO `goods_label` VALUES (18, 5, 1);
-INSERT INTO `goods_label` VALUES (55, 6, 1);
-INSERT INTO `goods_label` VALUES (56, 8, 1);
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品标签';
 
 -- ----------------------------
 -- Table structure for invite
@@ -329,12 +288,13 @@ CREATE TABLE `invite` (
   `uid` int(11) NOT NULL DEFAULT '0' COMMENT '邀请人ID',
   `fuid` int(11) NOT NULL DEFAULT '0' COMMENT '受邀人ID',
   `code` char(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '邀请码',
+  `is_free` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否是免费邀请码，免费邀请码不计入推广',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '邀请码状态：0-未使用、1-已使用、2-已过期',
   `dateline` datetime DEFAULT NULL COMMENT '有效期至',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='邀请码表';
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='邀请码表';
 
 -- ----------------------------
 -- Table structure for label
@@ -402,15 +362,7 @@ CREATE TABLE `order` (
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '最后一次更新时间',
   PRIMARY KEY (`oid`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单信息表';
-
--- ----------------------------
--- Records of order
--- ----------------------------
-BEGIN;
-INSERT INTO `order` VALUES (68, '180609015820252298', 1, 6, 0, 200, 200, '2018-06-11 01:58:20', 0, 1, 2, '2018-06-09 01:58:20', '2018-06-09 01:58:20');
-INSERT INTO `order` VALUES (69, '180609015901277958', 1, 1, 0, 12900, 12900, '2019-06-09 01:59:02', 0, 1, 2, '2018-06-09 01:59:01', '2018-06-09 01:59:02');
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单信息表';
 
 -- ----------------------------
 -- Table structure for order_goods
@@ -442,16 +394,7 @@ CREATE TABLE `order_label` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `oid` (`oid`),
   CONSTRAINT `aa` FOREIGN KEY (`oid`) REFERENCES `order` (`oid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of order_label
--- ----------------------------
-BEGIN;
-INSERT INTO `order_label` VALUES (36, 68, 1);
-INSERT INTO `order_label` VALUES (37, 69, 1);
-INSERT INTO `order_label` VALUES (38, 69, 2);
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for payment
@@ -473,7 +416,7 @@ CREATE TABLE `payment` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for payment_callback
@@ -496,7 +439,7 @@ CREATE TABLE `payment_callback` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COMMENT='有赞云回调日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='有赞云回调日志';
 
 -- ----------------------------
 -- Table structure for referral_apply
@@ -533,15 +476,7 @@ CREATE TABLE `referral_log` (
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='消费返利日志';
-
--- ----------------------------
--- Records of referral_log
--- ----------------------------
-BEGIN;
-INSERT INTO `referral_log` VALUES (27, 1, 1, 68, 200, 60, 0, '2018-06-09 01:58:20', '2018-06-09 01:58:20');
-INSERT INTO `referral_log` VALUES (28, 1, 1, 69, 12900, 3870, 0, '2018-06-09 01:59:02', '2018-06-09 01:59:02');
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='消费返利日志';
 
 -- ----------------------------
 -- Table structure for ss_config
@@ -680,14 +615,6 @@ CREATE TABLE `ss_node` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='节点信息表';
 
 -- ----------------------------
--- Records of ss_node
--- ----------------------------
-BEGIN;
-INSERT INTO `ss_node` VALUES (1, '北美高速VIP', 1, 'us', 'vip.us1.izhangxm.com', '67.218.155.138', NULL, '高级会员专用线路1', 'aes-192-ctr', 'auth_chain_a', 'vip.us1.baidu.com', 'tls1.2_ticket_auth', 'baike.baidu.com', 1, 1000, 1000, 'http://speed.izhangxm.com/api/monitor', 1, 0, 0, 0, '', '', '', '', '', 1, 1, '2018-05-25 15:15:52', '2018-05-26 23:26:29');
-INSERT INTO `ss_node` VALUES (2, '免费线路', 2, 'us', NULL, '149.28.37.249', NULL, '免费线路', 'aes-192-ctr', 'auth_chain_a', NULL, 'tls1.2_ticket_auth', NULL, 1, 1000, 1000, NULL, 1, 0, 0, 0, '', '', '', '', '', 1, 1, '2018-05-26 13:08:09', '2018-05-26 13:17:01');
-COMMIT;
-
--- ----------------------------
 -- Table structure for ss_node_info
 -- ----------------------------
 DROP TABLE IF EXISTS `ss_node_info`;
@@ -699,7 +626,7 @@ CREATE TABLE `ss_node_info` (
   `log_time` int(11) NOT NULL COMMENT '记录时间',
   PRIMARY KEY (`id`),
   KEY `idx_node_id` (`node_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=31836 DEFAULT CHARSET=utf8 COMMENT='节点负载信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='节点负载信息';
 
 -- ----------------------------
 -- Table structure for ss_node_label
@@ -715,14 +642,6 @@ CREATE TABLE `ss_node_label` (
   KEY `idx_label_id` (`label_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='节点标签';
 
--- ----------------------------
--- Records of ss_node_label
--- ----------------------------
-BEGIN;
-INSERT INTO `ss_node_label` VALUES (9, 1, 1);
-INSERT INTO `ss_node_label` VALUES (10, 1, 3);
-INSERT INTO `ss_node_label` VALUES (2, 2, 2);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for ss_node_online_log
@@ -735,7 +654,7 @@ CREATE TABLE `ss_node_online_log` (
   `log_time` int(11) NOT NULL COMMENT '记录时间',
   PRIMARY KEY (`id`),
   KEY `idx_node_id` (`node_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=31836 DEFAULT CHARSET=utf8 COMMENT='节点在线信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='节点在线信息';
 
 -- ----------------------------
 -- Table structure for ss_node_traffic_daily
@@ -752,7 +671,7 @@ CREATE TABLE `ss_node_traffic_daily` (
   `updated_at` datetime DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
   KEY `idx_node_id` (`node_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for ss_node_traffic_hourly
@@ -769,7 +688,7 @@ CREATE TABLE `ss_node_traffic_hourly` (
   `updated_at` datetime DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
   KEY `idx_node_id` (`node_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=506 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for ticket
@@ -783,7 +702,7 @@ CREATE TABLE `ticket` (
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态：0-待处理、1-已处理未关闭、2-已关闭',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for ticket_reply
@@ -796,7 +715,7 @@ CREATE TABLE `ticket_reply` (
   `content` text NOT NULL COMMENT '回复内容',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for user
@@ -828,8 +747,8 @@ CREATE TABLE `user` (
   `pay_way` tinyint(4) NOT NULL DEFAULT '0' COMMENT '付费方式：0-免费、1-月付、2-半年付、3-年付',
   `balance` int(11) NOT NULL DEFAULT '0' COMMENT '余额，单位分',
   `score` int(11) NOT NULL DEFAULT '0' COMMENT '积分',
-  `enable_time` date DEFAULT NULL COMMENT '开通日期',
-  `expire_time` date NOT NULL DEFAULT '2099-01-01' COMMENT '过期时间',
+  `enable_time` datetime DEFAULT NULL COMMENT '开通日期',
+  `expire_time` datetime NOT NULL DEFAULT '2099-01-01 12:00:00' COMMENT '过期时间',
   `ban_time` int(11) NOT NULL DEFAULT '0' COMMENT '封禁到期时间',
   `remark` text COMMENT '备注',
   `level` tinyint(4) NOT NULL DEFAULT '1' COMMENT '等级：可定义名称',
@@ -837,20 +756,20 @@ CREATE TABLE `user` (
   `reg_ip` varchar(20) NOT NULL DEFAULT '127.0.0.1' COMMENT '注册IP',
   `last_login` int(11) NOT NULL DEFAULT '0' COMMENT '最后登录时间',
   `referral_uid` int(11) NOT NULL DEFAULT '0' COMMENT '邀请人',
-  `traffic_reset_day` tinyint(4) NOT NULL DEFAULT '0' COMMENT '流量自动重置日，0表示不重置',
+  `traffic_reset_day` varchar(128) NOT NULL DEFAULT '0' COMMENT '流量下次重置日期，0表示不重置',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态：-1-禁用、0-未激活、1-正常',
   `remember_token` varchar(256) DEFAULT '',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `port` (`port`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES (1, 'izhangxm@foxmail.com', '89ac8933ea8e2e5b21ce4a88681ba83c', 10000, 'ParFCe', 33285996544, 0, 0, 1528250915, 1, 'aes-192-ctr', 'aes-192-ctr', 'auth_chain_a', NULL, 'tls1.2_ticket_auth', NULL, 204800, 204800, 1, 'A991671006', '991671006', 1, 3, 905240, 697, '2018-05-25', '2019-06-09', 0, '', 7, 1, '127.0.0.1', 1528261660, 1, 9, 1, 'CpzzR5VD8MTx4gBEuSEm', NULL, '2018-06-09 01:59:02');
+INSERT INTO `user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 10000, 'ParFCe', 1073741824, 0, 0, 1528250915, 1, 'aes-192-ctr', 'aes-192-ctr', 'auth_chain_a', NULL, 'tls1.2_ticket_auth', NULL, 204800, 204800, 1, 'A991671006', '991671006', 1, 3, 900120, 749, '2018-05-25 00:00:00', '2018-07-10 03:31:41', 0, '', 7, 1, '127.0.0.1', 1528532802, 1, '0', 1, 'FM9SCVPWvs7naz8mERTb', NULL, '2018-06-10 04:25:47');
 COMMIT;
 
 -- ----------------------------
@@ -867,26 +786,7 @@ CREATE TABLE `user_balance_log` (
   `desc` varchar(255) DEFAULT '' COMMENT '操作描述',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of user_balance_log
--- ----------------------------
-BEGIN;
-INSERT INTO `user_balance_log` VALUES (31, 1, 53, 993600, 988600, -5000, '购买服务：超值季度包', '2018-06-08 20:11:10');
-INSERT INTO `user_balance_log` VALUES (32, 1, 54, 988600, 975700, -12900, '购买服务：超值包年超级会员', '2018-06-08 20:11:48');
-INSERT INTO `user_balance_log` VALUES (33, 1, 55, 975700, 975500, -200, '购买服务：1GB流量日包测试', '2018-06-08 20:12:25');
-INSERT INTO `user_balance_log` VALUES (34, 1, 60, 975500, 962600, -12900, '购买服务：超值包年超级会员', '2018-06-08 23:23:01');
-INSERT INTO `user_balance_log` VALUES (35, 1, 61, 962600, 949700, -12900, '购买服务：超值包年超级会员', '2018-06-08 23:24:08');
-INSERT INTO `user_balance_log` VALUES (36, 1, 62, 949700, 949500, -200, '购买服务：1GB流量日包测试', '2018-06-08 23:25:05');
-INSERT INTO `user_balance_log` VALUES (37, 1, 63, 949500, 936600, -12900, '购买服务：超值包年超级会员', '2018-06-08 23:26:10');
-INSERT INTO `user_balance_log` VALUES (38, 1, 64, 936600, 936400, -200, '购买服务：1GB流量日包测试', '2018-06-08 23:34:08');
-INSERT INTO `user_balance_log` VALUES (39, 1, 65, 936400, 923500, -12900, '购买服务：超值包年超级会员', '2018-06-08 23:37:39');
-INSERT INTO `user_balance_log` VALUES (40, 1, 66, 923500, 918500, -5000, '购买服务：超值季度包', '2018-06-08 23:45:45');
-INSERT INTO `user_balance_log` VALUES (41, 1, 67, 918500, 918340, -160, '购买服务：1GB流量日包测试', '2018-06-09 00:01:00');
-INSERT INTO `user_balance_log` VALUES (42, 1, 68, 918340, 918140, -200, '购买服务：1GB流量两天体验包', '2018-06-09 01:58:20');
-INSERT INTO `user_balance_log` VALUES (43, 1, 69, 918140, 905240, -12900, '购买服务：超值包年超级会员', '2018-06-09 01:59:02');
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for user_ban_log
@@ -901,7 +801,7 @@ CREATE TABLE `user_ban_log` (
   `created_at` datetime DEFAULT NULL COMMENT ' 创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户封禁日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户封禁日志';
 
 -- ----------------------------
 -- Table structure for user_label
@@ -915,7 +815,7 @@ CREATE TABLE `user_label` (
   KEY `idx` (`user_id`,`label_id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_label_id` (`label_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户标签';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户标签';
 
 -- ----------------------------
 -- Table structure for user_score_log
@@ -931,7 +831,8 @@ CREATE TABLE `user_score_log` (
   `created_at` datetime DEFAULT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
   KEY `idx` (`user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
 
 -- ----------------------------
 -- Table structure for user_subscribe
@@ -948,14 +849,9 @@ CREATE TABLE `user_subscribe` (
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Records of user_subscribe
--- ----------------------------
-BEGIN;
-INSERT INTO `user_subscribe` VALUES (1, 1, 'G3diu', 28, 1, 0, '', '2018-05-25 15:53:43', '2018-06-09 01:59:15');
-COMMIT;
+
 
 -- ----------------------------
 -- Table structure for user_subscribe_log
@@ -969,19 +865,6 @@ CREATE TABLE `user_subscribe_log` (
   `request_header` text COMMENT '请求头部信息',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of user_subscribe_log
--- ----------------------------
-BEGIN;
-INSERT INTO `user_subscribe_log` VALUES (30, 1, '127.0.0.1', '2018-06-09 01:56:13', 'Accept:                    text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Encoding:           gzip, deflate\r\nAccept-Language:           zh-CN,zh;q=0.9,en;q=0.8\r\nConnection:                keep-alive\r\nContent-Length:            \r\nContent-Type:              \r\nCookie:                    remember=eyJpdiI6IkxcLzFDRWxidXBkTUNIb1ZJS0czbWF3PT0iLCJ2YWx1ZSI6InV0Y2kxTVVkbzRwb1ROM1plREFmSDNpT1pxVHlNS0FRdElpZXlRWDl5Tms9IiwibWFjIjoiZGRhOTA2MThlYzAzYmUwMzRmOTMzMGFjNWQwMWJiMDM3ZDQ5NzFjOWQwM2ZmOGI2YzU5MjZkMjhlYTE3Mjg3YSJ9; XSRF-TOKEN=eyJpdiI6IkR2V1J1UEc1aUJUZWk0Y1wvVDliYWJBPT0iLCJ2YWx1ZSI6IktwVlpwZGk3ZDFGeCtRalJHREdMQ0d5XC9WZEtRcmRScUdLMGNTRGVpU0UwSjRKNCszdUhcL01WbFwvUXVHeFlwMmJmYXhBT0Fmbko5cHY4N0VtMVJ1ckJRPT0iLCJtYWMiOiJhYjk1ZDcxNTBkZmQwMDg0ZTVkMjUwNmJhNTlkNWUwM2QzZGQ4M2Y1ZjA1MjYwN2JjODQzZTc2MjI1YjE1ZTFiIn0%3D; ssrpanel_session=eyJpdiI6IlVvMTNjNzVaSW9lRDBIZzkyRG1iWWc9PSIsInZhbHVlIjoiaEladHRPRVdQVW8ybkRkYkE1YjladjVXc25KUXdVVE9yNVYxK3pJWGlObk5PMkZWTnNXeUx6RWtGWGI1MUp1bTFINk1XVnVcL0RtUUEzZE5qQ01yU1ZBPT0iLCJtYWMiOiJjOTY4OTAzYTlhNjBjMGExOGU4YmE5ZjRlZGJjZDVmNmZlOGZkNzBkOWMxYWJlOWM0YjBlNTQwOTBjY2JiNmQ1In0%3D\r\nHost:                      localssr.com\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent:                Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.62 Safari/537.36\r\n');
-INSERT INTO `user_subscribe_log` VALUES (31, 1, '127.0.0.1', '2018-06-09 01:57:02', 'Accept:                    text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Encoding:           gzip, deflate\r\nAccept-Language:           zh-CN,zh;q=0.9,en;q=0.8\r\nCache-Control:             max-age=0\r\nConnection:                keep-alive\r\nContent-Length:            \r\nContent-Type:              \r\nCookie:                    remember=eyJpdiI6IkxcLzFDRWxidXBkTUNIb1ZJS0czbWF3PT0iLCJ2YWx1ZSI6InV0Y2kxTVVkbzRwb1ROM1plREFmSDNpT1pxVHlNS0FRdElpZXlRWDl5Tms9IiwibWFjIjoiZGRhOTA2MThlYzAzYmUwMzRmOTMzMGFjNWQwMWJiMDM3ZDQ5NzFjOWQwM2ZmOGI2YzU5MjZkMjhlYTE3Mjg3YSJ9; XSRF-TOKEN=eyJpdiI6IkR2V1J1UEc1aUJUZWk0Y1wvVDliYWJBPT0iLCJ2YWx1ZSI6IktwVlpwZGk3ZDFGeCtRalJHREdMQ0d5XC9WZEtRcmRScUdLMGNTRGVpU0UwSjRKNCszdUhcL01WbFwvUXVHeFlwMmJmYXhBT0Fmbko5cHY4N0VtMVJ1ckJRPT0iLCJtYWMiOiJhYjk1ZDcxNTBkZmQwMDg0ZTVkMjUwNmJhNTlkNWUwM2QzZGQ4M2Y1ZjA1MjYwN2JjODQzZTc2MjI1YjE1ZTFiIn0%3D; ssrpanel_session=eyJpdiI6IlVvMTNjNzVaSW9lRDBIZzkyRG1iWWc9PSIsInZhbHVlIjoiaEladHRPRVdQVW8ybkRkYkE1YjladjVXc25KUXdVVE9yNVYxK3pJWGlObk5PMkZWTnNXeUx6RWtGWGI1MUp1bTFINk1XVnVcL0RtUUEzZE5qQ01yU1ZBPT0iLCJtYWMiOiJjOTY4OTAzYTlhNjBjMGExOGU4YmE5ZjRlZGJjZDVmNmZlOGZkNzBkOWMxYWJlOWM0YjBlNTQwOTBjY2JiNmQ1In0%3D\r\nHost:                      localssr.com\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent:                Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.62 Safari/537.36\r\n');
-INSERT INTO `user_subscribe_log` VALUES (32, 1, '127.0.0.1', '2018-06-09 01:57:04', 'Accept:                    text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Encoding:           gzip, deflate\r\nAccept-Language:           zh-CN,zh;q=0.9,en;q=0.8\r\nCache-Control:             max-age=0\r\nConnection:                keep-alive\r\nContent-Length:            \r\nContent-Type:              \r\nCookie:                    remember=eyJpdiI6IkxcLzFDRWxidXBkTUNIb1ZJS0czbWF3PT0iLCJ2YWx1ZSI6InV0Y2kxTVVkbzRwb1ROM1plREFmSDNpT1pxVHlNS0FRdElpZXlRWDl5Tms9IiwibWFjIjoiZGRhOTA2MThlYzAzYmUwMzRmOTMzMGFjNWQwMWJiMDM3ZDQ5NzFjOWQwM2ZmOGI2YzU5MjZkMjhlYTE3Mjg3YSJ9; XSRF-TOKEN=eyJpdiI6IkR2V1J1UEc1aUJUZWk0Y1wvVDliYWJBPT0iLCJ2YWx1ZSI6IktwVlpwZGk3ZDFGeCtRalJHREdMQ0d5XC9WZEtRcmRScUdLMGNTRGVpU0UwSjRKNCszdUhcL01WbFwvUXVHeFlwMmJmYXhBT0Fmbko5cHY4N0VtMVJ1ckJRPT0iLCJtYWMiOiJhYjk1ZDcxNTBkZmQwMDg0ZTVkMjUwNmJhNTlkNWUwM2QzZGQ4M2Y1ZjA1MjYwN2JjODQzZTc2MjI1YjE1ZTFiIn0%3D; ssrpanel_session=eyJpdiI6IlVvMTNjNzVaSW9lRDBIZzkyRG1iWWc9PSIsInZhbHVlIjoiaEladHRPRVdQVW8ybkRkYkE1YjladjVXc25KUXdVVE9yNVYxK3pJWGlObk5PMkZWTnNXeUx6RWtGWGI1MUp1bTFINk1XVnVcL0RtUUEzZE5qQ01yU1ZBPT0iLCJtYWMiOiJjOTY4OTAzYTlhNjBjMGExOGU4YmE5ZjRlZGJjZDVmNmZlOGZkNzBkOWMxYWJlOWM0YjBlNTQwOTBjY2JiNmQ1In0%3D\r\nHost:                      localssr.com\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent:                Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.62 Safari/537.36\r\n');
-INSERT INTO `user_subscribe_log` VALUES (33, 1, '127.0.0.1', '2018-06-09 01:57:14', 'Accept:                    text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Encoding:           gzip, deflate\r\nAccept-Language:           zh-CN,zh;q=0.9,en;q=0.8\r\nCache-Control:             max-age=0\r\nConnection:                keep-alive\r\nContent-Length:            \r\nContent-Type:              \r\nCookie:                    remember=eyJpdiI6IkxcLzFDRWxidXBkTUNIb1ZJS0czbWF3PT0iLCJ2YWx1ZSI6InV0Y2kxTVVkbzRwb1ROM1plREFmSDNpT1pxVHlNS0FRdElpZXlRWDl5Tms9IiwibWFjIjoiZGRhOTA2MThlYzAzYmUwMzRmOTMzMGFjNWQwMWJiMDM3ZDQ5NzFjOWQwM2ZmOGI2YzU5MjZkMjhlYTE3Mjg3YSJ9; XSRF-TOKEN=eyJpdiI6IkR2V1J1UEc1aUJUZWk0Y1wvVDliYWJBPT0iLCJ2YWx1ZSI6IktwVlpwZGk3ZDFGeCtRalJHREdMQ0d5XC9WZEtRcmRScUdLMGNTRGVpU0UwSjRKNCszdUhcL01WbFwvUXVHeFlwMmJmYXhBT0Fmbko5cHY4N0VtMVJ1ckJRPT0iLCJtYWMiOiJhYjk1ZDcxNTBkZmQwMDg0ZTVkMjUwNmJhNTlkNWUwM2QzZGQ4M2Y1ZjA1MjYwN2JjODQzZTc2MjI1YjE1ZTFiIn0%3D; ssrpanel_session=eyJpdiI6IlVvMTNjNzVaSW9lRDBIZzkyRG1iWWc9PSIsInZhbHVlIjoiaEladHRPRVdQVW8ybkRkYkE1YjladjVXc25KUXdVVE9yNVYxK3pJWGlObk5PMkZWTnNXeUx6RWtGWGI1MUp1bTFINk1XVnVcL0RtUUEzZE5qQ01yU1ZBPT0iLCJtYWMiOiJjOTY4OTAzYTlhNjBjMGExOGU4YmE5ZjRlZGJjZDVmNmZlOGZkNzBkOWMxYWJlOWM0YjBlNTQwOTBjY2JiNmQ1In0%3D\r\nHost:                      localssr.com\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent:                Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.62 Safari/537.36\r\n');
-INSERT INTO `user_subscribe_log` VALUES (34, 1, '127.0.0.1', '2018-06-09 01:57:48', 'Accept:                    text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Encoding:           gzip, deflate\r\nAccept-Language:           zh-CN,zh;q=0.9,en;q=0.8\r\nCache-Control:             max-age=0\r\nConnection:                keep-alive\r\nContent-Length:            \r\nContent-Type:              \r\nCookie:                    remember=eyJpdiI6IkxcLzFDRWxidXBkTUNIb1ZJS0czbWF3PT0iLCJ2YWx1ZSI6InV0Y2kxTVVkbzRwb1ROM1plREFmSDNpT1pxVHlNS0FRdElpZXlRWDl5Tms9IiwibWFjIjoiZGRhOTA2MThlYzAzYmUwMzRmOTMzMGFjNWQwMWJiMDM3ZDQ5NzFjOWQwM2ZmOGI2YzU5MjZkMjhlYTE3Mjg3YSJ9; XSRF-TOKEN=eyJpdiI6IkR2V1J1UEc1aUJUZWk0Y1wvVDliYWJBPT0iLCJ2YWx1ZSI6IktwVlpwZGk3ZDFGeCtRalJHREdMQ0d5XC9WZEtRcmRScUdLMGNTRGVpU0UwSjRKNCszdUhcL01WbFwvUXVHeFlwMmJmYXhBT0Fmbko5cHY4N0VtMVJ1ckJRPT0iLCJtYWMiOiJhYjk1ZDcxNTBkZmQwMDg0ZTVkMjUwNmJhNTlkNWUwM2QzZGQ4M2Y1ZjA1MjYwN2JjODQzZTc2MjI1YjE1ZTFiIn0%3D; ssrpanel_session=eyJpdiI6IlVvMTNjNzVaSW9lRDBIZzkyRG1iWWc9PSIsInZhbHVlIjoiaEladHRPRVdQVW8ybkRkYkE1YjladjVXc25KUXdVVE9yNVYxK3pJWGlObk5PMkZWTnNXeUx6RWtGWGI1MUp1bTFINk1XVnVcL0RtUUEzZE5qQ01yU1ZBPT0iLCJtYWMiOiJjOTY4OTAzYTlhNjBjMGExOGU4YmE5ZjRlZGJjZDVmNmZlOGZkNzBkOWMxYWJlOWM0YjBlNTQwOTBjY2JiNmQ1In0%3D\r\nHost:                      localssr.com\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent:                Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.62 Safari/537.36\r\n');
-INSERT INTO `user_subscribe_log` VALUES (35, 1, '127.0.0.1', '2018-06-09 01:58:37', 'Accept:                    text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Encoding:           gzip, deflate\r\nAccept-Language:           zh-CN,zh;q=0.9,en;q=0.8\r\nCache-Control:             max-age=0\r\nConnection:                keep-alive\r\nContent-Length:            \r\nContent-Type:              \r\nCookie:                    remember=eyJpdiI6IkxcLzFDRWxidXBkTUNIb1ZJS0czbWF3PT0iLCJ2YWx1ZSI6InV0Y2kxTVVkbzRwb1ROM1plREFmSDNpT1pxVHlNS0FRdElpZXlRWDl5Tms9IiwibWFjIjoiZGRhOTA2MThlYzAzYmUwMzRmOTMzMGFjNWQwMWJiMDM3ZDQ5NzFjOWQwM2ZmOGI2YzU5MjZkMjhlYTE3Mjg3YSJ9; XSRF-TOKEN=eyJpdiI6IjhSSTRjTGl6TDJCbm9YZ3JCQVl3VkE9PSIsInZhbHVlIjoiUlNlNStBaU9cL1RWYThRTXJIZ1BCeHRsQjVYYXRNaXVBTnM2VVJPS0IwTExHRkJIcnBYN1pBc21sVFpvOUN4WWx0cHBNYVRWQUZRZ3hPdXVGR01YYXpBPT0iLCJtYWMiOiJhNzY0N2QzZDNmNDFhZWVjNGUwOTM5MWU2YmRhNjRkNjZmMjI4ZmE3OTdmYTc0ZWQwZjJkNmRmYjcyOTczZGZhIn0%3D; ssrpanel_session=eyJpdiI6IlMxMkI1RFpcL3pxOTFtZUxqVzA3c1VRPT0iLCJ2YWx1ZSI6IlwvS1wvc3puQWkxbG16aFMyTmFlS3FpazBYWWJWdnJPeVFJQ1dNeDRaQkJSOTFUa2QyNkQwb2pXZ25iWmxJcFNjNCtcLzdrM0hObXNwNWNlREhjUTRpaitBPT0iLCJtYWMiOiJjYzM1MmY0Mzg4ZmE0NTYwMGMzZTE2NDkxOTVjODkwYjYyYjVmMGFhYjY2ZDcwMjliZGFmY2I0OTBlMWM1N2EzIn0%3D\r\nHost:                      localssr.com\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent:                Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.62 Safari/537.36\r\n');
-INSERT INTO `user_subscribe_log` VALUES (36, 1, '127.0.0.1', '2018-06-09 01:59:18', 'Accept:                    text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Encoding:           gzip, deflate\r\nAccept-Language:           zh-CN,zh;q=0.9,en;q=0.8\r\nCache-Control:             max-age=0\r\nConnection:                keep-alive\r\nContent-Length:            \r\nContent-Type:              \r\nCookie:                    remember=eyJpdiI6IkxcLzFDRWxidXBkTUNIb1ZJS0czbWF3PT0iLCJ2YWx1ZSI6InV0Y2kxTVVkbzRwb1ROM1plREFmSDNpT1pxVHlNS0FRdElpZXlRWDl5Tms9IiwibWFjIjoiZGRhOTA2MThlYzAzYmUwMzRmOTMzMGFjNWQwMWJiMDM3ZDQ5NzFjOWQwM2ZmOGI2YzU5MjZkMjhlYTE3Mjg3YSJ9; XSRF-TOKEN=eyJpdiI6IkVcLzJHYnNzNnBodmN2NzZ4UDllRnFBPT0iLCJ2YWx1ZSI6InpYZzZWbU5lMzZ6djJibHdFUkZWbkZLMTh5UFdPdXc1dnppSnM0MDAyMDlzZHFiWFR6XC80MTR2WkJsN3JwbVQrV1lLaGhET2lqMVFJTm9DcWtCWnpuQT09IiwibWFjIjoiNzE4YTM0OGFhMjNiYWQyZjllZmI5ODdmNjNkZDQ2MzNiNDdhMTQyZjRhYWE1MThkNDk4MmY3MmE4NmE1ZDkxNiJ9; ssrpanel_session=eyJpdiI6IjArNXNmSUhOdTUrMVEzNytiVjRBWEE9PSIsInZhbHVlIjoieGhJZllITnArVFcxd1liNkNBY1NIQ2RJZ3JzZ1wvZWkxUE1JXC9KSG5OY1pBZTFUSzJnTk94QXJ0ZUtMeUJ0aU9iWmwxc0hNOUx3ZUZHWFQxYjQ4UTN4Zz09IiwibWFjIjoiOTE2MWYzNTJmOWZhNzI3MDY3NTM4NGI2ZTkwZDQ4OGMxMWJlMGVjNDVmOTYyNTY0ZmM4NGFjM2FiZGM4Y2NhZCJ9\r\nHost:                      localssr.com\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent:                Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.62 Safari/537.36\r\n');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for user_traffic_daily
@@ -1000,7 +883,7 @@ CREATE TABLE `user_traffic_daily` (
   PRIMARY KEY (`id`),
   KEY `idx_user` (`user_id`) USING BTREE,
   KEY `idx_user_node` (`user_id`,`node_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for user_traffic_hourly
@@ -1019,7 +902,7 @@ CREATE TABLE `user_traffic_hourly` (
   PRIMARY KEY (`id`),
   KEY `idx_user` (`user_id`) USING BTREE,
   KEY `idx_user_node` (`user_id`,`node_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1544 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for user_traffic_log
@@ -1038,7 +921,7 @@ CREATE TABLE `user_traffic_log` (
   KEY `idx_user` (`user_id`),
   KEY `idx_node` (`node_id`),
   KEY `idx_user_node` (`user_id`,`node_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=715 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for verify
@@ -1053,6 +936,6 @@ CREATE TABLE `verify` (
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -503,9 +503,9 @@ class UserController extends Controller
     // 公开的邀请码列表
     public function free(Request $request)
     {
-                        $view['is_invite_register'] = $this->config['is_invite_register'];
+        $view['is_invite_register'] = $this->config['is_invite_register'];
         $view['is_free_code'] = $this->config['is_free_code'];
-        $view['inviteList'] = Invite::query()->where('uid', 1)->where('status', 0)->paginate();
+        $view['inviteList'] = Invite::query()->where('is_free', 1)->where('status', 0)->paginate();
 
         return $this->view('user/free', $view);
     }
@@ -524,6 +524,7 @@ class UserController extends Controller
         $obj = new Invite();
         $obj->uid = $user['id'];
         $obj->fuid = 0;
+        $obj->is_free = 0;
         $obj->code = strtoupper(mb_substr(md5(microtime() . makeRandStr()), 8, 12));
         $obj->status = 0;
         $obj->dateline = date('Y-m-d H:i:s', strtotime("+7 days"));

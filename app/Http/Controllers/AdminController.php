@@ -1793,11 +1793,12 @@ class AdminController extends Controller
     public function makeInvite(Request $request)
     {
         $user = $request->session()->get('user');
-
+        $is_free = $request->get('is_free',0);
         for ($i = 0; $i < 5; $i++) {
             $obj = new Invite();
             $obj->uid = $user['id'];
             $obj->fuid = 0;
+            $obj->is_free = $is_free;
             $obj->code = strtoupper(substr(md5(microtime() . makeRandStr()), 8, 12));
             $obj->status = 0;
             $obj->dateline = date('Y-m-d H:i:s', strtotime("+ 7days"));
