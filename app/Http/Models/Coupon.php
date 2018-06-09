@@ -88,7 +88,7 @@ class Coupon extends Model
 
     // 卡券合法性检验:卡券号码，用于的商品，使用人
     static function isAvaliable2($coupon_sn,$goods_id,$user_id){
-        $coupon = Coupon::query()->where('sn',$coupon_sn)->first();
+        $coupon = Coupon::query()->where(['sn'=>$coupon_sn,'is_del'=>0])->first();
         if(!$coupon){
             return ['status' => 'fail', 'data' => false, 'message' => '该卡券不存在'];
         }
@@ -99,14 +99,17 @@ class Coupon extends Model
     static function isAvaliable($coupon_id,$goods_id,$user_id){
 
         try {
-            $coupon = Coupon::query()->find($coupon_id);
+            $coupon = Coupon::query()->where(['id'=>$coupon_id,'is_del'=>0])->first();
             if(!$coupon){
                 throw new Exception('该卡券不存在');
             }
 
-            $result = Goods::isAvaliable($goods_id);
-            if($result['status']=='fail'){
-                throw new Exception($result['message']);
+            if($coupon->type == 1 || $coupon->type ==2){
+                //如果是折扣券和抵用券(充值券和其他类型的券暂时不检查商品信息)
+                $result = Goods::isAvaliable($goods_id);
+                if($result['status']=='fail'){
+                    throw new Exception($result['message']);
+                }
             }
 
             $user = User::query()->find($user_id);
@@ -114,21 +117,27 @@ class Coupon extends Model
                 throw new Exception('该用户不存在');
             }
 
-            //检测是否可用于该商品
-            $coupon_goods_ids = $coupon->goods_ids;
-            if($coupon_goods_ids){
-                $coupon_goods_ids = explode(';', $coupon_goods_ids);
-                if(!in_array($goods_id,$coupon_goods_ids)){
-                    throw new Exception('该卡券不适用于该商品');
+            if($coupon->type == 1 || $coupon->type ==2) {
+                //如果是折扣券和抵用券(充值券和其他类型的券暂时不检查商品信息)
+                //检测是否可用于该商品
+                $coupon_goods_ids = $coupon->goods_ids;
+                if ($coupon_goods_ids) {
+                    $coupon_goods_ids = explode(';', $coupon_goods_ids);
+                    if (!in_array($goods_id, $coupon_goods_ids)) {
+                        throw new Exception('该卡券不适用于该商品');
+                    }
                 }
             }
 
-            $goods = Goods::query()->find($goods_id);
-            $coupon_goods_types = $coupon->goods_types;
-            if($coupon_goods_types){
-                $coupon_goods_types = explode(';', $coupon_goods_types);
-                if(!in_array($goods->type,$coupon_goods_types)){
-                    throw new Exception('该卡券不适用于该类型的商品');
+            if($coupon->type == 1 || $coupon->type ==2) {
+                //如果是折扣券和抵用券(充值券和其他类型的券暂时不检查商品信息)
+                $goods = Goods::query()->find($goods_id);
+                $coupon_goods_types = $coupon->goods_types;
+                if ($coupon_goods_types) {
+                    $coupon_goods_types = explode(';', $coupon_goods_types);
+                    if (!in_array($goods->type, $coupon_goods_types)) {
+                        throw new Exception('该卡券不适用于该类型的商品');
+                    }
                 }
             }
 

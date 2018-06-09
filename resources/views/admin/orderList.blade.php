@@ -36,6 +36,7 @@
                             <div class="col-md-2 col-sm-2">
                                 <select class="form-control input-sm" name="pay_way" id="pay_way" onchange="doSearch()">
                                     <option value="" @if(Request::get('pay_way') == '') selected @endif>支付方式</option>
+                                    <option value="0" @if(Request::get('pay_way') == '0') selected @endif>系统支付</option>
                                     <option value="1" @if(Request::get('pay_way') == '1') selected @endif>余额支付</option>
                                     <option value="2" @if(Request::get('pay_way') == '2') selected @endif>有赞云支付</option>
                                 </select>

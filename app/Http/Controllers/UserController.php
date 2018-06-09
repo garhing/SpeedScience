@@ -1037,10 +1037,17 @@ class UserController extends Controller
             return $this->json(['status' => 'fail', 'data' => '', 'message' => '券码不能为空']);
         }
 
-        $coupon = Coupon::query()->where('sn', $coupon_sn)->where('type', 3)->where('is_del', 0)->where('status', 0)->first();
-        if (!$coupon) {
-            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该券不可用']);
+        $coupon = Coupon::query()->where('sn', $coupon_sn)->first();
+        // 验证是否是充值券
+        if($coupon && $coupon->type != 3){
+            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该券码不是充值券']);
         }
+
+        $result = Coupon::isAvaliable2($coupon_sn,-1,$user['id']);
+        if($result['status'] == 'fail'){
+            return $this->json($result);
+        }
+
 
         DB::beginTransaction();
         try {
@@ -1062,6 +1069,9 @@ class UserController extends Controller
             $user->save();
 
             // 更改卡券状态
+            if($coupon->usage >0){
+                $coupon->usage -= 1;
+            }
             $coupon->status = 1;
             $coupon->save();
 

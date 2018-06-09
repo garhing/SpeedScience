@@ -221,7 +221,7 @@ class Order extends Model
 
             if($status == -1 || $status == 0){
                 //订单关闭和在线支付较为特殊
-                $result = Order::updateOrderStatus($order->oid, $s);
+                $result = Order::updateOrderStatus($order->oid, $status);
                 if ($result['status'] == 'fail') {
                     return $result;
                 }

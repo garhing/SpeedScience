@@ -58,18 +58,18 @@ class User extends Model
     public static function addOrder($uid, $goods_id, $coupon_sn=-1, $status = 0, $pay_way = 0)
     {
 
-        $goods = Goods::query()->find($goods_id);
         $user = User::query()->find($uid);
-
+        $coupon_id = 0;
         DB::beginTransaction();
         try {
 
             // 检测商品可用状态
-            $result = Goods::isAvaliable($goods->id);
+            $result = Goods::isAvaliable($goods_id);
             if($result['status'] == 'fail'){
                 throw new Exception($result['message']);
             }
 
+            $goods = Goods::query()->find($goods_id);
             // 如果使用优惠券
             if ($coupon_sn!=-1 && !empty($coupon_sn)) {
                 $result = Coupon::isAvaliable2($coupon_sn,$goods_id,$uid);
@@ -80,7 +80,7 @@ class User extends Model
                 // 计算实际应支付总价
                 $amount = $coupon->type == 2 ? $goods->price * $coupon->discount / 10 : $goods->price - $coupon->amount;
                 $amount = $amount > 0 ? $amount : 0;
-
+                $coupon_id = $coupon->id;
             } else {
                 $amount = $goods->price;
             }
@@ -97,10 +97,6 @@ class User extends Model
             }
 
             $sn = makeRandStr(12); // 有赞云随机码
-            if($pay_way ==2){
-                // 如果是有赞云支付，这一步仅仅创建订单，并设置为未支付
-                $status = 0;
-            }
 
             //***************************************************************************************
             // 生成订单
@@ -108,7 +104,7 @@ class User extends Model
             $order->order_sn = date('ymdHis') . mt_rand(100000, 999999);
             $order->user_id = $uid;
             $order->goods_id = $goods->id;
-            $order->coupon_id = !empty($coupon) ? $coupon->id : 0;
+            $order->coupon_id = $coupon_id;
             $order->origin_amount = $goods->price;
             $order->amount = $amount;
             $order->expire_at = null; //默认为空，有订单状态升级接口统一升级
@@ -146,7 +142,7 @@ class User extends Model
                 $payment->user_id = $user['id'];
                 $payment->oid = $order->oid;
                 $payment->order_sn = $order->order_sn;
-                $payment->pay_way = 1;
+                $payment->pay_way = 2;
                 $payment->amount = $amount;
                 $payment->qr_id = $result['response']['qr_id'];
                 $payment->qr_url = $result['response']['qr_url'];

@@ -129,6 +129,12 @@
                         <span class="title">商品管理</span>
                     </a>
                 </li>
+                <li class="nav-item {{in_array(Request::path(), ['shop/presentGoods']) ? 'active open' : ''}}">
+                    <a href="{{url('shop/presentGoods')}}" class="nav-link nav-toggle">
+                        <i class="fa fa-gift"></i>
+                        <span class="title">赠送商品</span>
+                    </a>
+                </li>
                 <li class="nav-item {{in_array(Request::path(), ['coupon/couponList', 'coupon/addCoupon', 'coupon/editCoupon']) ? 'active open' : ''}}">
                     <a href="{{url('coupon/couponList')}}" class="nav-link nav-toggle">
                         <i class="fa fa-ticket"></i>

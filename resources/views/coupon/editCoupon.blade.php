@@ -78,14 +78,14 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group {{$coupon->type==3?'hide':''}}" id="goods_ids_form">
                                     <label class="control-label col-md-3">固定商品</label>
                                     <div class="col-md-4">
                                         <input type="text" class="form-control" name="goods_ids" value="{{$coupon->goods_ids}}" id="goods_ids" placeholder="填写商品ID，用英文分号分隔">
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group  {{$coupon->type==3?'hide':''}}" id="goods_types_form">
                                     <label class="control-label col-md-3">商品类型</label>
                                     <div class="col-md-4">
                                         <input type="text" class="form-control" name="goods_types" value="{{$coupon->goods_types}}" id="goods_types" placeholder="填写商品类型数字，用英文分号分隔">
@@ -185,14 +185,23 @@
                 $("#amount").prop('required', 'required');
                 $("#discount").removeAttr('required');
                 $("#discount").val(discount);
-            } else {
+            } else  if (type == '2' ){
                 $("#amount").parent("div").parent("div").parent("div").addClass("hide");
                 $("#discount").parent("div").parent("div").parent("div").removeClass("hide");
                 $("#discount").prop('required', 'required');
                 $("#amount").removeAttr('required');
                 $("#amount").val(amount);
             }
+            if(type == '3'){
+                $('#goods_ids_form').addClass('hide');
+                $('#goods_types_form').addClass('hide');
+            }
+            if (type == '1' || type == '2'){
+                $('#goods_ids_form').removeClass('hide');
+                $('#goods_types_form').removeClass('hide');
+            }
         });
+
 
         available_start = "{{ $is_date?$coupon->available_start():date('Y-m-d h:i:00')}}"
         available_end = "{{ $is_date?$coupon->available_end():date('Y-m-d h:i:00',strtotime('+ 180 days'))}}"

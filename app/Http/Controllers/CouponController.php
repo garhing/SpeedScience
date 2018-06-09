@@ -172,17 +172,14 @@ class CouponController extends Controller
                 }
 
                 DB::commit();
-
                 $request->session()->flash('successMsg', '生成成功');
+                return Redirect::to('coupon/couponList');
             } catch (\Exception $e) {
                 DB::rollBack();
-
                 Log::error('生成优惠券失败：' . $e->getMessage());
-
                 $request->session()->flash('errorMsg', '生成失败：' . $e->getMessage());
+                return Redirect::to('coupon/addCoupon');
             }
-
-            return Redirect::to('coupon/addCoupon');
         } else {
             return $this->view('coupon/addCoupon');
         }

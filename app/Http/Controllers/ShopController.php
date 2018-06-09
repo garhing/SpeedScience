@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Models\Goods;
 use App\Http\Models\GoodsLabel;
 use App\Http\Models\Label;
+use App\Http\Models\User;
 use Illuminate\Http\Request;
+use Mockery\Exception;
 use Response;
 use Redirect;
 use DB;
@@ -45,8 +47,8 @@ class ShopController extends Controller
             $order = $request->get('order', 0);
             $number = $request->get('number', -1);
             $labels = $request->get('labels');
-            $available_start = $request->get('available_start',-1);
-            $available_end = $request->get('available_end',-1);
+            $available_start = $request->get('available_start', -1);
+            $available_end = $request->get('available_end', -1);
             $status = $request->get('status');
 
 
@@ -160,8 +162,8 @@ class ShopController extends Controller
             $price = $request->get('price', 0);
             $labels = $request->get('labels');
             $order = $request->get('order');
-            $available_start = $request->get('available_start',-1);
-            $available_end = $request->get('available_end',-1);
+            $available_start = $request->get('available_start', -1);
+            $available_end = $request->get('available_end', -1);
             $status = $request->get('status');
 
 
@@ -209,11 +211,11 @@ class ShopController extends Controller
             DB::beginTransaction();
             try {
                 $data = [
-                    'name'   => $name,
-                    'number'   => $number,
-                    'desc'   => $desc,
-                    'logo'   => $logo,
-                    'price'  => $price * 100,
+                    'name' => $name,
+                    'number' => $number,
+                    'desc' => $desc,
+                    'logo' => $logo,
+                    'price' => $price * 100,
                     'status' => $status,
                     'available_start' => $available_start,
                     'available_end' => $available_end,
@@ -256,7 +258,7 @@ class ShopController extends Controller
             }
 
             $view['goods'] = $goods;
-            $view['is_date'] = ($goods->available_start==-1 && $goods->available_end==-1)?0:1;
+            $view['is_date'] = ($goods->available_start == -1 && $goods->available_end == -1) ? 0 : 1;
             $view['label_list'] = Label::query()->orderBy('sort', 'desc')->orderBy('id', 'asc')->get();
 
             return $this->view('shop/editGoods', $view);
@@ -272,4 +274,48 @@ class ShopController extends Controller
 
         return $this->json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
     }
+
+    //商品赠送功能
+    public function presentGoods(Request $request)
+    {
+
+        if ($request->method() == 'POST') {
+
+            DB::beginTransaction();
+            try {
+
+                $user_ids = $request->get('user_ids');
+                $goods_ids = $request->get('goods_ids');
+                $status = $request->get('status');
+
+                $user_ids = explode(';', $user_ids);
+                $goods_ids = explode(';', $goods_ids);
+
+                foreach ($user_ids as $user_id) {
+                    foreach ($goods_ids as $goods_id) {
+
+                        $result = User::addOrder($user_id, $goods_id, $coupon_sn = -1, $status = $status, $pay_way = 0);
+                        if($result['status'] == 'fail'){
+                            throw  new Exception($result['message']);
+                        }
+                    }
+                }
+                $request->session()->flash('successMsg', '操作成功：');
+                DB::commit();
+                return Redirect::back();
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $request->session()->flash('errorMsg', '操作失败：' . $e->getMessage());
+                return Redirect::back()->withInput();
+            }
+
+
+        } else {
+
+            return $this->view('shop/presentGoods');
+        }
+
+    }
+
 }
