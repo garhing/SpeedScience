@@ -59,14 +59,14 @@ class Coupon extends Model
 
     function available_start(){
         if($this->attributes['available_start'] != -1){
-            return date('Y-m-d',$this->attributes['available_start']);
+            return date('Y-m-d h:i:s',$this->attributes['available_start']);
         }
         return $this->attributes['available_start'];
     }
 
     function available_end(){
         if($this->attributes['available_end'] != -1){
-            return date('Y-m-d',$this->attributes['available_end']);
+            return date('Y-m-d h:i:s',$this->attributes['available_end']);
         }
         return $this->attributes['available_end'];
     }
@@ -75,14 +75,14 @@ class Coupon extends Model
         if($this->attributes['available_start'] < 100){
             return '未指定：正在生效';
         }
-        return date('Y-m-d 00:00:00',$this->attributes['available_start']);
+        return date('Y-m-d h:i:s',$this->attributes['available_start']);
 
     }
     function havailable_end(){
         if($this->attributes['available_end'] < 100){
             return '未指定：永不结束';
         }
-        return date('Y-m-d 23:59:59',$this->attributes['available_end']);
+        return date('Y-m-d h:i:s',$this->attributes['available_end']);
 
     }
 

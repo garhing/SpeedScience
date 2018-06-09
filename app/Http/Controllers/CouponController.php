@@ -49,14 +49,14 @@ class CouponController extends Controller
             $amount = $request->get('amount',$coupon->amount);
             $discount = $request->get('discount',$coupon->discount);
 
-            $available_start = $request->get('available_start');
-            $available_end = $request->get('available_end');
+            $available_start = $request->get('available_start',-1);
+            $available_end = $request->get('available_end',-1);
 
-            $available_start = $available_start == -1 ? $available_start : strtotime(date('Y-m-d 0:0:0', strtotime($available_start)));
-            $available_end = $available_end == -1 ? $available_end : strtotime(date('Y-m-d 23:59:59', strtotime($available_end)));
+            $available_start = $available_start == -1 ? $available_start : strtotime(date('Y-m-d h:i:00', strtotime($available_start)));
+            $available_end = $available_end == -1 ? $available_end : strtotime(date('Y-m-d h:i:00', strtotime($available_end)));
 
 
-            if ((empty($amount) && empty($discount)) || empty($available_start) || empty($available_end)) {
+            if ((empty($amount) && empty($discount))) {
                 $request->session()->flash('errorMsg', '请填写完整');
                 return Redirect::back()->withInput();
             }
@@ -81,7 +81,7 @@ class CouponController extends Controller
                     'amount' => empty($amount) ? 0 : $amount*100,
                     'discount' => empty($discount) ? 0 : $discount/10,
                     'available_start' => $available_start,
-                    'available_end' => $available_start
+                    'available_end' => $available_end
                 ];
                 Coupon::query()->where('id',$id)->update($data);
 
@@ -124,16 +124,18 @@ class CouponController extends Controller
             $num = $request->get('num', 1); //生成数量
             $amount = $request->get('amount');
             $discount = $request->get('discount');
-            $available_start = $request->get('available_start');
-            $available_end = $request->get('available_end');
+            $available_start = $request->get('available_start',-1);
+            $available_end = $request->get('available_end',-1);
 
-            if (empty($num) || (empty($amount) && empty($discount)) || empty($available_start) || empty($available_end)) {
+            $available_start = $available_start == -1 ? $available_start : strtotime(date('Y-m-d h:i:00', strtotime($available_start)));
+            $available_end = $available_end == -1 ? $available_end : strtotime(date('Y-m-d h:i:00', strtotime($available_end)));
+
+            if (empty($num) || (empty($amount) && empty($discount))) {
                 $request->session()->flash('errorMsg', '请填写完整');
 
                 return Redirect::back()->withInput();
             }
-
-            if (strtotime($available_start) >= strtotime($available_end)) {
+            if ($available_start > $available_end) {
                 $request->session()->flash('errorMsg', '有效期范围错误');
 
                 return Redirect::back()->withInput();
@@ -163,8 +165,8 @@ class CouponController extends Controller
                     $obj->goods_ids = $goods_ids;
                     $obj->amount = empty($amount) ? 0 : $amount;
                     $obj->discount = empty($discount) ? 0 : $discount;
-                    $obj->available_start = strtotime(date('Y-m-d 0:0:0', strtotime($available_start)));
-                    $obj->available_end = strtotime(date('Y-m-d 23:59:59', strtotime($available_end)));
+                    $obj->available_start = $available_start;
+                    $obj->available_end = $available_end;
                     $obj->status = 0;
                     $obj->save();
                 }

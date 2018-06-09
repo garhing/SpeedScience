@@ -76,7 +76,7 @@ class User extends Model
                 if($result['status'] == 'fail'){
                     return $result;
                 }
-                $coupon = Coupon::query()->where('sn',$coupon_sn)->get();
+                $coupon = Coupon::query()->where('sn',$coupon_sn)->first();
                 // 计算实际应支付总价
                 $amount = $coupon->type == 2 ? $goods->price * $coupon->discount / 10 : $goods->price - $coupon->amount;
                 $amount = $amount > 0 ? $amount : 0;
@@ -114,7 +114,7 @@ class User extends Model
             $order->expire_at = null; //默认为空，有订单状态升级接口统一升级
             $order->is_expire = 0;
             $order->pay_way = $pay_way;
-            $order->status = 0; //默认为0，有订单状态升级接口统一升级
+            $order->status = -1; //默认为-1，关闭状态有订单状态升级接口统一升级
             $order->save();
 
             //***************************************************************************************************

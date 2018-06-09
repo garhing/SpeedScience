@@ -286,10 +286,24 @@ class Order extends Model
             }
 
             if ($status == -1) {
+                // 记得回复优惠券和商品数量
+                if($goods->number != -1 && $goods->number >= 0 ){
+                    Goods::query()->where('id',$goods->id)->increment('number',1);
+                }
+
+                $coupon = Coupon::query()->where('id',$order->coupon_id)->first();
+                if ($coupon) {
+                    if($coupon->usage !=-1 && $coupon->usage >=0){
+                        $coupon->usage += 1;
+                    }
+                    $coupon->save();
+                }
+
                 //订单关闭
                 Order::query()->where('oid', $oid)->update(['status' => $status]);
             }
             else if ($status == 0) {
+
                 //订单创建完成
                 Order::query()->where('oid', $oid)->update(['status' => $status]);
             }
@@ -326,10 +340,12 @@ class Order extends Model
 
                 $coupon = Coupon::query()->where('id',$order->coupon_id)->first();
                 if ($coupon) {
-                    if ($coupon->usage == 1) {
-                        $coupon->status = 1;
-                        $coupon->save();
+                    if($coupon->usage >0){
+                        $coupon->usage -= 1;
                     }
+                    $coupon->status = 1;
+                    $coupon->save();
+
                     // 写入日志
                     $couponLog = new CouponLog();
                     $couponLog->coupon_id = $coupon->id;
@@ -339,8 +355,8 @@ class Order extends Model
                 }
 
                 // 商品数量-1
-                if($goods->usage != -1 && $goods->usage !=0 ){
-                    Goods::query()->where('id',$goods->id)->decrement('number',-1);
+                if($goods->number != -1 && $goods->number > 0 ){
+                    Goods::query()->where('id',$goods->id)->decrement('number',1);
                 }
 
                 //订单支付成功

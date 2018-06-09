@@ -2,7 +2,7 @@
 
 @section('css')
     <link href="/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="/js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
     <!-- BEGIN CONTENT BODY -->
@@ -137,13 +137,30 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
-                                    <label class="control-label col-md-3">有效期</label>
+                                    <label class="control-label col-md-3">指定日期</label>
                                     <div class="col-md-4">
-                                        <div class="input-group input-large input-daterange">
-                                            <input type="text" class="form-control" name="available_start" value="{{Request::old('available_start')}}" id="available_start" required>
+                                        <div class="mt-radio-inline">
+                                            <label class="mt-radio">
+                                                <input type="radio" name="set_avliable" value="1" checked>是
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-radio">
+                                                <input type="radio" name="set_avliable" value="2"> 否
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group"  id="set_avaliable_form_id">
+                                    <label class="control-label col-md-3">有效期</label>
+                                    <div class="col-md-4 col-sm-5">
+                                        <div class="input-group date-time">
+                                            <input type="text" class="form-control" name="available_start" value="{{date('Y-m-d h:i:00')}}" id="available_start" >
                                             <span class="input-group-addon"> 至 </span>
-                                            <input type="text" class="form-control" name="available_end" value="{{Request::old('available_end')}}" id="available_end" required>
+                                            <input type="text" class="form-control" name="available_end"  value="{{date('Y-m-d h:i:00',strtotime('+ 180 days'))}}" id="available_end">
                                         </div>
                                     </div>
                                 </div>
@@ -167,19 +184,23 @@
     <!-- END CONTENT BODY -->
 @endsection
 @section('script')
-    <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-    <script src="/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
+    {{--<script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>--}}
+    {{--<script src="/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>--}}
+    <script src="/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+
     <script src="/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         // 有效期
-        $('.input-daterange input').each(function() {
-            $(this).datepicker({
+        $('.date-time input').each(function() {
+            $(this).datetimepicker({
+                minView:0,
                 language: 'zh-CN',
                 autoclose: true,
                 todayHighlight: true,
-                format: 'yyyy-mm-dd'
+                format: 'yyyy-mm-dd hh:ii:ss'
             });
         });
 
@@ -198,6 +219,23 @@
                 $("#discount").prop('required', 'required');
                 $("#amount").removeAttr('required');
                 $("#amount").val('');
+            }
+        });
+
+        available_start = "{{ date('Y-m-d h:i:00')}}"
+        available_end = "{{ date('Y-m-d h:i:00',strtotime('+ 180 days'))}}"
+
+        $("input[name='set_avliable']").change(function(){
+            var type = $(this).val();
+            if(type==2){
+                $('#available_start').val(-1);
+                $('#available_end').val(-1);
+                $('#set_avaliable_form_id').addClass('hide');
+
+            }else{
+                $('#available_start').val(available_start);
+                $('#available_end').val(available_end);
+                $('#set_avaliable_form_id').removeClass('hide');
             }
         });
     </script>

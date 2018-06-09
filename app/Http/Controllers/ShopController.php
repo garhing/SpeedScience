@@ -50,8 +50,8 @@ class ShopController extends Controller
             $status = $request->get('status');
 
 
-            $available_start = $available_start == -1 ? $available_start : strtotime(date('Y-m-d 0:0:0', strtotime($available_start)));
-            $available_end = $available_end == -1 ? $available_end : strtotime(date('Y-m-d 23:59:59', strtotime($available_end)));
+            $available_start = $available_start == -1 ? $available_start : strtotime(date('Y-m-d h:i:00', strtotime($available_start)));
+            $available_end = $available_end == -1 ? $available_end : strtotime(date('Y-m-d h:i:00', strtotime($available_end)));
 
 
             if (empty($name) || empty($traffic)) {
@@ -140,7 +140,7 @@ class ShopController extends Controller
                 DB::rollBack();
             }
 
-            return Redirect::to('shop/addGoods');
+            return Redirect::to('shop/goodsList');
         } else {
             $view['label_list'] = Label::query()->orderBy('sort', 'desc')->orderBy('id', 'asc')->get();
 
@@ -164,8 +164,9 @@ class ShopController extends Controller
             $available_end = $request->get('available_end',-1);
             $status = $request->get('status');
 
-            $available_start = $available_start == -1 ? $available_start : strtotime(date('Y-m-d 0:0:0', strtotime($available_start)));
-            $available_end = $available_end == -1 ? $available_end : strtotime(date('Y-m-d 23:59:59', strtotime($available_end)));
+
+            $available_start = $available_start == -1 ? $available_start : strtotime(date('Y-m-d h:i:00', strtotime($available_start)));
+            $available_end = $available_end == -1 ? $available_end : strtotime(date('Y-m-d h:i:00', strtotime($available_end)));
 
 
             $goods = Goods::query()->where('id', $id)->first();
@@ -243,7 +244,7 @@ class ShopController extends Controller
                 DB::rollBack();
             }
 
-            return Redirect::to('shop/editGoods?id=' . $id);
+            return Redirect::to('shop/goodsList');
         } else {
             $goods = Goods::query()->with(['label'])->where('id', $id)->first();
             if ($goods) {

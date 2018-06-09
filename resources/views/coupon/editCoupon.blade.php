@@ -2,7 +2,7 @@
 
 @section('css')
     <link href="/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="/js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
     <!-- BEGIN CONTENT BODY -->
@@ -127,11 +127,11 @@
                                 </div>
                                 <div class="form-group {{$is_date?'':"hide"}}"  id="set_avaliable_form_id">
                                     <label class="control-label col-md-3">有效期</label>
-                                    <div class="col-md-4">
-                                        <div class="input-group input-large input-daterange">
-                                            <input type="text" class="form-control" name="available_start" value="{{$coupon->available_start()}}" id="available_start" required>
+                                    <div class="col-md-4 col-sm-5">
+                                        <div class="input-group date-time">
+                                            <input type="text" class="form-control" name="available_start" value="{{$coupon->available_start()}}" id="available_start">
                                             <span class="input-group-addon"> 至 </span>
-                                            <input type="text" class="form-control" name="available_end" value="{{$coupon->available_start()}}" id="available_end" required>
+                                            <input type="text" class="form-control" name="available_end"  value="{{$coupon->available_end()}}" id="available_end">
                                         </div>
                                     </div>
                                 </div>
@@ -155,19 +155,23 @@
     <!-- END CONTENT BODY -->
 @endsection
 @section('script')
-    <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-    <script src="/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
+    {{--<script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>--}}
+    {{--<script src="/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>--}}
+    <script src="/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+
     <script src="/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         // 有效期
-        $('.input-daterange input').each(function() {
-            $(this).datepicker({
+        $('.date-time input').each(function() {
+            $(this).datetimepicker({
+                minView:0,
                 language: 'zh-CN',
                 autoclose: true,
                 todayHighlight: true,
-                format: 'yyyy-mm-dd'
+                format: 'yyyy-mm-dd hh:ii:ss'
             });
         });
         amount = '{{$coupon->amount}}'
@@ -190,8 +194,8 @@
             }
         });
 
-        available_start = "{{ $is_date?$coupon->available_start():date('Y-m-d')}}"
-        available_end = "{{ $is_date?$coupon->available_end():date('Y-m-d',strtotime('+ 180 days'))}}"
+        available_start = "{{ $is_date?$coupon->available_start():date('Y-m-d h:i:00')}}"
+        available_end = "{{ $is_date?$coupon->available_end():date('Y-m-d h:i:00',strtotime('+ 180 days'))}}"
 
         $("input[name='set_avliable']").change(function(){
             var type = $(this).val();

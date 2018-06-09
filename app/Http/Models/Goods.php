@@ -58,7 +58,7 @@ class Goods extends Model
     function available_start()
     {
         if ($this->attributes['available_start'] != -1) {
-            return date('Y/m/d', $this->attributes['available_start']);
+            return date('Y-m-d h:i:s', $this->attributes['available_start']);
         }
         return $this->attributes['available_start'];
     }
@@ -66,7 +66,7 @@ class Goods extends Model
     function available_end()
     {
         if ($this->attributes['available_end'] != -1) {
-            return date('Y/m/d', $this->attributes['available_end']);
+            return date('Y-m-d h:i:s', $this->attributes['available_end']);
         }
         return $this->attributes['available_end'];
     }
@@ -76,7 +76,7 @@ class Goods extends Model
         if ($this->attributes['available_start'] < 100) {
             return '已开始';
         }
-        return date('Y/m/d', $this->attributes['available_start']);
+        return date('Y/m/d h:i:s', $this->attributes['available_start']);
 
     }
 
@@ -85,7 +85,7 @@ class Goods extends Model
         if ($this->attributes['available_end'] < 100) {
             return '不结束';
         }
-        return date('Y/m/d', $this->attributes['available_end']);
+        return date('Y/m/d h:i:s', $this->attributes['available_end']);
 
     }
 
@@ -108,11 +108,11 @@ class Goods extends Model
             return false;
         }
         //3、判断活动开始时间
-        if ($this->attributes['available_start'] > 100 and strtotime($this->attributes['available_start']) < time()) {
+        if ($this->attributes['available_start'] > 100 and $this->attributes['available_start'] > time()) {
             return false;
         }
         //4、判断活动结束时间
-        if ($this->attributes['available_end'] > 100 and strtotime($this->attributes['available_end']) > time()) {
+        if ($this->attributes['available_end'] > 100 and $this->attributes['available_end'] < time()) {
             return false;
         }
         return true;
@@ -137,11 +137,11 @@ class Goods extends Model
                 throw new Exception('该商品未上架');
             }
             //3、判断活动开始时间
-            if ($goods->available_start >100 and strtotime($goods->available_start) > time()) {
+            if ($goods->available_start >100 and $goods->available_start > time()) {
                 throw new Exception('活动未开始');
             }
             //4、判断活动结束时间
-            if ($goods->available_end >100 and strtotime($goods->available_end) < time()) {
+            if ($goods->available_end >100 and $goods->available_end < time()) {
                 throw new Exception('活动已结束');
             }
 

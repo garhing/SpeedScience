@@ -815,7 +815,7 @@ class UserController extends Controller
         if($result['status'] == 'fail'){
             return $result;
         }
-
+        $coupon = Coupon::query()->where('sn',$coupon_sn)->first();
         $data = [
             'type'     => $coupon->type,
             'amount'   => $coupon->amount,
