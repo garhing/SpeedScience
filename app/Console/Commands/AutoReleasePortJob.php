@@ -10,7 +10,7 @@ use Log;
 class AutoReleasePortJob extends Command
 {
     protected $signature = 'autoReleasePortJob';
-    protected $description = '自动释放端口';
+    protected $description = '自动释放端口'; // TODO 直接做成了0，没必要，把这个配置干掉
 
     public function __construct()
     {

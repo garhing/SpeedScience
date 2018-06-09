@@ -44,8 +44,8 @@ class User extends Model
         return OrderLabel::query()->whereIn('oid', $oids)->pluck('label_id');
     }
 
-    // 添加一个商品,并触发一系列操作
 
+    // 添加一个商品,并触发一系列操作
     /**
      * @param $uid 给哪个用户加上
      * @param $goods_id 商品ID
@@ -55,15 +55,46 @@ class User extends Model
      * @param int $pay_way 支付方式：0-系统支付、1-余额支付、2-有赞云支付
      * @return array 返回添加结果
      */
-    public static function addOrder($uid, $goods_id, $coupon_id = -1, $amount, $status = 0, $pay_way = 0)
+    public static function addOrder($uid, $goods_id, $coupon_sn=-1, $status = 0, $pay_way = 0)
     {
 
         $goods = Goods::query()->find($goods_id);
-        $coupon = Coupon::query()->find($coupon_id);
         $user = User::query()->find($uid);
 
         DB::beginTransaction();
         try {
+
+            // 检测商品可用状态
+            $result = Goods::isAvaliable($goods->id);
+            if($result['status'] == 'fail'){
+                throw new Exception($result['message']);
+            }
+
+            // 如果使用优惠券
+            if ($coupon_sn!=-1 && !empty($coupon_sn)) {
+                $result = Coupon::isAvaliable2($coupon_sn,$goods_id,$uid);
+                if($result['status'] == 'fail'){
+                    return $result;
+                }
+                $coupon = Coupon::query()->where('sn',$coupon_sn)->get();
+                // 计算实际应支付总价
+                $amount = $coupon->type == 2 ? $goods->price * $coupon->discount / 10 : $goods->price - $coupon->amount;
+                $amount = $amount > 0 ? $amount : 0;
+
+            } else {
+                $amount = $goods->price;
+            }
+
+            // 如果最后总价格为0，则不允许在线支付创建支付单
+            if ($amount <= 0 && $pay_way == 2) {
+                return ['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：合计价格为0，无需使用在线支付'];
+            }
+
+            // 验证账号余额是否充足
+            if ($pay_way == 1 ) {
+                if($user->balance < $amount)
+                return['status' => 'fail', 'data' => '', 'message' => '支付失败：您的余额不足，请先充值'];
+            }
 
             $sn = makeRandStr(12); // 有赞云随机码
             if($pay_way ==2){
@@ -167,18 +198,35 @@ class User extends Model
     public function userExpireTime()
     {
         $result = Order::getUserExpireTime($this->attributes['id']);
-
-        return $result ? $result : '无服务,已停用';
+        return strtotime($result)< time() ? '已过期' : $result;
     }
-
 
     //用于前端显示
     public static function getUserExpireTime($uid)
     {
         $result = Order::getUserExpireTime($uid);
-        return $result ? $result : '无服务,已停用';
+        return strtotime($result)< time() ? '已过期' : $result;
     }
 
+    public function emptyUserTraffic2(){
+
+        User::query()->where('id',$this->attributes['id'])->update(['u'=>0,'d'=>0]);
+    }
+
+    public function emptyUserTraffic($uid){
+
+        User::query()->where('id',$uid)->update(['u'=>0,'d'=>0]);
+    }
+
+    public function resetUserTraffic2(){
+        User::deactiveUserOrder($this->attributes['id']);
+        User::query()->where('id',$this->attributes['id'])->update(['u'=>0,'d'=>0]);
+    }
+
+    public static function resetUserTraffic($uid){
+        User::deactiveUserOrder($uid);
+        User::query()->where('id',$uid)->update(['u'=>0,'d'=>0,]);
+    }
 
     /**
      * 适用于订单状态发生变化时使用
@@ -187,7 +235,6 @@ class User extends Model
      * 1、通过用户订单得到商品总流量并更新
      * 2、通过用户订单得到用户有效期并更新
      * 3、账号重置日期
-     *
      * 4、根据已经使用的流量和顺序，失效一些订单，防止失效的订单也能使用非限定服务器流量
      * @param $uid
      */
@@ -196,9 +243,9 @@ class User extends Model
         DB::beginTransaction();
         try {
             $transfer_enable = Order::getUserTransferEnable($uid);
-            $expire_time = date('Y-m-d', strtotime(Order::getUserExpireTime($uid)));
-            $traffic_reset_day = Order::getUserResetDay($uid);
-            User::query()->where('id', $uid)->update(['transfer_enable' => $transfer_enable, 'expire_time' => $expire_time, 'traffic_reset_day' => $traffic_reset_day]);
+            $expire_time = Order::getUserExpireTime($uid);
+            $next_reset_time = Order::getUserResetDay($uid);
+            User::query()->where('id', $uid)->update(['transfer_enable' => $transfer_enable, 'expire_time' => $expire_time, 'traffic_reset_day' => $next_reset_time]);
             DB::commit();
             return ['status' => 'success', 'data' => '', 'message' => '操作成功'];
         } catch (\Exception $e) {
@@ -211,7 +258,7 @@ class User extends Model
 
     // 失效用户订单, 防止失效的订单也能使用非限定服务器流量 ，用于自动化任务
     // 同时更新用户状态，所以不需要再次更新用户状态
-    static function deactiveUserOrder($uid)
+    static function deactiveUserOrder($uid,$update_user_status=true)
     {
         DB::beginTransaction();
         try {
@@ -255,7 +302,7 @@ class User extends Model
                 }
             }
             //失效订单后，更新用户状态
-            if ($flag) {
+            if ($flag && $update_user_status) {
                 $result = User::updateUserStatus($uid);
                 if ($result['status'] == 'fail'){
                     throw new Exception($result['message']);

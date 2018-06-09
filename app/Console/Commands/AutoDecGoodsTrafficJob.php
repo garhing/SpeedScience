@@ -13,7 +13,7 @@ use Log;
 class AutoDecGoodsTrafficJob extends Command
 {
     protected $signature = 'autoDecGoodsTrafficJob';
-    protected $description = '自动扣减用户到期流量包的流量';
+    protected $description = '自动扣减用户到期流量包的流量';// TODO 检测用户订单有效状态，自动失效过期订单和流量用尽订单, 并更新用户参数，也包括了用户流量重置操作
 
     public function __construct()
     {
@@ -22,62 +22,38 @@ class AutoDecGoodsTrafficJob extends Command
 
     public function handle()
     {
-        $orderList = Order::query()->with(['user', 'goods'])->where('status', 2)->where('is_expire', 0)->get();
+        // 查询过期订单
+        $orderList = Order::query()->with(['user', 'goods'])->where(['status'=>2,'is_expire'=> 0])->where('expire_at','<=',date('Y-m-d H:i:s'))->get();
         if (!$orderList->isEmpty()) {
-            // 用户默认标签
-            $config = $this->systemConfig();
-            $defaultLabels = [];
-            if ($config['initial_labels_for_user']) {
-                $defaultLabels = explode(',', $config['initial_labels_for_user']);
-            }
-
             foreach ($orderList as $order) {
                 if (empty($order->user) || empty($order->goods)) {
                     continue;
                 }
-
-                // 到期自动处理
-                if (date("Y-m-d H:i:s") >= $order->expire_at) {
-                    if ($order->user->transfer_enable - $order->goods->traffic * 1048576 <= 0) {
-                        User::query()->where('id', $order->user_id)->update(['transfer_enable' => 0]);
-                    } else {
-                        User::query()->where('id', $order->user_id)->decrement('transfer_enable', $order->goods->traffic * 1048576);
-                    }
-
-                    // 删除该商品对应用户的所有标签
-                    UserLabel::query()->where('user_id', $order->user->id)->delete();
-
-                    // 取出用户的全部其他商品并打上对应的标签
-                    $goodsIds = Order::query()->where('user_id', $order->user->id)->where('oid', '<>', $order->oid)->where('is_expire', 0)->groupBy('goods_id')->pluck('goods_id')->toArray();
-                    $goodsLabels = GoodsLabel::query()->whereIn('goods_id', $goodsIds)->groupBy('label_id')->pluck('label_id')->toArray();
-
-                    // 合并默认标签
-                    $labels = $defaultLabels ? array_merge($goodsLabels, $defaultLabels) : $goodsLabels;
-                    foreach ($labels as $vo) {
-                        $userLabel = new UserLabel();
-                        $userLabel->user_id = $order->user->id;
-                        $userLabel->label_id = $vo;
-                        $userLabel->save();
-                    }
-
-
-                    Order::query()->where('oid', $order->oid)->update(['is_expire' => 1]);
-                }
+                Order::query()->where($order->oid)->update('is_expire',1);
             }
         }
+
+        //查询需要重置流量的用户
+        $users = User::query()->where('traffic_reset_day','<>',0)->where('traffic_reset_day','<=',date('Y-m-d H:i:s'))->get();
+        if (!$users->isEmpty()) {
+            foreach ($users as $user) {
+                User::deactiveUserOrder($user->id,false);
+                User::query()->where('id', $user->id)->update(['u' => 0, 'd' => 0,]);
+
+            }
+        }
+
+        //更新所有用户状态
+        $allUserList = User::query()->get();
+        foreach ($allUserList as $user){
+            User::updateUserStatus($user->id);
+        }
+
+        // 邮件提醒 TODO
+        // 前面的操作记录下需要发邮件的用户
+
 
         Log::info('定时任务：' . $this->description);
     }
 
-    // 系统配置
-    private function systemConfig()
-    {
-        $config = Config::query()->get();
-        $data = [];
-        foreach ($config as $vo) {
-            $data[$vo->name] = $vo->value;
-        }
-
-        return $data;
-    }
 }

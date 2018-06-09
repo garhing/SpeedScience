@@ -9,7 +9,7 @@ use Log;
 class autoDisableExpireUserJob extends Command
 {
     protected $signature = 'autoDisableExpireUserJob';
-    protected $description = '自动禁用到期用户';
+    protected $description = '自动禁用到期用户'; // TODO 服务到期不封禁，修改为用户邮件提醒，超过N天无服务用户自动清理
 
     public function __construct()
     {

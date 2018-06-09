@@ -38,7 +38,9 @@
                                     <!-- <th> 图片 </th> -->
                                     <th> 内含流量 </th>
                                     <th> 售价 </th>
-                                    <th> 到期扣减优先级 </th>
+                                    <th> 扣减优先级 </th>
+                                    <th> 数量 </th>
+                                    <th> 活动时间 </th>
                                     <!-- <th> 所需积分 </th> -->
                                     <th> 状态 </th>
                                     <th style="text-align: center;"> 操作 </th>
@@ -59,13 +61,11 @@
                                             <td> {{$goods->traffic}} </td>
                                             <td> {{$goods->price}}元 </td>
                                             <td> {{$goods->order}} </td>
+                                            <td> {{$goods->number==-1?'不限量':$goods->number}} </td>
+                                            <td> {{$goods->avaliableTime()}} </td>
                                             <!-- <td> {{$goods->score}} </td> -->
                                             <td>
-                                                @if($goods->status)
-                                                    <span class="label label-success">上架</span>
-                                                @else
-                                                    <span class="label label-default">下架</span>
-                                                @endif
+                                                <span class="label label-success">{{$goods->hstatus()}}</span>
                                             </td>
                                             <td style="text-align: center;">
                                                 <button type="button" class="btn btn-sm blue btn-outline" onclick="editGoods('{{$goods->id}}')"><i class="fa fa-pencil"></i></button>

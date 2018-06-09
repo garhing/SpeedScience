@@ -75,21 +75,16 @@
         function redeemCoupon() {
             var coupon_sn = $('#coupon_sn').val();
             var goods_price = '{{$goods->price}}';
-
+            layer.load(2);
             $.ajax({
                 type: "POST",
                 url: "{{url('user/redeemCoupon')}}",
                 async: false,
-                data: {_token:'{{csrf_token()}}', coupon_sn:coupon_sn},
+                data: {_token:'{{csrf_token()}}', coupon_sn:coupon_sn,goods_id:'{{$goods->id}}', user_id:'{{$user['id']}}'},
                 dataType: 'json',
-                beforeSend: function () {
-                    index = layer.load(1, {
-                        shade: [0.7,'#CCC']
-                    });
-                },
                 success: function (ret) {
                     console.log(ret);
-                    layer.close(index);
+                    layer.closeAll('loading');
                     $("#coupon_sn").parent().removeClass("has-error");
                     $("#coupon_sn").parent().removeClass("has-success");
                     $(".input-group-addon").remove();
@@ -108,10 +103,17 @@
 
                         $(".grand-total").text("￥" + total_price);
                     } else {
+                        layer.msg(ret.message, {time:2000})
                         $("#coupon_sn").parent().addClass('has-error');
                         $("#coupon_sn").parent().remove('.input-group-addon');
                         $("#coupon_sn").parent().prepend('<span class="input-group-addon"><i class="fa fa-remove fa-fw"></i></span>');
                     }
+                },
+                error:function (ret) {
+                    layer.msg('服务器发生未知异常', {time:5000});
+                },
+                complete:function (ret) {
+                    layer.closeAll('loading');
                 }
             });
         }
@@ -120,11 +122,7 @@
         function onlinePay() {
             var goods_id = '{{$goods->id}}';
             var coupon_sn = $('#coupon_sn').val();
-
-            index = layer.load(1, {
-                shade: [0.7,'#CCC']
-            });
-
+            layer.load(2);
             $.ajax({
                 type: "POST",
                 url: "{{url('payment/create')}}",
@@ -137,17 +135,18 @@
                     });
                 },
                 success: function (ret) {
-                    layer.msg(ret.message, {time:1300}, function() {
+                    layer.msg(ret.message, {time:2000}, function() {
                         if (ret.status == 'success') {
                             window.location.href = '{{url('payment')}}' + "/" + ret.data;
-                        } else {
-                            layer.close(index);
                         }
                     });
+                },
+                error:function (ret) {
+                    layer.msg('服务器发生未知异常', {time:5000});
+                },
+                complete:function (ret) {
+                    layer.closeAll('loading');
                 }
-                //complete: function () {
-                    //
-                //}
             });
         }
 
@@ -156,9 +155,7 @@
             var goods_id = '{{$goods->id}}';
             var coupon_sn = $('#coupon_sn').val();
 
-            index = layer.load(1, {
-                shade: [0.7,'#CCC']
-            });
+            layer.load(2);
 
             $.ajax({
                 type: "POST",
@@ -166,19 +163,18 @@
                 async: false,
                 data: {_token:'{{csrf_token()}}', goods_id:goods_id, coupon_sn:coupon_sn},
                 dataType: 'json',
-                beforeSend: function () {
-                    index = layer.load(1, {
-                        shade: [0.7,'#CCC']
-                    });
-                },
                 success: function (ret) {
                     layer.msg(ret.message, {time:1300}, function() {
                         if (ret.status == 'success') {
                             window.location.href = '{{url('user/orderList')}}';
-                        } else {
-                            layer.close(index);
                         }
                     });
+                },
+                error:function (ret) {
+                    layer.msg('服务器发生未知异常', {time:5000});
+                },
+                complete:function (ret) {
+                    layer.closeAll('loading');
                 }
             });
         }

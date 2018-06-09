@@ -12,7 +12,7 @@ use Log;
 class AutoBanUserJob extends Command
 {
     protected $signature = 'autoBanUserJob';
-    protected $description = '自动封禁用户';
+    protected $description = '自动封禁24小时内流量异常账号'; // TODO 好像写得不对
 
     public function __construct()
     {

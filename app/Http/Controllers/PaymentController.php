@@ -41,27 +41,7 @@ class PaymentController extends Controller
             return $this->json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：尚有未支付的订单，请先去支付']);
         }
 
-        // 使用优惠券
-        if ($coupon_sn) {
-            $coupon = Coupon::query()->where('sn', $coupon_sn)->whereIn('type', [1, 2])->where('is_del', 0)->where('status', 0)->first();
-            if (!$coupon) {
-                return $this->json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：优惠券不存在']);
-            }
-
-            // 计算实际应支付总价
-            $amount = $coupon->type == 2 ? $goods->price * $coupon->discount / 10 : $goods->price - $coupon->amount;
-            $amount = $amount > 0 ? $amount : 0;
-            $coupon_id = $coupon->id;
-        } else {
-            $amount = $goods->price;
-        }
-
-        // 如果最后总价格为0，则不允许创建支付单
-        if ($amount <= 0) {
-            return $this->json(['status' => 'fail', 'data' => '', 'message' => '创建支付单失败：合计价格为0，无需使用在线支付']);
-        }
-
-        $result = User::addOrder($user['id'],$goods_id, $coupon_id, $amount,0,2);
+        $result = User::addOrder($user['id'],$goods_id, $coupon_sn,0,2);
         if($result['status']=='fail'){
             return $this->json($result);
         }

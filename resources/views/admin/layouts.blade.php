@@ -129,7 +129,7 @@
                         <span class="title">商品管理</span>
                     </a>
                 </li>
-                <li class="nav-item {{in_array(Request::path(), ['coupon/couponList', 'coupon/addCoupon']) ? 'active open' : ''}}">
+                <li class="nav-item {{in_array(Request::path(), ['coupon/couponList', 'coupon/addCoupon', 'coupon/editCoupon']) ? 'active open' : ''}}">
                     <a href="{{url('coupon/couponList')}}" class="nav-link nav-toggle">
                         <i class="fa fa-ticket"></i>
                         <span class="title">卡券管理</span>

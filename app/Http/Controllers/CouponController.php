@@ -26,14 +26,102 @@ class CouponController extends Controller
         return $this->view('coupon/couponList', $view);
     }
 
-    // 添加商品
+    // 优惠券列表
+    public function editCoupon(Request $request)
+    {
+        if ($request->method() == 'POST') {
+
+            $id = $request->get('id');
+            $coupon = Coupon::query()->find($id);
+
+            if(!$coupon){
+                $request->session()->flash('errorMsg', '未找到该优惠券');
+                return Redirect::to('coupon/editCoupon');
+            }
+
+
+            $name = $request->get('name');
+            $type = $request->get('type',$coupon->type);
+            $usage = $request->get('usage', 1); //使用次数
+            $user_ids = $request->get('user_ids', '');
+            $goods_types = $request->get('goods_types', '');
+            $goods_ids = $request->get('goods_ids', '');
+            $amount = $request->get('amount',$coupon->amount);
+            $discount = $request->get('discount',$coupon->discount);
+
+            $available_start = $request->get('available_start');
+            $available_end = $request->get('available_end');
+
+            $available_start = $available_start == -1 ? $available_start : strtotime(date('Y-m-d 0:0:0', strtotime($available_start)));
+            $available_end = $available_end == -1 ? $available_end : strtotime(date('Y-m-d 23:59:59', strtotime($available_end)));
+
+
+            if ((empty($amount) && empty($discount)) || empty($available_start) || empty($available_end)) {
+                $request->session()->flash('errorMsg', '请填写完整');
+                return Redirect::back()->withInput();
+            }
+
+            if ($available_start > $available_end) {
+                $request->session()->flash('errorMsg', '有效期范围错误');
+
+                return Redirect::back()->withInput();
+            }
+
+            DB::beginTransaction();
+            try {
+
+                $data = [
+                    'name' => $name,
+                    'type' => $type,
+                    'usage' => $usage,
+                    'user_ids' => $user_ids,
+                    'goods_types' => $goods_types,
+                    'goods_ids' => $goods_ids,
+                    'user_ids' => $user_ids,
+                    'amount' => empty($amount) ? 0 : $amount*100,
+                    'discount' => empty($discount) ? 0 : $discount/10,
+                    'available_start' => $available_start,
+                    'available_end' => $available_start
+                ];
+                Coupon::query()->where('id',$id)->update($data);
+
+                DB::commit();
+
+                $request->session()->flash('successMsg', '编辑成功');
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                Log::error('编辑优惠券失败：' . $e->getMessage());
+
+                $request->session()->flash('errorMsg', '生成失败：' . $e->getMessage());
+            }
+
+
+            return Redirect::to('coupon/couponList');
+
+        } else {
+
+            $id = $request->get('id');
+            $coupon = Coupon::query()->find($id);
+            $view['coupon'] = $coupon;
+            $view['is_date'] = ($coupon->available_start==-1 && $coupon->available_end==-1)?0:1;
+            return $this->view('coupon/editCoupon', $view);
+        }
+    }
+
+
+    // 添加卡券
     public function addCoupon(Request $request)
     {
         if ($request->method() == 'POST') {
             $name = $request->get('name');
             $type = $request->get('type', 1);
-            $usage = $request->get('usage', 1);
-            $num = $request->get('num', 1);
+            $usage = $request->get('usage', 1); //使用次数
+            $user_ids = $request->get('user_ids', '');
+            $goods_types = $request->get('goods_types', '');
+            $goods_ids = $request->get('goods_ids', '');
+
+            $num = $request->get('num', 1); //生成数量
             $amount = $request->get('amount');
             $discount = $request->get('discount');
             $available_start = $request->get('available_start');
@@ -70,6 +158,9 @@ class CouponController extends Controller
                     $obj->logo = $logo;
                     $obj->type = $type;
                     $obj->usage = $usage;
+                    $obj->user_ids = $user_ids;
+                    $obj->goods_types = $goods_types;
+                    $obj->goods_ids = $goods_ids;
                     $obj->amount = empty($amount) ? 0 : $amount;
                     $obj->discount = empty($discount) ? 0 : $discount;
                     $obj->available_start = strtotime(date('Y-m-d 0:0:0', strtotime($available_start)));

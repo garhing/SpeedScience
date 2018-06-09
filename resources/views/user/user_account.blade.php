@@ -82,7 +82,7 @@
                                     <li class="list-group-item">
                                         {{trans('home.account_bandwidth_usage')}}：{{$info['usedTransfer']}}
                                         （{{$info['totalTransfer']}}
-                                        ）@if($info['traffic_reset_day']) &ensp;{{trans('home.account_reset_notice', ['reset_day' => $info['traffic_reset_day']])}}  @endif
+                                        ）@if($info['traffic_reset_day'])&ensp; 每30天重置一次，下次重置时间为：{{$info['traffic_reset_day']}}  @endif
                                         <div class="progress progress-striped active" style="margin-bottom:0;"
                                              title="{{trans('home.account_total_traffic')}} {{$info['totalTransfer']}}，{{trans('home.account_usage_traffic')}} {{$info['usedTransfer']}}">
                                             <div class="progress-bar progress-bar-danger" role="progressbar"

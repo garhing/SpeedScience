@@ -143,24 +143,60 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-3">流量扣减优先级</label>
                                     <div class="col-md-6">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" name="order" value="0" id="order" placeholder="" required="">
-                                        </div>
+                                        <input type="text" class="form-control" name="order" value="{{$goods->order}}" id="order" placeholder="" required="">
                                         <span class="help-block">使用的流量扣减顺序,数字越大优先级越高</span>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">商品数量</label>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" name="number" value="{{$goods->number}}" id="number" placeholder="填写商品数量，-1为不限量" required="">
+                                        <span class="help-block">商品数量，-1为不限量</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">指定日期</label>
+                                    <div class="col-md-4">
+                                        <div class="mt-radio-inline">
+                                            <label class="mt-radio">
+                                                <input type="radio" name="set_avliable" value="1" {{$is_date?'checked':''}}>是
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-radio">
+                                                <input type="radio" name="set_avliable" value="2" {{$is_date?'':'checked'}}> 否
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group {{$is_date?'':"hide"}}" id="set_avaliable_form_id">
+                                    <label class="control-label col-md-3">有效期</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group input-large input-daterange">
+                                            <input type="text" class="form-control" name="available_start" value="{{ $goods->available_start()}}" id="available_start" required>
+                                            <span class="input-group-addon"> 至 </span>
+                                            <input type="text" class="form-control" name="available_end" value="{{$goods->available_end()}}" id="available_end" required>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="form-group last">
                                     <label class="control-label col-md-3">状态</label>
                                     <div class="col-md-6">
                                         <div class="mt-radio-inline">
                                             <label class="mt-radio">
+                                                <input type="radio" name="status" value="0" {{$goods->status == 0 ? 'checked' : ''}} /> 下架
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-radio">
                                                 <input type="radio" name="status" value="1" {{$goods->status == 1 ? 'checked' : ''}} /> 上架
                                                 <span></span>
                                             </label>
                                             <label class="mt-radio">
-                                                <input type="radio" name="status" value="0" {{$goods->status == 0 ? 'checked' : ''}} /> 下架
+                                                <input type="radio" name="status" value="2" {{$goods->status == 2 ? 'checked' : ''}} /> 仅系统可见(用于赠送商品)
                                                 <span></span>
                                             </label>
+
                                         </div>
                                     </div>
                                 </div>
@@ -204,6 +240,23 @@
                 todayHighlight: true,
                 format: 'yyyy-mm-dd'
             });
+        });
+
+        available_start = "{{ $is_date?$goods->available_start():date('Y-m-d')}}"
+        available_end = "{{ $is_date?$goods->available_end():date('Y-m-d',strtotime('+ 180 days'))}}"
+
+         $("input[name='set_avliable']").change(function(){
+            var type = $(this).val();
+            if(type==2){
+                $('#available_start').val('-1');
+                $('#available_end').val('-1');
+                $('#set_avaliable_form_id').addClass('hide');
+
+            }else{
+                $('#available_start').val(available_start);
+                $('#available_end').val(available_end);
+                $('#set_avaliable_form_id').removeClass('hide');
+            }
         });
     </script>
 @endsection

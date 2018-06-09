@@ -808,23 +808,12 @@ class UserController extends Controller
     public function redeemCoupon(Request $request)
     {
         $coupon_sn = $request->get('coupon_sn');
+        $goods_id = $request->get('goods_id');
+        $user_id = $request->get('user_id');
 
-        if (empty($coupon_sn)) {
-            return $this->json(['status' => 'fail', 'data' => '', 'message' => '优惠券不能为空']);
-        }
-
-        $coupon = Coupon::query()->where('sn', $coupon_sn)->whereIn('type', [1, 2])->where('is_del', 0)->first();
-        if (empty($coupon)) {
-            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该优惠券不存在']);
-        } else if ($coupon->status == 1) {
-            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该优惠券已使用，请换一个试试']);
-        } else if ($coupon->status == 2) {
-            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该优惠券已失效，请换一个试试']);
-        } else if ($coupon->available_start > time() || $coupon->available_end < time()) {
-            $coupon->status = 2;
-            $coupon->save();
-
-            return $this->json(['status' => 'fail', 'data' => '', 'message' => '该优惠券已失效，请换一个试试']);
+        $result = Coupon::isAvaliable2($coupon_sn,$goods_id,$user_id);
+        if($result['status'] == 'fail'){
+            return $result;
         }
 
         $data = [
@@ -846,34 +835,8 @@ class UserController extends Controller
 
         $coupon_id = -1;
         if ($request->method() == 'POST') {
-            $goods = Goods::query()->with(['label'])->where('id', $goods_id)->where('status', 1)->first();
-            if (empty($goods)) {
-                return $this->json(['status' => 'fail', 'data' => '', 'message' => '支付失败：商品或服务已下架']);
-            }
 
-            // 使用优惠券
-            if (!empty($coupon_sn)) {
-                $coupon = Coupon::query()->where('sn', $coupon_sn)->whereIn('type', [1, 2])->where('is_del', 0)->where('status', 0)->first();
-                if (empty($coupon)) {
-                    return $this->json(['status' => 'fail', 'data' => '', 'message' => '支付失败：优惠券不存在']);
-                }
-
-                // 计算实际应支付总价
-                $amount = $coupon->type == 2 ? $goods->price * $coupon->discount / 10 : $goods->price - $coupon->amount;
-                $amount = $amount > 0 ? $amount : 0;
-
-                $coupon_id = $coupon->id;
-            } else {
-                $amount = $goods->price;
-            }
-
-            // 验证账号余额是否充足
-            $user = User::query()->where('id', $user['id'])->first();
-            if ($user->balance < $amount) {
-                return $this->json(['status' => 'fail', 'data' => '', 'message' => '支付失败：您的余额不足，请先充值']);
-            }
-
-            $result = User::addOrder($user->id, $goods_id,$coupon_id, $amount, $status=2, $pay_way=1);
+            $result = User::addOrder($user['id'], $goods_id,$coupon_sn, $status=2, $pay_way=1);
             return $this->json($result);
 
         } else {
@@ -884,6 +847,7 @@ class UserController extends Controller
 
             $goods->traffic = flowAutoShow($goods->traffic * 1048576);
             $view['goods'] = $goods;
+            $view['user'] = $user;
             $view['is_youzan'] = $this->config['is_youzan'];
 
             return $this->view('user/addOrder', $view);
@@ -1140,7 +1104,7 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
 
-            $result= Order::updateOrderStatus($oid,2);
+            $result= Order::updateOrderStatusUnit($oid,2);
             if($result['status']== 'fail'){
                 return $this->json(['status' => 'fail', 'data' => '', 'message' => '激活失败'.$result['message']]);
             }

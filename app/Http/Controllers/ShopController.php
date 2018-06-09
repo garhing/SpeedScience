@@ -43,8 +43,16 @@ class ShopController extends Controller
             $type = $request->get('type', 1);
             $days = $request->get('days', 90);
             $order = $request->get('order', 0);
+            $number = $request->get('number', -1);
             $labels = $request->get('labels');
+            $available_start = $request->get('available_start',-1);
+            $available_end = $request->get('available_end',-1);
             $status = $request->get('status');
+
+
+            $available_start = $available_start == -1 ? $available_start : strtotime(date('Y-m-d 0:0:0', strtotime($available_start)));
+            $available_end = $available_end == -1 ? $available_end : strtotime(date('Y-m-d 23:59:59', strtotime($available_end)));
+
 
             if (empty($name) || empty($traffic)) {
                 $request->session()->flash('errorMsg', '请填写完整');
@@ -102,7 +110,10 @@ class ShopController extends Controller
                 $goods->type = $type;
                 $goods->days = $days;
                 $goods->order = $order;
+                $goods->number = $number;
                 $goods->is_del = 0;
+                $goods->available_start = $available_start;
+                $goods->available_end = $available_end;
                 $goods->status = $status;
                 $goods->save();
 
@@ -144,11 +155,18 @@ class ShopController extends Controller
 
         if ($request->method() == 'POST') {
             $name = $request->get('name');
+            $number = $request->get('number', -1);
             $desc = $request->get('desc');
             $price = $request->get('price', 0);
             $labels = $request->get('labels');
             $order = $request->get('order');
+            $available_start = $request->get('available_start',-1);
+            $available_end = $request->get('available_end',-1);
             $status = $request->get('status');
+
+            $available_start = $available_start == -1 ? $available_start : strtotime(date('Y-m-d 0:0:0', strtotime($available_start)));
+            $available_end = $available_end == -1 ? $available_end : strtotime(date('Y-m-d 23:59:59', strtotime($available_end)));
+
 
             $goods = Goods::query()->where('id', $id)->first();
             if (!$goods) {
@@ -191,10 +209,13 @@ class ShopController extends Controller
             try {
                 $data = [
                     'name'   => $name,
+                    'number'   => $number,
                     'desc'   => $desc,
                     'logo'   => $logo,
                     'price'  => $price * 100,
                     'status' => $status,
+                    'available_start' => $available_start,
+                    'available_end' => $available_end,
                     'order' => $order
                 ];
 
@@ -234,6 +255,7 @@ class ShopController extends Controller
             }
 
             $view['goods'] = $goods;
+            $view['is_date'] = ($goods->available_start==-1 && $goods->available_end==-1)?0:1;
             $view['label_list'] = Label::query()->orderBy('sort', 'desc')->orderBy('id', 'asc')->get();
 
             return $this->view('shop/editGoods', $view);

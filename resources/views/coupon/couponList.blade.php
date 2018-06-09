@@ -36,11 +36,15 @@
                                     <th> # </th>
                                     <th> 名称 </th>
                                     <th> 券码 </th>
-                                    <th> LOGO </th>
+                                    {{--<th> LOGO </th>--}}
                                     <th> 类型 </th>
-                                    <th> 用途 </th>
+                                    <th> 剩余次数 </th>
+                                    <th> 用户 </th>
+                                    <th> 指定商品类型 </th>
+                                    <th> 指定商品ID </th>
                                     <th> 优惠 </th>
-                                    <th> 有效期 </th>
+                                    <th> 生效时间 </th>
+                                    <th> 结束时间 </th>
                                     <th> 状态 </th>
                                     <th> 操作 </th>
                                 </tr>
@@ -56,7 +60,7 @@
                                             <td> {{$coupon->id}} </td>
                                             <td> {{$coupon->name}} </td>
                                             <td> <span class="label label-info">{{$coupon->sn}}</span> </td>
-                                            <td> @if($coupon->logo) <a href="{{$coupon->logo}}" class="fancybox"><img src="{{$coupon->logo}}"/></a> @endif </td>
+{{--                                            <td> @if($coupon->logo) <a href="{{$coupon->logo}}" class="fancybox"><img src="{{$coupon->logo}}"/></a> @endif </td>--}}
                                             <td>
                                                 @if($coupon->type == '1')
                                                     抵用券
@@ -66,7 +70,10 @@
                                                     充值券
                                                 @endif
                                             </td>
-                                            <td> {{$coupon->usage == '1' ? '一次性' : '可重复'}} </td>
+                                            <td> {{$coupon->usage}} </td>
+                                            <td> {{$coupon->huser_ids()}} </td>
+                                            <td> {{$coupon->hgoods_types()}} </td>
+                                            <td> {{$coupon->hgoods_ids()}} </td>
                                             <td>
                                                 @if($coupon->type == '1' || $coupon->type == '3')
                                                     {{$coupon->amount}}元
@@ -74,19 +81,20 @@
                                                     {{$coupon->discount}}折
                                                 @endif
                                             </td>
-                                            <td> {{date('Y-m-d', $coupon->available_start)}} ~ {{date('Y-m-d', $coupon->available_end)}} </td>
+                                            <td> {{$coupon->havailable_start()}} </td>
+                                            <td> {{$coupon->havailable_end()}} </td>
                                             <td>
-                                                @if ($coupon->usage == 1)
-                                                    @if($coupon->status == '1')
-                                                        <span class="label label-default"> 已使用 </span>
-                                                    @elseif ($coupon->status == '2')
-                                                        <span class="label label-default"> 已失效 </span>
-                                                    @else
-                                                        <span class="label label-success"> 未使用 </span>
-                                                    @endif
+
+                                                @if($coupon->status == '1')
+                                                    <span class="label label-default"> 已使用 </span>
+                                                @elseif ($coupon->status == '2')
+                                                    <span class="label label-default"> 已失效 </span>
+                                                @else
+                                                    <span class="label label-success"> 未使用 </span>
                                                 @endif
                                             </td>
                                             <td>
+                                                <a type="button" class="btn btn-sm blue btn-outline" href="{{url('coupon/editCoupon').'?id='.$coupon->id}}"><i class="fa fa-pencil"></i></a>
                                                 @if($coupon->status != '1')
                                                     <button type="button" class="btn btn-sm red btn-outline" onclick="delCoupon('{{$coupon->id}}')"><i class="fa fa-trash"></i></button>
                                                 @endif

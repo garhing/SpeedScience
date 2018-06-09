@@ -2,6 +2,7 @@
 
 namespace App\Http\Models;
 
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Database\Eloquent\Model;
 use Mockery\Exception;
 use DB;
@@ -147,6 +148,9 @@ class Order extends Model
     static function getUserExpireTime($uid)
     {
         $result = Order::query()->where(['user_id' => $uid, 'status' => '2', 'is_expire' => 0])->max('expire_at');
+        if(!$result){
+            return date('Y-m-d H:i:s',strtotime('- 10 years'));
+        }
         return $result;
     }
 
@@ -188,10 +192,13 @@ class Order extends Model
         if ($existTaocanOrder) {
             $goods = $existTaocanOrder->goods;
             $activeTimestamps = strtotime("-" . $goods->days . " days", strtotime($existTaocanOrder->expire_at));
-            $traffic_reset_day = in_array(date('d', $activeTimestamps), [29, 30, 31]) ? 28 : abs(date('d', $activeTimestamps));
-            return $traffic_reset_day;
+            $next_reset_time = strtotime('+ 30 days',$activeTimestamps);
+            while($next_reset_time<time()){
+                $next_reset_time = strtotime('+ 30 days',$next_reset_time);
+            }
+            return date('Y-m-d H:i:s', $next_reset_time);
         }
-        return null;
+        return 0;
     }
 
     /**
@@ -212,8 +219,8 @@ class Order extends Model
                 return ['status' => 'fail', 'message' => '订单不存在'];
             }
 
-            if($status == -1){
-                //订单关闭较为特殊
+            if($status == -1 || $status == 0){
+                //订单关闭和在线支付较为特殊
                 $result = Order::updateOrderStatus($order->oid, $s);
                 if ($result['status'] == 'fail') {
                     return $result;
@@ -331,6 +338,11 @@ class Order extends Model
                     $couponLog->save();
                 }
 
+                // 商品数量-1
+                if($goods->usage != -1 && $goods->usage !=0 ){
+                    Goods::query()->where('id',$goods->id)->decrement('number',-1);
+                }
+
                 //订单支付成功
                 Order::query()->where('oid', $oid)->update(['status' => $status]);
             }
@@ -356,7 +368,7 @@ class Order extends Model
                 }
 
                 //激活订单
-                $expire_at = date('Y:m:d H:i:s', strtotime("+" . $goods->days . " days"));
+                $expire_at = date('Y-m-d H:i:s', strtotime("+" . $goods->days . " days"));
                 Order::query()->where('oid', $oid)->update(['expire_at' => $expire_at, 'status' => $status]);
 
                 // 激活账户服务

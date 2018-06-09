@@ -11,6 +11,7 @@ use App\Http\Models\UserSubscribeLog;
 use Illuminate\Http\Request;
 use Redirect;
 use DB;
+use App\Http\Models\Order;
 
 /**
  * 订阅控制器
@@ -46,7 +47,7 @@ class SubscribeController extends Controller
         $this->log($subscribe->id, $request->getClientIp(), $request->headers);
 
         // 获取这个账号可用节点
-        $userLabelIds = UserLabel::query()->where('user_id', $user->id)->pluck('label_id');
+        $userLabelIds = Order::getUserLabels($user['id']);
         if (empty($userLabelIds)) {
             exit($this->noneNode());
         }

@@ -11,7 +11,7 @@ use Log;
 class AutoResetUserTrafficJob extends Command
 {
     protected $signature = 'autoResetUserTrafficJob';
-    protected $description = '自动重置用户可用流量';
+    protected $description = '自动重置用户可用流量'; // TODO
 
     public function __construct()
     {
