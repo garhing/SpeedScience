@@ -14,16 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\AutoBanSubscribeJob::class,
-        \App\Console\Commands\AutoBanUserJob::class,
         \App\Console\Commands\AutoCheckNodeStatusJob::class,
         \App\Console\Commands\AutoClearLogJob::class,
-        \App\Console\Commands\AutoCloseOrderJob::class,
-        \App\Console\Commands\AutoDecGoodsTrafficJob::class,
-        \App\Console\Commands\AutoDisableExpireUserJob::class,
-        \App\Console\Commands\AutoDisableUserJob::class,
-        \App\Console\Commands\AutoReleasePortJob::class,
-        \App\Console\Commands\AutoReopenUserJob::class,
-        \App\Console\Commands\AutoResetUserTrafficJob::class,
+        \App\Console\Commands\RoutineJob::class,
         \App\Console\Commands\AutoStatisticsNodeDailyTrafficJob::class,
         \App\Console\Commands\AutoStatisticsNodeHourlyTrafficJob::class,
         \App\Console\Commands\AutoStatisticsUserDailyTrafficJob::class,
@@ -31,7 +24,6 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\UserExpireWarningJob::class,
         \App\Console\Commands\UserTrafficAbnormalWarningJob::class,
         \App\Console\Commands\UserTrafficWarningJob::class,
-        \App\Console\Commands\AutoPullCode::class,
     ];
 
     /**
@@ -44,16 +36,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('autoBanSubscribeJob')->everyThirtyMinutes();
-        $schedule->command('autoBanUserJob')->everyTenMinutes();
         $schedule->command('autoCheckNodeStatusJob')->everyMinute();
         $schedule->command('autoClearLogJob')->everyThirtyMinutes();
         $schedule->command('autoCloseOrderJob')->everyMinute();
-        $schedule->command('autoDecGoodsTrafficJob')->everyTenMinutes();
-        $schedule->command('autoDisableExpireUserJob')->everyMinute();
-        $schedule->command('autoDisableUserJob')->everyMinute();
-        $schedule->command('autoReleasePortJob')->everyMinute();
-        $schedule->command('autoReopenUserJob')->everyMinute();
-        $schedule->command('autoResetUserTrafficJob')->everyFiveMinutes();
+        $schedule->command('RoutineJob')->everyTenMinutes();
         $schedule->command('autoStatisticsNodeDailyTrafficJob')->dailyAt('04:30');
         $schedule->command('autoStatisticsNodeHourlyTrafficJob')->hourly();
         $schedule->command('autoStatisticsUserDailyTrafficJob')->dailyAt('03:00');

@@ -27,7 +27,7 @@ class AutoCloseOrderJob extends Command
             try {
                 foreach ($paymentList as $payment) {
                     Payment::query()->where('id', $payment->id)->update(['status' => -1]); // 关闭支付单
-                    Order::query()->where('oid', $payment->oid)->update(['status' => -1]); // 关闭订单
+                    Order::updateOrderStatusUnit($payment->oid,-1); // 关闭订单
                 }
 
                 DB::commit();
