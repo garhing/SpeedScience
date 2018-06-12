@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\AutoBanSubscribeJob::class,
         \App\Console\Commands\AutoCheckNodeStatusJob::class,
         \App\Console\Commands\AutoClearLogJob::class,
+        \App\Console\Commands\AutoCloseOrderJob::class,
         \App\Console\Commands\RoutineJob::class,
         \App\Console\Commands\AutoStatisticsNodeDailyTrafficJob::class,
         \App\Console\Commands\AutoStatisticsNodeHourlyTrafficJob::class,

@@ -80,6 +80,7 @@ return [
     'locale' => 'zh-CN',
     //'locale' => 'en',
 
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
