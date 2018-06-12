@@ -48,6 +48,9 @@ class RoutineJob extends Command
         //更新所有用户状态
         $allUserList = User::query()->get();
         foreach ($allUserList as $user){
+            User::deactiveUserOrder($user->id,false);
+
+
             User::updateUserStatus($user->id);
         }
 
@@ -68,6 +71,8 @@ class RoutineJob extends Command
         // TODO 邮件提醒
 
 
+
+        //************************* 分钟级任务 **********************************************************************************
         // 1/2封禁24小时内流量异常账号
         if ($this->config['is_traffic_ban']) {
             $userList = User::query()->where('status', '>=', 0)->where('enable', 1)->get();
@@ -85,6 +90,7 @@ class RoutineJob extends Command
                 }
             }
         }
+
         // 2/2 解封账号
         $userList = User::query()->where('status', '>=', 0)->where('ban_time', '>', 0)->get();
         foreach ($userList as $user) {
@@ -95,7 +101,7 @@ class RoutineJob extends Command
                 $this->log($user->id, 0, '【自动解封】-封禁到期');
             }
         }
-
+        //************************* 分钟级任务 **********************************************************************************
 
         Log::info('定时任务：' . $this->description);
     }

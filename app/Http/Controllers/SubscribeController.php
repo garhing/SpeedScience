@@ -46,6 +46,10 @@ class SubscribeController extends Controller
         // 记录每次请求
         $this->log($subscribe->id, $request->getClientIp(), $request->headers);
 
+
+        //订阅前先更新用户状态
+        User::updateUserStatus($user['id']);
+
         // 获取这个账号可用节点
         $userLabelIds = Order::getUserLabels($user['id']);
         if (empty($userLabelIds)) {

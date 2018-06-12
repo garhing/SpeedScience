@@ -70,12 +70,15 @@ class UserController extends Controller
     public function userAccount(Request $request){
         $user = $request->session()->get('user');
 
+        //查阅前先更新用户状态
+        User::updateUserStatus($user['id']);
+
         $user = User::query()->where('id', $user['id'])->first();
         $user->totalTransfer = flowAutoShow($user->transfer_enable);
         $user->usedTransfer = flowAutoShow($user->u + $user->d);
         $user->usedPercent = $user->transfer_enable > 0 ? round(($user->u + $user->d) / $user->transfer_enable, 2) : 1;
         $user->levelName = Level::query()->where('level', $user['level'])->first()['level_name'];
-        $user->expireWarning = Order::getUserExpireTime($user->id)<= date('Y-m-d', strtotime("+ 30 days")) ? 1 : 0; // 临近过期提醒
+        $user->expireWarning = strtotime($user->expire_time)<= strtotime(date('Y-m-d', strtotime("+ 30 days")) )? 1 : 0; // 临近过期提醒
         $user->expire_time = $user->userExpireTime();
 
         $view['info'] = $user->toArray();

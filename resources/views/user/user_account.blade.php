@@ -45,11 +45,20 @@
                             <div class="col-md-12">
                                 <ul class="list-group">
                                     <li class="list-group-item">
-                                        SSR状态：{{$info['status']!=-1 ? trans('home.enabled') : trans('home.disabled') }}
-                                    </li>
-                                    @if($login_add_score)
-                                        <li class="list-group-item">
-                                            {{trans('home.account_score')}}：{{$info['score']}}
+                                        SSR状态：
+                                        @if ($info['status']!=-1)
+                                            @if ($info['expireWarning'])
+                                                {{trans('home.enabled')}}，有效期至：<span class="label label-warning">{{$info['expire_time']}}</span>
+                                            @else
+                                                {{trans('home.enabled')}}，有效期至：{{$info['expire_time']}}
+                                            @endif
+                                        @else
+                                            {{ trans('home.disabled')}}
+                                         @endif
+                                     </li>
+                                     @if($login_add_score)
+                                         <li class="list-group-item">
+                                             {{trans('home.account_score')}}：{{$info['score']}}
                                             <span class="badge badge-info">
                             <a href="javascript:;" data-toggle="modal" data-target="#exchange_modal"
                                style="color:#FFF;">{{trans('home.redeem_coupon')}}</a>
@@ -62,14 +71,6 @@
                             <a href="javascript:;" data-toggle="modal" data-target="#charge_modal"
                                style="color:#FFF;">{{trans('home.recharge')}}</a>
                         </span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        {{trans('home.account_expire')}}
-                                        ：@if ($info['expireWarning'])
-                                            <span class="label label-warning">{{$info['expire_time']}}</span>
-                                        @else
-                                            {{$info['expire_time']}}
-                                        @endif
                                     </li>
                                     <li class="list-group-item">
                                         {{trans('home.account_last_usage')}}

@@ -193,7 +193,7 @@ class User extends Model
     //用于前端显示
     public function userExpireTime()
     {
-        $result = Order::getUserExpireTime($this->attributes['id']);
+        $result = $this->attributes['expire_time'];
         return strtotime($result)< time() ? '已过期' : $result;
     }
 
