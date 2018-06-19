@@ -47,18 +47,20 @@
                                     <li class="list-group-item">
                                         SSR状态：
                                         @if ($info['status']!=-1)
-                                            @if ($info['expireWarning'])
-                                                {{trans('home.enabled')}}，有效期至：<span class="label label-warning">{{$info['expire_time']}}</span>
-                                            @else
-                                                {{trans('home.enabled')}}，有效期至：{{$info['expire_time']}}
-                                            @endif
+                                            {{trans('home.enabled')}}
                                         @else
-                                            {{ trans('home.disabled')}}
-                                         @endif
-                                     </li>
-                                     @if($login_add_score)
-                                         <li class="list-group-item">
-                                             {{trans('home.account_score')}}：{{$info['score']}}
+                                            <span class="label label-danger">{{ trans('home.disabled')}}</span>
+                                        @endif
+                                        ,
+                                        @if ($info['expireWarning'])
+                                            有效期至：<span class="label label-warning">{{$info['expire_time']}}</span>
+                                        @else
+                                            有效期至：{{$info['expire_time']}}
+                                        @endif
+                                    </li>
+                                    @if($login_add_score)
+                                        <li class="list-group-item">
+                                            {{trans('home.account_score')}}：{{$info['score']}}
                                             <span class="badge badge-info">
                             <a href="javascript:;" data-toggle="modal" data-target="#exchange_modal"
                                style="color:#FFF;">{{trans('home.redeem_coupon')}}</a>
@@ -83,7 +85,8 @@
                                     <li class="list-group-item">
                                         {{trans('home.account_bandwidth_usage')}}：{{$info['usedTransfer']}}
                                         （{{$info['totalTransfer']}}
-                                        ）@if($info['traffic_reset_day'])&ensp; 每30天重置一次，下次重置时间为：{{$info['traffic_reset_day']}}  @endif
+                                        ）@if($info['traffic_reset_day'])&ensp;
+                                        每30天重置一次，下次重置时间为：{{$info['traffic_reset_day']}}  @endif
                                         <div class="progress progress-striped active" style="margin-bottom:0;"
                                              title="{{trans('home.account_total_traffic')}} {{$info['totalTransfer']}}，{{trans('home.account_usage_traffic')}} {{$info['usedTransfer']}}">
                                             <div class="progress-bar progress-bar-danger" role="progressbar"
@@ -344,25 +347,25 @@
         var UIModals = function () {
             var n = function () {
                 @foreach($nodeList as $node)
-            $("#txt_{{$node->id}}").draggable({handle: ".modal-header"});
+                $("#txt_{{$node->id}}").draggable({handle: ".modal-header"});
                 $("#qrcode_{{$node->id}}").draggable({handle: ".modal-header"});
                 @endforeach
-        };
+            };
 
-        return {
-            init: function () {
-                n()
+            return {
+                init: function () {
+                    n()
+                }
             }
-        }
-    }();
+        }();
 
-    jQuery(document).ready(function () {
-        UIModals.init()
-    });
+        jQuery(document).ready(function () {
+            UIModals.init()
+        });
 
-    // 循环输出节点scheme用于生成二维码
-@foreach ($nodeList as $node)
-            $('#qrcode_ssr_img_{{$node->id}}').qrcode("{{$node->ssr_scheme}}");
+        // 循环输出节点scheme用于生成二维码
+        @foreach ($nodeList as $node)
+        $('#qrcode_ssr_img_{{$node->id}}').qrcode("{{$node->ssr_scheme}}");
         $('#qrcode_ss_img_{{$node->id}}').qrcode("{{$node->ss_scheme}}");
         @endforeach
 
