@@ -46,7 +46,7 @@
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         SSR状态：
-                                        @if ($info['status']!=-1)
+                                        @if ($info['enable'] == 1)
                                             {{trans('home.enabled')}}
                                         @else
                                             <span class="label label-danger">{{ trans('home.disabled')}}</span>

@@ -241,11 +241,11 @@ class User extends Model
             $transfer_enable = Order::getUserTransferEnable($uid);
             $expire_time = Order::getUserExpireTime($uid);
             $next_reset_time = Order::getUserResetDay($uid);
-            $status = 1;
+            $enable = 1;
             if(strtotime($expire_time)<time()){
-                $status = -1;
+                $enable = 0;
             }
-            User::query()->where('id', $uid)->update(['status'=>$status,'transfer_enable' => $transfer_enable, 'expire_time' => $expire_time, 'traffic_reset_day' => $next_reset_time]);
+            User::query()->where('id', $uid)->update(['enable'=>$enable,'transfer_enable' => $transfer_enable, 'expire_time' => $expire_time, 'traffic_reset_day' => $next_reset_time]);
             DB::commit();
             return ['status' => 'success', 'data' => '', 'message' => '操作成功'];
         } catch (\Exception $e) {
