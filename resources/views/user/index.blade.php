@@ -99,19 +99,19 @@
                                     <div class="tab-pane" id="tab_2">
                                         <p>1、点击下载<a href="{{url('/downloads/ssr-win.7z')}}">Windows客户端</a>并启动</p>
                                         <p>2、右键任务栏小飞机==>>服务器订阅==>>SSR服务器订阅设置，添加您的订阅地址</p>
-                                        <p>3、右键任务栏小飞机==>>服务器订阅==>>更新SSR服务器订阅，更新您的服务信息</p>
-                                        <p>4、更新成功后，右键菜单==>>服务器==>>编辑服务器 处，删除原有服务器。</p>
+                                        <p>3、右键任务栏小飞机==>>服务器订阅==>><span style="color:red">更新SSR服务器订阅(不通过代理)</span>，更新您的服务信息</p>
+                                        <p>4、更新成功后，右键菜单==>>服务器==>>编辑服务器处，删除原有服务器。</p>
                                         <p>5、右键菜单==>>系统代理模式==>>PAC模式</p>
                                     </div>
                                     <div class="tab-pane" id="tab_3">
                                         <p>1、点击下载<a href="{{url('/downloads/ssr-android.apk')}}">Android客户端</a>并启动</p>
-                                        <p>2、</p>
-                                        <p>3、</p>
-                                        <p>4、</p>
-                                        <p>5、</p>
+                                        <p>2、点击小飞机添加订阅地址</p>
+                                        <p>3、黏贴宁的订阅地址，并更新</p>
+                                        <p>4、选择合适的线路并连接</p>
+                                        <p>5、测试是否成功</p>
                                     </div>
                                     <div class="tab-pane" id="tab_4">
-                                        <p>1、请参照<a href="https://github.com/j-proxy/iossos" target="_blank"> 教程 </a>安装Shadowrocket</p>
+                                        <p>1、点击下载<a href="{{url('/downloads/Shadowrocket-2.1.12.ipa')}}">iOS客户端</a>并参照<a href="https://github.com/j-proxy/iossos" target="_blank"> 教程 </a>安装Shadowrocket</p>
                                         <p>2、点击右上角 "+"号，类型选择"Subscribe"</p>
                                         <p>3、粘贴您的订阅地址，然后点击完成</p>
                                         <p>4、更新成功后，选择您的线路</p>
