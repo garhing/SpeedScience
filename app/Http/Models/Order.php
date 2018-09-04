@@ -147,10 +147,11 @@ class Order extends Model
     // 根据用户ID和对应的订单，查询用户过期时间
     static function getUserExpireTime($uid)
     {
-        $result = Order::query()->where(['user_id' => $uid, 'status' => '2', 'is_expire' => 0])
-            ->orWhere(['user_id' => $uid, 'status' => '3'])
+        $result1 = Order::query()->where(['user_id' => $uid, 'status' => '2', 'is_expire' => 0])->max('expire_at');
+        $result2 = Order::query()->where(['user_id' => $uid, 'status' => '3', 'is_expire' => 0])
             ->whereHas('goods', function ($q) { $q->where('type', 2); })
             ->max('expire_at');
+        $result = $result1>$result2?$result1:$result2;
         if(!$result){
             return date('Y-m-d H:i:s',strtotime('- 10 years'));
         }
