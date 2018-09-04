@@ -40,7 +40,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('autoCheckNodeStatusJob')->everyMinute();
         $schedule->command('autoClearLogJob')->everyThirtyMinutes();
         $schedule->command('autoCloseOrderJob')->everyMinute();
-        $schedule->command('RoutineJob')->everyTenMinutes();
+        $schedule->command('routineJob')->everyTenMinutes();
         $schedule->command('autoStatisticsNodeDailyTrafficJob')->dailyAt('04:30');
         $schedule->command('autoStatisticsNodeHourlyTrafficJob')->hourly();
         $schedule->command('autoStatisticsUserDailyTrafficJob')->dailyAt('03:00');

@@ -3,18 +3,17 @@
 namespace App\Console\Commands;
 
 use App\Http\Models\Config;
-use App\Http\Models\GoodsLabel;
-use App\Http\Models\UserLabel;
 use Illuminate\Console\Command;
 use App\Http\Models\Order;
 use App\Http\Models\User;
+use App\Http\Models\UserTrafficHourly;
 use Log;
 
 class RoutineJob extends Command
 {
-    protected $signature = 'RoutineJob';
+    protected $signature = 'routineJob';
     protected $description = '例行任务';// TODO 检测用户订单有效状态，自动失效过期订单和流量用尽订单, 并更新用户参数，也包括了用户流量重置操作
-    public $config = null;
+    protected $config = null;
 
     public function __construct()
     {
@@ -31,7 +30,7 @@ class RoutineJob extends Command
                 if (empty($order->user) || empty($order->goods)) {
                     continue;
                 }
-                Order::query()->where($order->oid)->update('is_expire',1);
+                Order::query()->where('oid',$order->oid)->update(['is_expire'=>1]);
             }
         }
 

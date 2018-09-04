@@ -71,7 +71,7 @@ class UserController extends Controller
         $user = $request->session()->get('user');
 
         //查阅前先更新用户状态
-        User::updateUserStatus($user['id']);
+        User::deactiveUserOrder($user['id'],true);
 
         $user = User::query()->where('id', $user['id'])->first();
         $user->totalTransfer = flowAutoShow($user->transfer_enable);
