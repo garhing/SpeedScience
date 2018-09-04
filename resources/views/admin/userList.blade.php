@@ -122,6 +122,7 @@
                                                 @endif
                                             </td>
                                             <td>
+
                                                 <button type="button" class="btn btn-sm blue btn-outline" onclick="editUser('{{$user->id}}')">
                                                     <i class="fa fa-pencil"></i>
                                                 </button>
@@ -133,6 +134,12 @@
                                                 </button>
                                                 <button type="button" class="btn btn-sm green-meadow btn-outline" onclick="resetTraffic('{{$user->id}}')">
                                                     <i class="fa fa-refresh"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-danger btn-outline" onclick="delUser('{{$user->id}}')">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-success btn-outline" onclick="switchToUser('{{$user->id}}')">
+                                                    切换身份
                                                 </button>
                                             </td>
                                         </tr>
@@ -164,6 +171,25 @@
     <script src="/js/layer/layer.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+        // 切换用户身份
+        function switchToUser(user_id) {
+            $.ajax({
+                'url': "{{url("/admin/switchToUser")}}",
+                'data': {
+                    'user_id': user_id,
+                    '_token': '{{csrf_token()}}'
+                },
+                'dataType': "json",
+                'type': "POST",
+                success: function (ret) {
+                    layer.msg(ret.message, {time: 1000}, function () {
+                        if (ret.status == 'success') {
+                            window.location.href = "/user";
+                        }
+                    });
+                }
+            });
+        }
         // 批量生成账号
         function batchAddUsers() {
             layer.confirm('将自动生成5个账号，确定继续吗？', {icon: 3, title:'警告'}, function(index) {
