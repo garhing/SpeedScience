@@ -424,6 +424,7 @@ class AdminController extends Controller
         try{
             DB::beginTransaction();
             User::query()->where('id', $id)->delete();
+            Order::query()->where('user_id', $id)->delete();
             UserBanLog::query()->where('user_id', $id)->delete();
             UserBalanceLog::query()->where('user_id', $id)->delete();
             UserLabel::query()->where('user_id', $id)->delete();
@@ -437,6 +438,7 @@ class AdminController extends Controller
             DB::commit();
             return $this->json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
         }catch (Exception $exception){
+            DB::rollBack();
             return $this->json(['status' => 'fail', 'data' => '', 'message' => '删除失败']);
         }
     }

@@ -14,6 +14,7 @@ use Response;
 use Redirect;
 use Cache;
 use Mail;
+use DB;
 
 /**
  * 注册控制器
@@ -39,8 +40,8 @@ class RegisterController extends Controller
             $aff = intval($request->get('aff', 0));
 
             //取出之前存贮的推广人链接，但优先级较低
-            $his_aff_id = $request->cookie('aff_id',0);
-            $aff  = $aff ? $aff : $his_aff_id;
+            $his_aff_id = $request->cookie('aff_id', 0);
+            $aff = $aff ? $aff : $his_aff_id;
 
             // 防止重复提交
             $session_register_token = $request->session()->get('register_token');
@@ -105,9 +106,9 @@ class RegisterController extends Controller
 
                     return Redirect::back()->withInput($request->except(['code']));
                 }
-                
+
                 // 如果不是免费邀请码
-                if(!$code->is_free){
+                if (!$code->is_free) {
                     $aff = $code->uid;
                 }
             }
@@ -189,6 +190,45 @@ class RegisterController extends Controller
                 if ($this->config['is_invite_register']) {
                     Invite::query()->where('id', $code->id)->update(['fuid' => $user->id, 'status' => 1]);
                 }
+            }
+
+            //推荐的用户获取赠送商品
+            if($referral_uid != 0){
+                DB::beginTransaction();
+                try {
+                    $user_id = $referral_uid;
+                    $goods_ids = $this->config['referral_good_ids'];
+                    $goods_ids = explode(';', $goods_ids);
+                    foreach ($goods_ids as $goods_id) {
+                        $result = User::addOrder($user_id, $goods_id, $coupon_sn = -1, $status = 1, $pay_way = 0);
+                        if($result['status'] == 'fail'){
+                            throw  new Exception($result['message']);
+                        }
+                    }
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollBack();
+//                    $request->session()->flash('errorMsg', '操作失败：' . $e->getMessage());
+                }
+            }
+
+            //用户注册赠送商品
+            DB::beginTransaction();
+            try {
+                $user_id = $user->id;
+                $goods_ids = $this->config['initial_good_ids'];
+                $goods_ids = explode(';', $goods_ids);
+                foreach ($goods_ids as $goods_id) {
+                    $result = User::addOrder($user_id, $goods_id, $coupon_sn = -1, $status = 2, $pay_way = 0);
+                    if($result['status'] == 'fail'){
+                        throw  new Exception($result['message']);
+                    }
+                }
+                DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+//                $request->session()->flash('errorMsg', '操作失败：' . $e->getMessage());
             }
 
             // 发送邮件

@@ -82,7 +82,7 @@
                                             <tr>
                                                 <td> {{$order->oid}} </td>
                                                 <td> {{$order->order_sn}} </td>
-                                                <td> {{$order->user->username}} </td>
+                                                <td> {{empty($order->user) ? '【账号已删除】' : $order->user->username}} </td>
                                                 <td> {{$order->goods->name}} </td>
                                                 <td> {{$order->expireAt()}} </td>
                                                 <td> {{$order->coupon ? $order->coupon->name . ' - ' . $order->coupon->sn : '无'}} </td>
