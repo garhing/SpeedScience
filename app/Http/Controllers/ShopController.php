@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Models\Goods;
 use App\Http\Models\GoodsLabel;
 use App\Http\Models\Label;
+use App\Http\Models\Order;
+use App\Http\Models\OrderLabel;
 use App\Http\Models\User;
 use Illuminate\Http\Request;
 use Mockery\Exception;
@@ -300,7 +302,7 @@ class ShopController extends Controller
                         }
                     }
                 }
-                $request->session()->flash('successMsg', '操作成功：');
+                $request->session()->flash('successMsg', '操作成功');
                 DB::commit();
                 return Redirect::back();
 
@@ -315,7 +317,48 @@ class ShopController extends Controller
 
             return $this->view('shop/presentGoods');
         }
-
     }
+
+    public function refreshLabel(Request $request){
+        if ($request->method() == 'POST') {
+            try {
+                DB::beginTransaction();
+                $refresh = $request->get('refresh');
+                if($refresh == '0'){
+
+                    $request->session()->flash('errorMsg', '操作无效');
+                    DB::commit();
+                    return Redirect::back();
+                }
+                $orders = Order::query()->where(['status' => '2', 'is_expire' => 0])->get(['oid','goods_id'])->toArray();
+                foreach ($orders as $order){
+                    // 删除原有的标签
+                    OrderLabel::query()->where('oid',$order['oid'])->delete();
+                    // 修改为******写订单标签****
+                    $goodsLabels = GoodsLabel::query()->where('goods_id', $order['goods_id'])->pluck('label_id')->toArray();
+                    foreach ($goodsLabels as $vo) {
+                        $obj = new OrderLabel();
+                        $obj->oid = $order['oid'];
+                        $obj->label_id = $vo;
+                        $obj->save();
+                    }
+                }
+
+                $request->session()->flash('successMsg', '操作成功');
+                DB::commit();
+                return Redirect::back();
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $request->session()->flash('errorMsg', '操作失败' . $e->getMessage());
+                return Redirect::back()->withInput();
+            }
+
+        } else {
+
+            return $this->view('shop/refreshLabel');
+        }
+    }
+
 
 }

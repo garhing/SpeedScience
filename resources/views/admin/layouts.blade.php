@@ -111,7 +111,7 @@
                         <span class="selected"></span>
                     </a>
                 </li>
-                <li class="nav-item {{in_array(Request::path(), ['shop/goodsList', 'shop/addGoods', 'shop/editGoods','shop/goodsList','shop/addGoods', 'shop/editGoods','coupon/couponList', 'coupon/addCoupon', 'coupon/editCoupon','shop/presentGoods']) ? 'active open' : ''}}">
+                <li class="nav-item {{in_array(Request::path(), ['shop/goodsList', 'shop/addGoods', 'shop/editGoods','shop/goodsList','shop/addGoods', 'shop/editGoods','coupon/couponList', 'coupon/addCoupon', 'coupon/editCoupon','shop/presentGoods','shop/refreshLabel']) ? 'active open' : ''}}">
                     <a href="{{url('shop/goodsList')}}" class="nav-link nav-toggle">
                         <i class="fa fa-shopping-cart"></i>
                         <span class="title">商品管理</span>
@@ -134,6 +134,12 @@
                             <a href="{{url('shop/presentGoods')}}" class="nav-link ">
                                 <i class="fa fa-user-times"></i>
                                 <span class="title">赠送商品</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{in_array(Request::path(), ['shop/refreshLabel']) ? 'active open' : ''}}">
+                            <a href="{{url('shop/refreshLabel')}}" class="nav-link ">
+                                <i class="fa fa-clone"></i>
+                                <span class="title">线路更新</span>
                             </a>
                         </li>
                     </ul>

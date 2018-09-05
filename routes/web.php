@@ -106,6 +106,7 @@ Route::group(['middleware' => ['forbidden', 'user', 'admin']], function () {
     Route::any('shop/editGoods', 'ShopController@editGoods'); // 编辑商品
     Route::post('shop/delGoods', 'ShopController@delGoods'); // 删除商品
     Route::any('shop/presentGoods', 'ShopController@presentGoods'); // 赠送商品
+    Route::any('shop/refreshLabel', 'ShopController@refreshLabel'); // 线路更新
     Route::any('coupon/couponList', 'CouponController@couponList'); // 优惠券列表
     Route::any('coupon/editCoupon', 'CouponController@editCoupon'); // 编辑优惠券
     Route::any('coupon/addCoupon', 'CouponController@addCoupon'); // 添加优惠券

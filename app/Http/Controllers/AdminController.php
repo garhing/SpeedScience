@@ -437,7 +437,7 @@ class AdminController extends Controller
             Verify::query()->where('user_id', $id)->delete();
             DB::commit();
             return $this->json(['status' => 'success', 'data' => '', 'message' => '删除成功']);
-        }catch (Exception $exception){
+        }catch (\Exception $exception){
             DB::rollBack();
             return $this->json(['status' => 'fail', 'data' => '', 'message' => '删除失败']);
         }
