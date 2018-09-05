@@ -94,16 +94,24 @@
                                             <tr class="odd gradeX {{$user->trafficWarning ? 'danger' : ''}}">
                                             <td> {{$user->id}} </td>
                                             <td> {{$user->username}} </td>
-                                            <td> <span class="label label-danger"> {{$user->port}} </span> </td>
+                                            <td> <span class="label label-info"> {{$user->port}} </span> </td>
                                             <td> <span class="label label-default"> {{$user->method}} </span> </td>
                                             <td class="center"> {{$user->used_flow}} / {{$user->transfer_enable}} </td>
                                             <td class="center"> {{empty($user->t) ? '未使用' : date('Y-m-d H:i:s', $user->t)}} </td>
                                             <td class="center">
-                                                @if ($user->expireWarning)
-                                                    <span class="label label-warning"> {{$user->userExpireTime()}}</span>
-                                                @else
-                                                    {{$user->userExpireTime()}}
+                                                {{--@if ($user->expireWarning)--}}
+                                                    {{--<span class="label label-warning"> {{$user->userExpireTime()}}</span>--}}
+                                                {{--@else--}}
+                                                    {{--{{$user->userExpireTime()}}--}}
+                                                {{--@endif--}}
+                                                @if ($user->userIsExpire())
+                                                        <span class="label label-danger"> {{$user->expire_time}}</span>
+                                                    @elseif($user->expireWarning)
+                                                        <span class="label label-warning"> {{$user->expire_time}}</span>
+                                                    @else
+                                                        <span class="label label-info"> {{$user->expire_time}}</span>
                                                 @endif
+
                                             </td>
                                             <td>
                                                 @if ($user->status == '1')

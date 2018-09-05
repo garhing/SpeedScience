@@ -189,7 +189,12 @@ class User extends Model
 
         return $data;
     }
-
+    //用于前端显示
+    public function userIsExpire()
+    {
+        $result = $this->attributes['expire_time'];
+        return strtotime($result)< time() ? 1 : 0;
+    }
     //用于前端显示
     public function userExpireTime()
     {
