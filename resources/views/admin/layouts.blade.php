@@ -111,66 +111,66 @@
                         <span class="selected"></span>
                     </a>
                 </li>
-                <li class="nav-item {{in_array(Request::path(), ['admin/inviteList']) ? 'active open' : ''}}">
-                    <a href="{{url('admin/inviteList')}}" class="nav-link nav-toggle">
-                        <i class="fa fa-puzzle-piece"></i>
-                        <span class="title">邀请管理</span>
-                    </a>
-                </li>
-                <li class="nav-item {{in_array(Request::path(), ['admin/applyList', 'admin/applyDetail']) ? 'active open' : ''}}">
-                    <a href="{{url('admin/applyList')}}" class="nav-link nav-toggle">
-                        <i class="fa fa-credit-card"></i>
-                        <span class="title">提现管理</span>
-                    </a>
-                </li>
-                <li class="nav-item {{in_array(Request::path(), ['shop/goodsList', 'shop/addGoods', 'shop/editGoods']) ? 'active open' : ''}}">
+                <li class="nav-item {{in_array(Request::path(), ['shop/goodsList', 'shop/addGoods', 'shop/editGoods','shop/goodsList','shop/addGoods', 'shop/editGoods','coupon/couponList', 'coupon/addCoupon', 'coupon/editCoupon','shop/presentGoods']) ? 'active open' : ''}}">
                     <a href="{{url('shop/goodsList')}}" class="nav-link nav-toggle">
                         <i class="fa fa-shopping-cart"></i>
                         <span class="title">商品管理</span>
+                        <span class="arrow"></span>
                     </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item {{in_array(Request::path(), ['shop/goodsList','shop/addGoods', 'shop/editGoods']) ? 'active open' : ''}}">
+                            <a href="{{url('shop/goodsList')}}" class="nav-link ">
+                                <i class="fa fa-user"></i>
+                                <span class="title">商品列表</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{in_array(Request::path(), ['coupon/couponList', 'coupon/addCoupon', 'coupon/editCoupon']) ? 'active open' : ''}}">
+                            <a href="{{url('coupon/couponList')}}" class="nav-link ">
+                                <i class="fa fa-money"></i>
+                                <span class="title">卡券列表</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{in_array(Request::path(), ['shop/presentGoods']) ? 'active open' : ''}}">
+                            <a href="{{url('shop/presentGoods')}}" class="nav-link ">
+                                <i class="fa fa-user-times"></i>
+                                <span class="title">赠送商品</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="nav-item {{in_array(Request::path(), ['shop/presentGoods']) ? 'active open' : ''}}">
-                    <a href="{{url('shop/presentGoods')}}" class="nav-link nav-toggle">
-                        <i class="fa fa-gift"></i>
-                        <span class="title">赠送商品</span>
+                <li class="nav-item {{in_array(Request::path(), ['admin/applyList', 'admin/applyDetail','admin/orderList','admin/userBalanceLogList']) ? 'active open' : ''}}">
+                    <a href="{{url('admin/applyList')}}" class="nav-link nav-toggle">
+                        <i class="fa fa-credit-card"></i>
+                        <span class="title">资金管理</span>
+                        <span class="arrow"></span>
                     </a>
-                </li>
-                <li class="nav-item {{in_array(Request::path(), ['coupon/couponList', 'coupon/addCoupon', 'coupon/editCoupon']) ? 'active open' : ''}}">
-                    <a href="{{url('coupon/couponList')}}" class="nav-link nav-toggle">
-                        <i class="fa fa-ticket"></i>
-                        <span class="title">卡券管理</span>
-                    </a>
-                </li>
-                <li class="nav-item {{in_array(Request::path(), ['ticket/ticketList', 'ticket/replyTicket']) ? 'active open' : ''}}">
-                    <a href="{{url('ticket/ticketList')}}" class="nav-link nav-toggle">
-                        <i class="fa fa-question-circle"></i>
-                        <span class="title">工单管理</span>
-                    </a>
-                </li>
-                <li class="nav-item {{in_array(Request::path(), ['admin/labelList', 'admin/addLabel', 'admin/editLabel']) ? 'active open' : ''}}">
-                    <a href="{{url('admin/labelList')}}" class="nav-link nav-toggle">
-                        <i class="fa fa-sticky-note-o"></i>
-                        <span class="title">标签管理</span>
-                    </a>
-                </li>
-                <li class="nav-item {{in_array(Request::path(), ['admin/orderList']) ? 'active open' : ''}}">
-                    <a href="{{url('admin/orderList')}}" class="nav-link nav-toggle">
-                        <i class="fa fa-reorder"></i>
-                        <span class="title">订单管理</span>
-                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item {{in_array(Request::path(), ['admin/orderList']) ? 'active open' : ''}}">
+                            <a href="{{url('admin/orderList')}}" class="nav-link nav-toggle">
+                                <i class="fa fa-reorder"></i>
+                                <span class="title">订单列表</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{in_array(Request::path(), ['admin/applyList', 'admin/applyDetail']) ? 'active open' : ''}}">
+                            <a href="{{url('admin/applyList')}}" class="nav-link nav-toggle">
+                                <i class="fa fa-credit-card"></i>
+                                <span class="title">提现管理</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{in_array(Request::path(), ['admin/userBalanceLogList']) ? 'active open' : ''}}">
+                            <a href="{{url('admin/userBalanceLogList')}}" class="nav-link ">
+                                <i class="fa fa-money"></i>
+                                <span class="title">余额记录</span>
+                            </a>
+                        </li>
+                    </ul>
+
                 </li>
 
-                <li class="nav-item {{in_array(Request::path(), ['admin/mailEdit']) ? 'active open' : ''}}">
-                    <a href="{{url('admin/mailEdit')}}" class="nav-link ">
-                        <i class="fa fa-mail-forward"></i>
-                        <span class="title">邮件群发</span>
-                    </a>
-                </li>
-
-                <li class="nav-item {{in_array(Request::path(), ['admin/articleList', 'admin/addArticle', 'admin/editArticle', 'admin/articleLogList']) ? 'active open' : ''}}">
+                <li class="nav-item {{in_array(Request::path(), ['admin/articleList', 'admin/addArticle', 'admin/editArticle', 'admin/articleLogList','admin/mailEdit','ticket/ticketList', 'ticket/replyTicket']) ? 'active open' : ''}}">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-file-word-o"></i>
-                        <span class="title">文章管理</span>
+                        <span class="title">服务支持</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
@@ -180,9 +180,21 @@
                                 <span class="title">文章列表</span>
                             </a>
                         </li>
+                        <li class="nav-item {{in_array(Request::path(), ['ticket/ticketList', 'ticket/replyTicket']) ? 'active open' : ''}}">
+                            <a href="{{url('ticket/ticketList')}}" class="nav-link nav-toggle">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="title">工单管理</span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{in_array(Request::path(), ['admin/mailEdit']) ? 'active open' : ''}}">
+                            <a href="{{url('admin/mailEdit')}}" class="nav-link ">
+                                <i class="fa fa-mail-forward"></i>
+                                <span class="title">邮件群发</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
-                <li class="nav-item {{in_array(Request::path(), ['admin/userList', 'admin/addUser', 'admin/editUser', 'admin/userOrderList', 'admin/userBalanceLogList', 'admin/userBanLogList', 'admin/export', 'admin/userMonitor']) ? 'active open' : ''}}">
+                <li class="nav-item {{in_array(Request::path(), ['admin/userList', 'admin/addUser', 'admin/editUser', 'admin/userOrderList', 'admin/userBalanceLogList', 'admin/userBanLogList', 'admin/export', 'admin/userMonitor','admin/inviteList']) ? 'active open' : ''}}">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-users"></i>
                         <span class="title">用户管理</span>
@@ -195,12 +207,13 @@
                                 <span class="title">用户列表</span>
                             </a>
                         </li>
-                        <li class="nav-item {{in_array(Request::path(), ['admin/userBalanceLogList']) ? 'active open' : ''}}">
-                            <a href="{{url('admin/userBalanceLogList')}}" class="nav-link ">
-                                <i class="fa fa-money"></i>
-                                <span class="title">余额变动记录</span>
+                        <li class="nav-item {{in_array(Request::path(), ['admin/inviteList']) ? 'active open' : ''}}">
+                            <a href="{{url('admin/inviteList')}}" class="nav-link nav-toggle">
+                                <i class="fa fa-puzzle-piece"></i>
+                                <span class="title">邀请管理</span>
                             </a>
                         </li>
+
                         <li class="nav-item {{in_array(Request::path(), ['admin/userBanLogList']) ? 'active open' : ''}}">
                             <a href="{{url('admin/userBanLogList')}}" class="nav-link ">
                                 <i class="fa fa-user-times"></i>
@@ -209,13 +222,20 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{in_array(Request::path(), ['admin/nodeList', 'admin/addNode', 'admin/editNode', 'admin/groupList', 'admin/addGroup', 'admin/editGroup', 'admin/nodeMonitor']) ? 'active open' : ''}}">
+                <li class="nav-item {{in_array(Request::path(), ['admin/nodeList', 'admin/addNode', 'admin/editNode', 'admin/groupList', 'admin/addGroup', 'admin/editGroup', 'admin/nodeMonitor','admin/labelList', 'admin/addLabel', 'admin/editLabel']) ? 'active open' : ''}}">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-list-alt"></i>
                         <span class="title">节点管理</span>
                         <span class="arrow"></span>
                     </a>
+
                     <ul class="sub-menu">
+                        <li class="nav-item {{in_array(Request::path(), ['admin/labelList', 'admin/addLabel', 'admin/editLabel']) ? 'active open' : ''}}">
+                            <a href="{{url('admin/labelList')}}" class="nav-link nav-toggle">
+                                <i class="fa fa-sticky-note-o"></i>
+                                <span class="title">标签管理</span>
+                            </a>
+                        </li>
                         <li class="nav-item {{in_array(Request::path(), ['admin/nodeList', 'admin/addNode', 'admin/editNode', 'admin/nodeMonitor']) ? 'active open' : ''}}">
                             <a href="{{url('admin/nodeList')}}" class="nav-link ">
                                 <i class="fa fa-list"></i>
