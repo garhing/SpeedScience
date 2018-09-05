@@ -48,6 +48,9 @@
                     <div class="portlet-body form">
                         <div class="mt-clipboard-container">
                             <p style="font-size: 1.2em">您的订阅地址</p>
+                            <div class="alert alert-danger">
+                                <p> 警告：该订阅地址仅限个人使用，请勿传播该地址，否则会导致您的账号流量使用情况异常触发自动封号机制。 </p>
+                            </div>
                             @if($subscribe_status)
                                 <input type="text" id="mt-target-1" class="form-control" value="{{$link}}" />
                                 <a href="javascript:exchangeSubscribe();" class="btn green">
@@ -73,16 +76,16 @@
                                 <div class="portlet-title tabbable-line">
                                     <ul class="nav nav-tabs" style="float: left">
                                         <li class="active">
-                                            <a href="#tab_1" data-toggle="tab"> Mac</a>
+                                            <a href="#tab_1" data-toggle="tab"><i class="fa fa-apple"></i> Mac</a>
                                         </li>
                                         <li>
-                                            <a href="#tab_2" data-toggle="tab"> Windows</a>
+                                            <a href="#tab_2" data-toggle="tab"><i class="fa fa-windows"></i> Windows</a>
                                         </li>
                                         <li>
-                                            <a href="#tab_3" data-toggle="tab"> Android</a>
+                                            <a href="#tab_3" data-toggle="tab"><i class="fa fa-android"></i> Android</a>
                                         </li>
                                         <li>
-                                            <a href="#tab_4" data-toggle="tab">iOS</a>
+                                            <a href="#tab_4" data-toggle="tab"><i class="fa fa-apple"></i>iOS</a>
                                         </li>
                                     </ul>
                                 </div>
