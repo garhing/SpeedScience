@@ -386,7 +386,7 @@ class Order extends Model
                     if ($result['status'] == 'fail'){
                         throw new Exception($result['message']);
                     }
-                    $next_reset_time = Order::getUserResetDay($uid);
+                    $next_reset_time = Order::getUserResetDay($user->id);
                     User::query()->where('id', $user->id)->update(['u' => 0, 'd' =>0 ,'traffic_reset_day'=>$next_reset_time]);
                 }
 
