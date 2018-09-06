@@ -25,7 +25,11 @@ class ShopController extends Controller
     // 商品列表
     public function goodsList(Request $request)
     {
-        $goodsList = Goods::query()->where('is_del', 0)->orderBy('id', 'desc')->paginate(10);
+        $goodsList = Goods::query()->where('is_del', 0)
+            ->orderBy('status','asc')
+            ->orderBy('type','asc')
+            ->orderBy('price','asc')
+            ->paginate(15);
         foreach ($goodsList as $goods) {
             $goods->traffic = flowAutoShow($goods->traffic * 1048576);
         }
