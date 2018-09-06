@@ -95,9 +95,9 @@
                                             </td>
                                             <td>
                                                 <a type="button" class="btn btn-sm blue btn-outline" href="{{url('coupon/editCoupon').'?id='.$coupon->id}}"><i class="fa fa-pencil"></i></a>
-                                                @if($coupon->status != '1')
-                                                    <button type="button" class="btn btn-sm red btn-outline" onclick="delCoupon('{{$coupon->id}}')"><i class="fa fa-trash"></i></button>
-                                                @endif
+                                                {{--@if($coupon->status != '1')--}}
+                                                {{--@endif--}}
+                                                <button type="button" class="btn btn-sm red btn-outline" onclick="delCoupon('{{$coupon->id}}')"><i class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     @endforeach
