@@ -42,7 +42,7 @@ class YzyController extends Controller
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
         if (!$data) {
-            Log::info('YZY-POST:回调数据无法解析，可能是非法请求');
+            Log::error('YZY-POST:回调数据无法解析，可能是非法请求');
             exit();
         }
 
@@ -51,7 +51,7 @@ class YzyController extends Controller
         $sign_string = $this->config['youzan_client_id'] . "" . $msg . "" . $this->config['youzan_client_secret'];
         $sign = md5($sign_string);
         if ($sign != $data['sign']) {
-            Log::info('YZY-POST:回调数据签名错误，可能是非法请求');
+            Log::error('YZY-POST:回调数据签名错误，可能是非法请求');
             exit();
         } else {
             // 返回请求成功标识给有赞
@@ -59,7 +59,7 @@ class YzyController extends Controller
         }
 
         // 先写入回调日志
-        $this->callbackLog($data['client_id'], $data['id'], $data['kdt_id'], $data['kdt_name'], $data['mode'], $data['msg'], $data['sendCount'], $data['sign'], $data['status'], $data['test'], $data['type'], $data['version']);
+        $this->callbackLog($data['client_id'], $data['id'], $data['kdt_id'], array_key_exists('kdt_name',$data)?$data['kdt_name']:'店铺名为空', $data['mode'], $data['msg'], $data['sendCount'], $data['sign'], $data['status'], $data['test'], $data['type'], $data['version']);
 
         // msg内容经过 urlencode 编码，进行解码
         $msg = json_decode(urldecode($msg), true);
@@ -69,13 +69,13 @@ class YzyController extends Controller
             $yzy = new Yzy();
             $result = $yzy->getTradeByTid($msg['tid']);
             if (isset($result['error_response'])) {
-                Log::info('【有赞云】回调订单信息错误：' . $result['error_response']['msg']);
+                Log::error('【有赞云】回调订单信息错误：' . $result['error_response']['msg']);
                 exit();
             }
 
             $payment = Payment::query()->where('qr_id', $result['response']['trade']['qr_id'])->first();
             if (!$payment) {
-                Log::info('【有赞云】回调订单不存在');
+                Log::error('【有赞云】回调订单不存在');
                 exit();
             }
 
@@ -88,7 +88,7 @@ class YzyController extends Controller
             // 交易成功
             if ($data['status'] == 'TRADE_SUCCESS') {
                 if ($payment->status != '0') {
-                    Log::info('【有赞云】回调订单状态不正确');
+                    Log::error('【有赞云】回调订单状态不正确');
                     exit();
                 }
 
@@ -115,7 +115,7 @@ class YzyController extends Controller
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::info('【有赞云】更新支付单和订单异常：' . $e->getMessage());
+                    Log::error('【有赞云】更新支付单和订单异常：' . $e->getMessage());
                 }
                 exit();
             }
@@ -147,7 +147,7 @@ class YzyController extends Controller
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::info('【有赞云】更新支付单和订单异常'.$e->getMessage());
+                    Log::error('【有赞云】更新支付单和订单异常'.$e->getMessage());
                 }
 
                 exit();
