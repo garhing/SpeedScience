@@ -116,6 +116,7 @@ Route::group(['middleware' => ['forbidden', 'user', 'admin']], function () {
     Route::post("admin/switchToUser", "AdminController@switchToUser"); // 转换成某个用户的身份
     Route::any("admin/decompile", "AdminController@decompile"); // SS(R)链接反解析
     Route::any("payment/callbackList", "PaymentController@callbackList"); // 有赞云支付回调日志
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index'); // 系统运行日志
 });
 
 Route::group(['middleware' => ['forbidden', 'user']], function () {
