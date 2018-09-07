@@ -32,6 +32,7 @@ class RoutineJob extends Command
                     continue;
                 }
                 Order::query()->where('oid',$order->oid)->update(['is_expire'=>1]);
+                User::updateUserStatus($order->user_id);
             }
         }
 
@@ -41,19 +42,17 @@ class RoutineJob extends Command
             foreach ($users as $user) {
                 User::deactiveUserOrder($user->id,false);
                 User::activeUserOrder($user->id,false);
-                $next_reset_time = Order::getUserResetDay($user->id);
-                User::query()->where('id', $user->id)->update(['u' => 0, 'd' => 0,'traffic_reset_day' => $next_reset_time]);
-                // TODO 邮件提醒
+                User::query()->where('id', $user->id)->update(['u' => 0, 'd' => 0]);
+                User::updateUserStatus($user->id);
             }
         }
 
-        //更新所有用户状态
-        $allUserList = User::query()->get();
+        //更新所有用户状态,禁用用户进入正常状态不需要自动进行
+        $allUserList = User::query()->where('enable',1)->get();
         foreach ($allUserList as $user){
             User::deactiveUserOrder($user->id,false);
             User::updateUserStatus($user->id);
         }
-
 
         // 自动禁用流量超限的用户
         $userList = User::query()->where('enable', 1)->whereRaw("u + d >= transfer_enable")->get();

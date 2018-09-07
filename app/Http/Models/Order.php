@@ -153,7 +153,7 @@ class Order extends Model
             ->max('expire_at');
         $result = $result1>$result2?$result1:$result2;
         if(!$result){
-            return date('Y-m-d H:i:s',strtotime('- 10 years'));
+            return '1992-12-25 11:14:00';
         }
         return $result;
     }
