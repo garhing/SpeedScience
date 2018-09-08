@@ -15,6 +15,7 @@ use Redirect;
 use Cache;
 use Mail;
 use DB;
+use Log;
 
 /**
  * 注册控制器
@@ -165,6 +166,7 @@ class RegisterController extends Controller
             $user->expire_time = date('Y-m-d H:i:s', strtotime("+" . $this->config['default_days'] . " days"));
             $user->reg_ip = $request->getClientIp();
             $user->referral_uid = $referral_uid;
+            $user->status = 1;
             $user->save();
 
             if ($user->id) {
@@ -192,47 +194,52 @@ class RegisterController extends Controller
                 }
             }
 
-            //推荐的用户获取赠送商品
-            if($referral_uid != 0){
+            // 不需要激活的话，才会直接赠送商品
+            if (!$this->config['is_active_register']){
+                //推荐的用户获取赠送商品
+                if($referral_uid != 0){
+                    DB::beginTransaction();
+                    try {
+                        $affUser = User::query()->where('id', $referral_uid)->first();
+                        $goods_ids = $this->config['referral_good_ids'];
+                        $goods_ids = explode(';', $goods_ids);
+                        foreach ($goods_ids as $goods_id) {
+                            $result = User::addOrder($affUser->id, $goods_id, $coupon_sn = -1, $status = 1, $pay_way = 0);
+                            if($result['status'] == 'fail'){
+                                throw  new Exception($result['message']);
+                            }
+                        }
+                        DB::commit();
+                        Log::info($affUser->username.'推荐用户,获取赠送商品成功');
+                    } catch (\Exception $e) {
+                        DB::rollBack();
+                        Log::error('推荐的用户获取赠送商品失败：'.$e->getMessage());
+                    }
+                }
+
+                //用户注册赠送商品
                 DB::beginTransaction();
                 try {
-                    $user_id = $referral_uid;
-                    $goods_ids = $this->config['referral_good_ids'];
+                    $user_id = $user->id;
+                    $goods_ids = $this->config['initial_good_ids'];
                     $goods_ids = explode(';', $goods_ids);
                     foreach ($goods_ids as $goods_id) {
-                        $result = User::addOrder($user_id, $goods_id, $coupon_sn = -1, $status = 1, $pay_way = 0);
+                        $result = User::addOrder($user_id, $goods_id, $coupon_sn = -1, $status = 2, $pay_way = 0);
                         if($result['status'] == 'fail'){
                             throw  new Exception($result['message']);
                         }
                     }
                     DB::commit();
+                    Log::info($user->username.'用户注册赠送商品成功');
                 } catch (\Exception $e) {
                     DB::rollBack();
-//                    $request->session()->flash('errorMsg', '操作失败：' . $e->getMessage());
+                    Log::info($user->username.'用户注册赠送商品成功');
                 }
-            }
-
-            //用户注册赠送商品
-            DB::beginTransaction();
-            try {
-                $user_id = $user->id;
-                $goods_ids = $this->config['initial_good_ids'];
-                $goods_ids = explode(';', $goods_ids);
-                foreach ($goods_ids as $goods_id) {
-                    $result = User::addOrder($user_id, $goods_id, $coupon_sn = -1, $status = 2, $pay_way = 0);
-                    if($result['status'] == 'fail'){
-                        throw  new Exception($result['message']);
-                    }
-                }
-                DB::commit();
-
-            } catch (\Exception $e) {
-                DB::rollBack();
-//                $request->session()->flash('errorMsg', '操作失败：' . $e->getMessage());
             }
 
             // 发送邮件
             if ($this->config['is_active_register']) {
+                User::query()->where('id', $user->id)->update(['status'=>0]);
                 // 生成激活账号的地址
                 $token = md5($this->config['website_name'] . $username . microtime());
                 $verify = new Verify();
@@ -250,6 +257,7 @@ class RegisterController extends Controller
                     Mail::to($username)->send(new activeUser($this->config['website_name'], $activeUserUrl));
                     $this->sendEmailLog($user->id, $title, $content);
                 } catch (\Exception $e) {
+
                     $this->sendEmailLog($user->id, $title, $content, 0, $e->getMessage());
                 }
 

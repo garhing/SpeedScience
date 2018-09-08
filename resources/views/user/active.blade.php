@@ -23,6 +23,7 @@
     <!-- END THEME GLOBAL STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link href="/assets/pages/css/login-2.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/project.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL STYLES -->
     <!-- BEGIN THEME LAYOUT STYLES -->
     <!-- END THEME LAYOUT STYLES -->
@@ -32,7 +33,7 @@
 <body class="login">
 <!-- BEGIN LOGO -->
 <div class="logo">
-    <a href="javascript:;"> <img src="/assets/images/home_logo.png" alt="" /> </a>
+    <a href="{{url('/')}}" class="logo-font">{{$app_config['website_name']}}</a>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
@@ -79,7 +80,7 @@
     <!-- BEGIN REGISTRATION FORM -->
     <form class="register-form" action="{{url(Request::getRequestUri())}}" method="post" style="display: block;">
         <div class="form-actions">
-            <button type="button" class="btn btn-default" onclick="login()">{{trans('active.login_button')}}</button>
+            <button type="button" class="btn btn-info" onclick="login()" style="background-color: #e7505a;color: #fff">{{trans('active.login_button')}}</button>
         </div>
     </form>
     <!-- END REGISTRATION FORM -->

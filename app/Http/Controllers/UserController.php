@@ -655,12 +655,50 @@ class UserController extends Controller
         $verify->status = 1;
         $verify->save();
 
-        // 账号激活后给邀请人送流量
-        if ($verify->user->referral_uid) {
-            $transfer_enable = $this->config['referral_traffic'] * 1048576;
+        // 激活账号后赠送商品
+        $user = User::query()->where('id', $verify->user_id)->first();
+        $affUser = User::query()->where('id', $user->referral_uid)->first();
+        $referral_uid = $affUser ? $affUser->id : 0;
 
-            User::query()->where('id', $verify->user->referral_uid)->increment('transfer_enable', $transfer_enable);
-            User::query()->where('id', $verify->user->referral_uid)->update(['enable' => 1]);
+        //推荐的用户获取赠送商品
+        if($referral_uid != 0){
+            DB::beginTransaction();
+            try {
+                $user_id = $referral_uid;
+                $goods_ids = $this->config['referral_good_ids'];
+                $goods_ids = explode(';', $goods_ids);
+                foreach ($goods_ids as $goods_id) {
+                    $result = User::addOrder($user_id, $goods_id, $coupon_sn = -1, $status = 1, $pay_way = 0);
+                    if($result['status'] == 'fail'){
+                        throw  new Exception($result['message']);
+                    }
+                }
+                DB::commit();
+                Log::info($affUser->username.'推荐用户,获取赠送商品成功');
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error('推荐的用户获取赠送商品失败：'.$e->getMessage());
+            }
+        }
+
+        //用户注册赠送商品
+        DB::beginTransaction();
+        try {
+            $user_id = $user->id;
+            $goods_ids = $this->config['initial_good_ids'];
+            $goods_ids = explode(';', $goods_ids);
+            foreach ($goods_ids as $goods_id) {
+                $result = User::addOrder($user_id, $goods_id, $coupon_sn = -1, $status = 2, $pay_way = 0);
+                if($result['status'] == 'fail'){
+                    throw  new Exception($result['message']);
+                }
+            }
+            DB::commit();
+            Log::info($user->username.'用户注册赠送商品成功');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('用户注册赠送商品失败：'.$e->getMessage());
         }
 
         $request->session()->flash('successMsg', '账号激活成功');
