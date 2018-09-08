@@ -44,11 +44,12 @@
             width: 100%;
             height: 100%;
             color: #37302d;
-            background: #ffffff;
+            background: #ff1c1c;
         }
 
         table {
             border-collapse: collapse !important;
+            max-width:800px;
         }
 
         h1, h2, h3, h4 {
@@ -200,18 +201,18 @@
 
             <table cellspacing="0" cellpadding="0" width="100%">
                 <tr>
-                    <td style="background:#1f1f1f" width="100%">
+                    <td style="background:#1f1f1f" width="100%" id="main_tr_id">
                         <center>
                             <table cellspacing="0" cellpadding="0" width="600" class="w320">
                                 <tr>
                                     <td valign="top" class="mobile-block mobile-no-padding-bottom mobile-center"
-                                        width="270" style="background:#1f1f1f;padding:10px 10px 10px 20px;">
-                                        <a href="{{url('/')}}" style="text-decoration: none;">
-                                            <span class="logo" style="color: #FFFFFF;font-size: 36px;
+                                        width="270" style="background:#1f1f1f;padding:8px 10px 8px 20px;">
+                                        <a href="{{url('/')}}" style="text-decoration: none;" target="_blank">
+                                            <span class="logo" style="color: #FFFFFF;font-size: 28px;
                 font-weight: bold;
                 padding: 10px 0;
                 display: block;
-                text-decoration: none;">问道科研</span>
+                text-decoration: none;">{{empty($app_config['website_name'])?$websiteName:$app_config['website_name']}}</span>
                                         </a>
                                     </td>
                                     <td valign="top" class="mobile-block mobile-center" width="270"

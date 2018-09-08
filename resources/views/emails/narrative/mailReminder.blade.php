@@ -10,23 +10,25 @@
 
                             <br class="mobile-hide" />
 
-                            <h3>欢迎来到{{$websiteName}}</h3>
+                            {{--<h3>{{ $title }}</h3>--}}
 
+                            {{--<br>--}}
+                            {!! $content !!}
                             <br>
-                            We're excited you're here! Learn more about us and activate your new account by clicking the link below!<br>
+                            <br>
                             <br>
 
                             <table cellspacing="0" cellpadding="0" width="100%" bgcolor="#ffffff">
                                 <tr>
                                     <td style="width:130px;background:#D84A38;">
-                                        <div>
+                                        <div style="text-align:center;">
                                             <!--[if mso]>
                                             <v:rect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#" style="height:33px;v-text-anchor:middle;width:130px;" stroke="f" fillcolor="#D84A38">
                                                 <w:anchorlock/>
                                                 <center>
                                             <![endif]-->
-                                            <a href="{{$activeUserUrl}}"
-                                               style="background-color:#D84A38;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:33px;text-align:center;text-decoration:none;width:130px;-webkit-text-size-adjust:none;">激活账号！</a>
+                                            <a href="{{url('user/index')}}" target="_blank"
+                                               style="background-color:#D84A38;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:33px;text-decoration:none;-webkit-text-size-adjust:none;">点击登录我的账户</a>
                                             <!--[if mso]>
                                             </center>
                                             </v:rect>

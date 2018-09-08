@@ -31,7 +31,7 @@ class mailReminder extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('emails.narrative.welcome')->with($this->sendConfigs);
+        return $this->view('emails.narrative.mailReminder')->with($this->sendConfigs);
     }
 
     /**
