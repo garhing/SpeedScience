@@ -2160,16 +2160,17 @@ class AdminController extends Controller
                 $addr = str_replace("\r","",$addr);
                 $addr = str_replace("\n","",$addr);
                 // 用户名不是邮箱的跳过
-                if (false === filter_var($addr, FILTER_VALIDATE_EMAIL)) {
+                $result = Verify::filter_email($addr);
+                if($result['status'] == 'fail'){
                     continue;
                 }
-                $now = $now->addSecond(1);
                 $send_config['addr'] =  $addr;
                 $send_config['title'] =  $title;
                 $send_config['content'] =  $content;
                 $send_config['app_config'] =  $this->config;
                 $message = (new mailReminder($send_config))->subject($title) ->delay($now);
                 \Mail::to($send_config['addr'])->send($message);
+                $now = $now->addSecond(50);
 
             }
 

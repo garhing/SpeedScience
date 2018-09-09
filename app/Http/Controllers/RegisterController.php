@@ -70,10 +70,12 @@ class RegisterController extends Controller
                 $request->session()->flash('errorMsg', '两次输入密码不一致，请重新输入');
 
                 return Redirect::back()->withInput($request->except(['password', 'repassword']));
-            } else if (false === filter_var($username, FILTER_VALIDATE_EMAIL)) {
-                $request->session()->flash('errorMsg', '用户名必须是合法邮箱，请重新输入');
-
-                return Redirect::back()->withInput();
+            } else {
+                $result = Verify::filter_email($username);
+                if ($result['status'] == 'fail'){
+                    $request->session()->flash('errorMsg', $result['msg']);
+                    return Redirect::back()->withInput();
+                }
             }
 
             // 是否校验验证码
