@@ -4,7 +4,7 @@
         <td style="border-bottom:1px solid #e7e7e7;">
 
             <center>
-                <table cellpadding="0" cellspacing="0" width="600" class="w320">
+                <table cellpadding="0" cellspacing="0" width="600" class="w500">
                     <tr>
                         <td align="left" class="mobile-padding" style="padding:20px 20px 0">
 

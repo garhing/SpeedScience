@@ -49,7 +49,7 @@
 
         table {
             border-collapse: collapse !important;
-            max-width:800px;
+            max-width:650px;
         }
 
         h1, h2, h3, h4 {
@@ -106,7 +106,10 @@
         @media only screen and (max-width: 600px) {
 
             table[class="w320"] {
-                width: 320px !important;
+                width: 500px !important;
+            }
+            table[class="w500"] {
+                width: 500px !important;
             }
 
             table[class="w300"] {
@@ -119,6 +122,9 @@
 
             td[class="w320"] {
                 width: 320px !important;
+            }
+            td[class="w500"] {
+                width: 500px !important;
             }
 
             td[class~="mobile-padding"] {
@@ -208,9 +214,9 @@
                                     <td valign="top" class="mobile-block mobile-no-padding-bottom mobile-center"
                                         width="270" style="background:#1f1f1f;padding:8px 10px 8px 20px;">
                                         <a href="{{url('/')}}" style="text-decoration: none;" target="_blank">
-                                            <span class="logo" style="color: #FFFFFF;font-size: 28px;
+                                            <span class="logo" style="color: #FFFFFF;font-size: 24px;
                 font-weight: bold;
-                padding: 10px 0;
+                padding: 8px 0;
                 display: block;
                 text-decoration: none;">{{empty($app_config['website_name'])?$websiteName:$app_config['website_name']}}</span>
                                         </a>
@@ -227,17 +233,17 @@
                 <tr>
                     <td style="background-color:#1f1f1f;">
                         <center>
-                            <table border="0" cellpadding="0" cellspacing="0" width="600" class="w320"
+                            <table border="0" cellpadding="0" cellspacing="0" width="600" class="w500"
                                    style="height:100%;color:#ffffff" bgcolor="#1f1f1f">
                                 <tr>
                                     <td align="right" valign="middle" class="mobile-padding"
-                                        style="font-size:12px;padding:20px; background-color:#1f1f1f; color:#ffffff; text-align:left; ">
-                                        <a style="text-decoration: none;color:#ffffff;" href="{{url('home/features')}}">产品特性</a>&nbsp;|&nbsp;&nbsp;
-                                        <a  style="text-decoration: none;color:#ffffff;"
+                                        style="font-size:14px;padding:14px; background-color:#1f1f1f; color:#ffffff; text-align:left; ">
+                                        <a  target="_blank" style="text-decoration: none;color:#ffffff;" href="{{url('home/features')}}">产品特性</a>&nbsp;|&nbsp;&nbsp;
+                                        <a  target="_blank" style="text-decoration: none;color:#ffffff;" target="_blank"
                                            href="{{url('home/aff')}}">推介计划</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                                        <a style="text-decoration: none;color:#ffffff;"
+                                        <a target="_blank" style="text-decoration: none;color:#ffffff;"
                                            href="{{url('home/tos')}}">用户政策</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                                        <a style="text-decoration: none;color:#ffffff;"
+                                        <a target="_blank" style="text-decoration: none;color:#ffffff;"
                                            href="{{url('home/about#contact_us')}}">关于我们</a>&nbsp;
                                     </td>
                                 </tr>
