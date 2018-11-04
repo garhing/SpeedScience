@@ -245,7 +245,12 @@ class User extends Model
             if(strtotime($expire_time)<time()){
                 $enable = 0;
             }
-            User::query()->where('id', $uid)->update(['enable'=>$enable,'transfer_enable' => $transfer_enable, 'expire_time' => $expire_time, 'traffic_reset_day' => $next_reset_time]);
+            $user = User::query()->where('id', $uid)->first();
+            if($user->traffic_reset_day == 0 || empty($user->traffic_reset_day)){
+                User::query()->where('id', $uid)->update(['enable'=>$enable,'transfer_enable' => $transfer_enable, 'expire_time' => $expire_time, 'traffic_reset_day' => $next_reset_time]);
+            }else{
+                User::query()->where('id', $uid)->update(['enable'=>$enable,'transfer_enable' => $transfer_enable, 'expire_time' => $expire_time]);
+            }
             DB::commit();
             return ['status' => 'success', 'data' => '', 'message' => '操作成功'];
         } catch (\Exception $e) {
@@ -255,7 +260,38 @@ class User extends Model
         }
 
     }
+    //生效用户套餐订单，自动恢复由于流量耗尽导致的订单失效
+    static function activeUserOrder($uid,$update_user_status=true)
+    {
+        DB::beginTransaction();
+        try {
+            $user = User::query()->find($uid);
 
+            // 查询出 '流量耗尽' 的订单
+            $orders = Order::query()
+                ->with('goods')
+                ->where(['user_id' => $uid, 'status' => 3])
+                ->whereHas('goods', function ($q) {  $q->where('type', 2);})
+                ->where('expire_at','>=',date('Y-m-d H:i:s'))
+                ->get()->toArray();
+            foreach ($orders as $order) {
+                Order::query()->where('oid', $order['oid'])->update(['status'=>2]);
+            }
+            //激活订单后，更新用户状态
+            if ($update_user_status) {
+                $result = User::updateUserStatus($uid);
+                if ($result['status'] == 'fail'){
+                    throw new Exception($result['message']);
+                }
+            }
+            DB::commit();
+            return ['status' => 'success', 'data' => '', 'message' => '操作成功'];
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            DB::rollBack();
+            return ['status' => 'fail', 'data' => '', 'message' => '操作失败' . $e->getMessage()];
+        }
+    }
     // 失效用户订单, 防止失效的订单也能使用非限定服务器流量 ，用于自动化任务
     // 同时更新用户状态，所以不需要再次更新用户状态
     static function deactiveUserOrder($uid,$update_user_status=true)
@@ -302,7 +338,7 @@ class User extends Model
                 }
             }
             //失效订单后，更新用户状态
-            if ($flag && $update_user_status) {
+            if ($update_user_status) {
                 $result = User::updateUserStatus($uid);
                 if ($result['status'] == 'fail'){
                     throw new Exception($result['message']);

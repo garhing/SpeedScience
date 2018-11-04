@@ -6,6 +6,7 @@ use App\Http\Models\Config;
 use Illuminate\Console\Command;
 use App\Http\Models\Order;
 use App\Http\Models\User;
+use App\Http\Models\UserBanLog;
 use App\Http\Models\UserTrafficHourly;
 use Log;
 
@@ -39,7 +40,9 @@ class RoutineJob extends Command
         if (!$users->isEmpty()) {
             foreach ($users as $user) {
                 User::deactiveUserOrder($user->id,false);
-                User::query()->where('id', $user->id)->update(['u' => 0, 'd' => 0,]);
+                User::activeUserOrder($user->id,false);
+                $next_reset_time = Order::getUserResetDay($user->id);
+                User::query()->where('id', $user->id)->update(['u' => 0, 'd' => 0,'traffic_reset_day' => $next_reset_time]);
                 // TODO 邮件提醒
             }
         }
@@ -48,8 +51,6 @@ class RoutineJob extends Command
         $allUserList = User::query()->get();
         foreach ($allUserList as $user){
             User::deactiveUserOrder($user->id,false);
-
-
             User::updateUserStatus($user->id);
         }
 

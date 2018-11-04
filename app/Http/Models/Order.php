@@ -147,7 +147,10 @@ class Order extends Model
     // 根据用户ID和对应的订单，查询用户过期时间
     static function getUserExpireTime($uid)
     {
-        $result = Order::query()->where(['user_id' => $uid, 'status' => '2', 'is_expire' => 0])->max('expire_at');
+        $result = Order::query()->where(['user_id' => $uid, 'status' => '2', 'is_expire' => 0])
+            ->orWhere(['user_id' => $uid, 'status' => '3'])
+            ->whereHas('goods', function ($q) { $q->where('type', 2); })
+            ->max('expire_at');
         if(!$result){
             return date('Y-m-d H:i:s',strtotime('- 10 years'));
         }
@@ -186,9 +189,11 @@ class Order extends Model
     // 根据订单，查询用户重置日期
     static function getUserResetDay($uid)
     {
-        $existTaocanOrder = Order::query()->with('goods')->whereHas('goods', function ($q) {
-            $q->where('type', 2);
-        })->where(['user_id' => $uid, 'status' => '2', 'is_expire' => 0])->first();
+        $existTaocanOrder = Order::query()->with('goods')
+            ->where(['user_id' => $uid, 'is_expire' => 0])
+            ->whereHas('goods', function ($q) {  $q->where('type', 2);})
+            ->whereIn('status',['2','3'])
+            ->first();
         if ($existTaocanOrder) {
             $goods = $existTaocanOrder->goods;
             $activeTimestamps = strtotime("-" . $goods->days . " days", strtotime($existTaocanOrder->expire_at));
@@ -380,7 +385,8 @@ class Order extends Model
                     if ($result['status'] == 'fail'){
                         throw new Exception($result['message']);
                     }
-                    User::query()->where('id', $user->id)->update(['u' => 0, 'd' =>0 ]);
+                    $next_reset_time = Order::getUserResetDay($uid);
+                    User::query()->where('id', $user->id)->update(['u' => 0, 'd' =>0 ,'traffic_reset_day'=>$next_reset_time]);
                 }
 
                 //激活订单
