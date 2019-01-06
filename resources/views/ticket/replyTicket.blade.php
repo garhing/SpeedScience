@@ -36,7 +36,7 @@
                                     <div class="timeline-body-arrow"></div>
                                     <div class="timeline-body-head">
                                         <div class="timeline-body-head-caption">
-                                            <span class="timeline-body-alerttitle font-blue-madison">{{$ticket->user->username}}</span>
+                                            <span class="timeline-body-alerttitle font-blue-madison">{{empty($ticket->user->username) ? '【账号已删除】' : $ticket->user->username}}</span>
                                             <span class="timeline-body-time font-grey-cascade"> {{$ticket->created_at}} </span>
                                         </div>
                                         <div class="timeline-body-head-actions"></div>
