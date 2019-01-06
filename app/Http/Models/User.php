@@ -251,11 +251,8 @@ class User extends Model
                 $enable = 0;
             }
             $user = User::query()->where('id', $uid)->first();
-            if($user->traffic_reset_day == 0 || empty($user->traffic_reset_day)){
-                User::query()->where('id', $uid)->update(['enable'=>$enable,'transfer_enable' => $transfer_enable, 'expire_time' => $expire_time, 'traffic_reset_day' => $next_reset_time]);
-            }else{
-                User::query()->where('id', $uid)->update(['enable'=>$enable,'transfer_enable' => $transfer_enable, 'expire_time' => $expire_time]);
-            }
+            User::query()->where('id', $uid)->update(['enable'=>$enable,'transfer_enable' => $transfer_enable, 'expire_time' => $expire_time, 'traffic_reset_day' => $next_reset_time]);
+            User::query()->where('id', $uid)->update(['traffic_reset_day' => $next_reset_time]);
             DB::commit();
             return ['status' => 'success', 'data' => '', 'message' => '操作成功'];
         } catch (\Exception $e) {
